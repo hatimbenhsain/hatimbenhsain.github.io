@@ -20,20 +20,36 @@ img{
 }
 #main{
 	font-family:'Courier New';
-	font-weight:bold;
-	font-size:50px;
-	margin-top:13%;
+	margin-top:8%;
 	margin-left:40%;
 	margin-right:40%;
 	float:center;
 	text-align:center;
 }
-#play{
+h{
+	font-weight:bold;
+	font-size:50px;
+}
+p{
 	margin-top: 20%;
+	font-size:30px;
 }
 #stuff{
-	margin-left:-20%;
-	margin-right:-20%;
-	margin-top: 15%
+	margin-left:-50%;
+	margin-right:-50%;
+	margin-top: 40%
 }
-#about{margin-right:30%}
+.review{
+	display:inline-block;
+	margin-left:6%;
+	margin-right:6%;
+	width:20%;
+}
+.reviewer{
+	color:grey;
+	text-align: right;
+}
+a{
+	color:white;
+	text-decoration: none;
+}
