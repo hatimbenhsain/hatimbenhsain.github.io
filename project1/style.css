@@ -1,0 +1,45 @@
+body{
+	margin:0;
+	padding:0;
+	background-color:black;
+	color:white;
+}
+body{
+	position:absolute;
+}
+img{
+	margin:auto;
+}
+#rideau1{
+	float:left;
+	margin-left:-50%;
+}
+#rideau2{
+	float:right;
+	margin-right:-50%;
+}
+#main{
+	font-family:'Courier New';
+	font-weight:bold;
+	font-size:50px;
+	margin-top:13%;
+	margin-left:40%;
+	margin-right:40%;
+	float:center;
+	text-align:center;
+}
+#play{
+	margin-top: 20%;
+}
+#stuff{
+	margin-left:-20%;
+	margin-right:-20%;
+	margin-top: 15%
+}
+#about{margin-right:30%}
+a{
+	opacity:0.5;
+}
+a:hover{
+	opacity:1;
+}

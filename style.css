@@ -1,3 +1,20 @@
 h1{
 	font-family:'Comic Sans MS';
 }
+a{
+	font-size:50px;
+	position: absolute;
+	top:25%;
+	left:50%;
+}
+a:visited{
+	color: green;
+}
+a:hover{
+	color: red;	
+}
+div{
+	height:30px;
+	width:300px;
+	border:2px solid black;
+}
