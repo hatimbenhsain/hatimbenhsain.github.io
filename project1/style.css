@@ -10,13 +10,29 @@ body{
 img{
 	margin:auto;
 }
+#animatedRideau1{
+	position:fixed;
+	right:50%;
+	z-index:50;
+	transition:right linear 1s;
+}
+#animatedRideau2{
+	position:fixed;
+	left:50%;
+	z-index:50;
+	transition:left linear 1s;
+}
 #rideau1{
 	float:left;
 	margin-left:-50%;
+	position: relative;
+	z-index:100;
 }
 #rideau2{
 	float:right;
 	margin-right:-50%;
+	position: relative;
+	z-index:100;
 }
 #main{
 	font-family:'Courier New';
@@ -42,4 +58,15 @@ a{
 }
 a:hover{
 	opacity:1;
+}
+audio{
+	visibility:hidden;
+	position:fixed;
+}
+#mutee{
+	position:fixed;
+	bottom:5%;
+	z-index:20;
+	right:20%;
+	width:50px;
 }

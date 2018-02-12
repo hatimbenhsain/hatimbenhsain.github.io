@@ -10,34 +10,77 @@ body{
 img{
 	margin:auto;
 }
+#animatedRideau1{
+	position:fixed;
+	right:50%;
+	z-index:50;
+	transition:right linear 1s;
+}
+#animatedRideau2{
+	position:fixed;
+	left:50%;
+	z-index:50;
+	transition:left linear 1s;
+}
 #rideau1{
 	float:left;
 	margin-left:-50%;
+	position: relative;
+	z-index:100;
 }
 #rideau2{
 	float:right;
 	margin-right:-50%;
+	position: relative;
+	z-index:100;
 }
 #main{
 	font-family:'Courier New';
-	font-weight:bold;
-	font-size:50px;
-	margin-top:13%;
+	margin-top:8%;
 	margin-left:40%;
 	margin-right:40%;
 	float:center;
 	text-align:center;
 }
-#play{
-	margin-top: 20%;
+h{
+	font-weight:bold;
+	font-size:50px;
 }
-#stuff{
-	margin-left:-20%;
-	margin-right:-20%;
-	margin-top: 15%
+#content{
+	margin-left:-50%;
+	margin-right:-50%;
+	margin-top:20%;
 }
-#about{margin-right:30%}
+.bio{
+	position:absolute;
+	margin-right:30%;
+	transition: opacity linear 1s;
+	opacity:0;
+	visibility:hidden;
+}
+.pic{
+	margin-left:4%;
+	opacity:0.5;
+	border: 8px solid white;
+	border-radius:100%;
+}
+.pic:hover{
+	opacity:1;
+}
+.hoveredBio{
+}
 a{
 	color:white;
 	text-decoration: none;
+}
+audio{
+	visibility:hidden;
+	position:fixed;
+}
+#mutee{
+	position:fixed;
+	bottom:5%;
+	z-index:20;
+	right:20%;
+	width:50px;
 }
