@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+      <meta charset = 'utf-8'>
+      <link rel  = "stylesheet" href= 'style.css'>
+      <!-- <script src = "script.js"> </script> -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>A Day in A Dog's Life </title>
+    </head>
+<body>
+  <div id='main'>
+    <header>
+      <div class = "container">
+        <div class = "title">
+          <h1> A DAY IN A DOG'S LIFE</h1>
+        </div>
+      </div>
+    </header>
+
+    <section id = "map">
+        <div class ="box" id = "img1" onclick=change(block1)>
+          <h3>FISHMARKET</h3>
+          <img class="things" src="fishMarket.png">
+        </div>
+        <div class ="box" id = "img2" onclick=change(block2)>
+          <h3>PARK</h3>
+          <img class="things" src="park.jpg">
+        </div>
+        <div class ="box" id = "img3" onclick=change(block3)>
+          <h3>CAFÉ</h3>
+          <img class="things" src="cafe.jpg">
+        </div>
+        <div class ="box" id = "img4" onclick=change(block4)>
+          <h3>BEACH</h3>
+          <img class="things" src="beach.jpg">
+        </div>
+    </section>
+  </div>
+  <div id="popup" class='screen' onclick=fadeOut(popup,main)>
+    <p>
+      What you are about to experience <br>
+      is a Day in a Dog's Life.<br>
+      Imagine you're a dog<br>
+      And you have awoken to find <br>
+      your owner is no longer with you. <br>
+      Where do you go to look for them?<br>
+      Choose carefully...<br><br><br>
+      Please pick 2 locations to explore.<br><br>
+
+
+      <marquee>(best experienced with headphones)</marquee>
+
+
+
+    </p>
+    <img src='doge.gif' id='gif'>
+
+
+
+  </div>
+  <div id='ending1' class='ending' onclick=fadeOut(ending1,main)>
+    <p>
+      Sorry, you have just met an unexpected end.. <br>
+      click wherever to start again
+    </p>
+  </div>
+    <div id='ending2' class='ending' onclick=fadeOut(ending2,main)>
+    <p>
+      Congrats! You have found a new owner and a new home! <br>
+      click wherever to start again
+    </p>
+  </div>
+    <div id='ending3' class='ending' onclick=fadeOut(ending3,main)>
+    <p>
+      Congrats! You have just found your long lost owner!<br>
+      click wherever to start again
+    </p>
+  </div>
+</body>
+<script type="text/javascript" src="howler.js"></script>
+<script src="script.js"></script>
+</html>

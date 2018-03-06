@@ -1,0 +1,161 @@
+html,
+body{
+  position:absolute;
+  margin: 0;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height:100%;
+  width:100%;
+}
+
+.container {
+  height: 10%;
+  width:100%;
+  text-align:center;
+  vertical-align:middle;
+  position:absolute;
+  border-bottom: 0px;
+}
+
+#map {
+  position:absolute;
+  top:10%;
+  height: 90%;
+  width:100%;
+  font-family: 'Open Sans';
+
+}
+
+.box{
+  position: absolute;
+}
+
+#img1{
+  top:1%;
+  left:1%;
+  height: 48.5%;
+  width: 48.5%;
+  cursor: pointer;
+
+}
+
+#img2{
+  top:1%;
+  left:50.5%;
+  right:2%;
+  height: 48.5%;
+  width: 48.5%;
+  cursor: pointer;
+}
+
+#img3{
+  left:1%;
+  top:50.5%;
+  bottom:1%;
+  height: 48.5%;
+  width: 48.5%;
+  cursor: pointer;
+}
+
+#img4{
+
+  top:50.5%;
+  left:50.5%;
+  bottom:1%;
+  right:1%;
+  height: 48.5%;
+  width: 48.5%;
+  cursor: pointer;
+
+}
+.things{
+  position:absolute;
+  filter:grayscale(80%);
+  height:100%;
+  width:100%;
+}
+.things:hover{
+  filter:grayscale(0%);
+}
+.box:hover{
+  border: 5px solid   #947a63;
+}
+#popup{
+  position:fixed;
+  margin: 0;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height:100%;
+  width:100%;
+  align-content:center;
+  background-color:black;
+  margin:auto;
+}
+.ending{
+  position:fixed;
+  margin: 0;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height:100%;
+  width:100%;
+  align-content:center;
+  background-color:black;
+  margin:auto;
+  visibility:hidden;
+  opacity:0;
+}
+p{
+
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color:white;
+  text-align:center;
+}
+
+#gif{
+  position: absolute;
+  top: 48%;
+  left: 47%;
+  z-index:60;
+}
+#main{
+  background-image:url('map.jpg');
+  position:absolute;
+  margin: 0;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height:100%;
+  width:100%;
+  color:black;
+}
+h3{
+  z-index:1;
+  position:absolute;
+  right:5%;
+  bottom:5%;
+  color:white;
+  font:bold x-large Bahnschrift ;
+
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+}
+h1{
+  font:bold xx-large Bahnschrift ;
+  color:white;
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+}
+/* h2{
+  z-index: 1;
+  position:absolute;
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+} */
