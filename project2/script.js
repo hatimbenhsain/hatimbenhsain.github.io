@@ -60,6 +60,7 @@ let fishMarketScene2=new Howl({
 })
 let opening=new Howl({
 	src:['DialogueOpening.wav'],
+	loop:true,
 	onend:function(){checkingEnding()},
 })
 let endingScene2=new Howl({
@@ -86,7 +87,7 @@ let endSound1=dogDeath
 let endSound2=endingScene2
 let endSound3=EndingScene1
 let endSounds=[endSound1,endSound2,endSound3]
-let allSounds=sounds1.concat(sounds2.concat(endSounds))
+let allSounds=sounds1.concat(sounds2.concat(endSounds.concat([opening])))
 
 // console.log(popup)
 //popup.addEventListener("click",fadeOut(main,popup))
