@@ -3,9 +3,6 @@ h1{
 }
 a{
 	font-size:50px;
-	position: absolute;
-	top:25%;
-	left:50%;
 }
 a:visited{
 	color: green;
@@ -14,7 +11,8 @@ a:hover{
 	color: red;	
 }
 div{
-	height:30px;
-	width:300px;
-	border:2px solid black;
+	position:absolute;
+	top:10%;
+	left:10%;
+	right:10%;
 }
