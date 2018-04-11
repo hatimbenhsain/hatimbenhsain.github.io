@@ -1,0 +1,71 @@
+#book{
+	position:absolute;
+	display:block;
+	width:80%;
+	margin-left:10%;
+	margin-right:10%;
+	top:0%;
+	transition: top ease-in 1s;
+	z-index: 50;
+}
+#content{
+	visibility:hidden;
+	opacity:0;
+	transition:opacity ease-out 1s;
+}
+#recipe{
+	position:absolute;
+	margin-right:66%;
+	margin-left:4%;
+	top:10%;
+}
+#video{
+	position:absolute;
+	margin-left:40%;
+	margin-right:2%;
+	top:13%;
+	width:50%;
+	height:60%;
+}
+h1{
+	color:#7C574F;
+	font-weight:normal;
+	font-size:2.5em;
+	font-family:"Helvetica";
+}
+h2{
+	color:#7C574F;
+	font-weight:normal;
+	font-size:1.5em;
+	font-family:"Helvetica";
+}
+p{
+	font-size:1.7em;
+	font-family:"Helvetica";
+}
+#previous{
+	position:fixed;
+	left:4%;
+	bottom:4%;
+}
+#next{
+	position:fixed;
+	right:4%;
+	bottom:4%;
+}
+img{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	height:50px;
+}
+h3{
+	text-align:center;
+	font-size:1em;
+	font-family:"Helvetica";
+}
+h4{
+	text-align:center;
+	font-size:1.3em;
+	font-family:"Helvetica";
+}
