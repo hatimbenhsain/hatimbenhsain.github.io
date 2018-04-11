@@ -15,7 +15,7 @@ function turn(){
 		console.log('yo')
 		content.style.visibility='visible'
 		content.style.opacity="1"
-		book.style.top='-100%'
+		book.style.top='-150%'
 		turned=1
 	}
 }

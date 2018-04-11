@@ -1,10 +1,17 @@
+body{
+	overflow:hidden;
+}
+#Book{
+	cursor:pointer;
+}
 #book{
 	position:absolute;
 	display:block;
-	width:80%;
-	margin-left:10%;
-	margin-right:10%;
-	top:0%;
+	width:105%;
+	margin-left:-2%;
+	margin-right:0%;
+	top:-10%;
+	overflow:hidden;
 	transition: top ease-in 1s;
 	z-index: 50;
 }
@@ -17,13 +24,13 @@
 	position:absolute;
 	margin-right:66%;
 	margin-left:4%;
-	top:10%;
+	top:15%;
 }
 #video{
 	position:absolute;
 	margin-left:40%;
 	margin-right:2%;
-	top:13%;
+	top:17%;
 	width:50%;
 	height:60%;
 }
@@ -36,7 +43,7 @@ h1{
 h2{
 	color:#7C574F;
 	font-weight:normal;
-	font-size:1.5em;
+	font-size:1.7em;
 	font-family:"Helvetica";
 }
 p{
@@ -66,6 +73,6 @@ h3{
 }
 h4{
 	text-align:center;
-	font-size:1.3em;
-	font-family:"Helvetica";
+	font-size:2em;
+	font-family:"Playfair Display";
 }
