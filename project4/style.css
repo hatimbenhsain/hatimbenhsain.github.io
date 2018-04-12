@@ -25,7 +25,6 @@ body{
 	margin-right:66%;
 	margin-left:4%;
 	top:15%;
-	font-family:"Playfair Display";
 }
 #video{
 	position:absolute;
@@ -45,11 +44,11 @@ h2{
 	color:#7C574F;
 	font-weight:normal;
 	font-size:1.7em;
-	font-family:"Helvetica";
+	font-family:"Playfair Display";
 }
 p{
 	font-size:1.7em;
-	font-family:"Helvetica";
+	font-family:"Playfair Display";
 }
 #previous{
 	position:fixed;
@@ -70,7 +69,7 @@ img{
 h3{
 	text-align:center;
 	font-size:1em;
-	font-family:"Helvetica";
+	font-family:"Playfair Display";
 }
 h4{
 	text-align:center;
