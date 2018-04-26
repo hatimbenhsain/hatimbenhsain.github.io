@@ -1,4 +1,4 @@
-html{
+#page{
 	background-color:black;
 	transition:background-color linear 1s;
 }
