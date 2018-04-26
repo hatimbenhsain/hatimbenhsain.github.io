@@ -1,0 +1,24 @@
+html{
+	background-color:black;
+	transition:background-color linear 1s;
+}
+h1{
+	position:absolute;
+	top:2%;
+	left:40%;
+	right:40%;
+	text-align:center;
+}
+#theVideo{
+	position:fixed;
+	top:30%;
+	right:10%;
+}
+#monkey{
+	width:10%;
+	position:fixed;
+	bottom:0%;
+	right:0%;
+	opacity:0;
+	transition: opacity linear 1s;
+}
