@@ -1,0 +1,13 @@
+#biggerVideo{
+	opacity:0;
+	position:absolute;
+	bottom:0;
+	top:0;
+	left:0;
+	right:0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-top: auto;
+	transition: opacity ease-in-out 1s;
+}

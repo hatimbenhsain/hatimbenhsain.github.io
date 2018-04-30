@@ -1,24 +1,61 @@
-#page{
-	background-color:black;
-	transition:background-color linear 1s;
+body{
+	background:url("gift.jpg") no-repeat center fixed; 
+    background-size: cover;
+	overflow:hidden;
+	transition:background-image ease-in-out 1s;
 }
-h1{
-	position:absolute;
-	top:2%;
-	left:40%;
-	right:40%;
-	text-align:center;
+#moana{
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
+top:15%;
+transition:top ease-in 1s;
+}
+#moana:hover{
+animation:shake 0.5s;
+animation-iteration-count: infinite;
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 #theVideo{
-	position:fixed;
-	top:30%;
-	right:10%;
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
+top:25%;
+opacity:0;
+pointer-events:none;
+transition: opacity ease-in-out 1s;
 }
-#monkey{
-	width:10%;
-	position:fixed;
-	bottom:0%;
-	right:0%;
-	opacity:0;
-	transition: opacity linear 1s;
+h1{
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
+text-align:center;
+top:-5%;
+font-family: 'Erica One', cursive;
+font-weight:bold;
+font-size:6em;
+color: black;
+-webkit-text-fill-color: white; /* Will override color (regardless of order) */
+-webkit-text-stroke-width: 5px;
+-webkit-text-stroke-color: black;
+opacity:0;
+transition: opacity ease-in-out 1s;
 }
