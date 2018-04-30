@@ -3,6 +3,7 @@ body{
     background-size: cover;
 	overflow:hidden;
 	transition:background-image ease-in-out 1s;
+    -webkit-transition:background-image ease-in-out 1s;
 }
 #moana{
 position: absolute;
@@ -40,6 +41,7 @@ top:25%;
 opacity:0;
 pointer-events:none;
 transition: opacity ease-in-out 1s;
+-webkit-transition: opacity ease-in-out 1s;;
 }
 h1{
 position: absolute;
@@ -58,4 +60,5 @@ color: black;
 -webkit-text-stroke-color: black;
 opacity:0;
 transition: opacity ease-in-out 1s;
+-webkit-transition:opacity ease-in-out 1s;
 }

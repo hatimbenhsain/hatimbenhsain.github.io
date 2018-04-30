@@ -41,6 +41,7 @@ function onPlayerStateChange(event){
 		theFrame.id='biggerVideo'},1000)
 		setTimeout(function(){
 			body.style.transition="background-image ease-in-out 5s"
+			body.style.webkitTransition="background-image ease-in-out 5s"
 			body.style.backgroundImage='url("darkToys.jpg")'
 			console.log(body.style.backgroundImage)},2000)
 	}else if (event.data==0){
