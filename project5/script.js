@@ -22,7 +22,7 @@ moana.addEventListener('mouseleave',function(){
 	}
 })
 moana.addEventListener('click',function(){
-	moana.style.top='-60%'
+	moana.style.top='-150%'
 	phase=1
 	for (i in [0,1,2,3,4,5,6,7,8,9]){
 		setTimeout(function(){shake.volume-=0.1

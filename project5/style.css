@@ -12,7 +12,7 @@ margin-right: auto;
 left: 0;
 right: 0;
 top:15%;
-transition:top ease-in 1s;
+transition:top ease-in 2s;
 }
 #moana:hover{
 animation:shake 0.5s;
@@ -37,7 +37,7 @@ margin-left: auto;
 margin-right: auto;
 left: 0;
 right: 0;
-top:25%;
+top:35%;
 opacity:0;
 pointer-events:none;
 transition: opacity ease-in-out 1s;
