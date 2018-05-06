@@ -20,4 +20,9 @@ let lugaimat=document.getElementById('lugaimat')
 lugaimat.addEventListener('click',function(){
 	openInNewTab('lugaimat.pdf')
 })
+let shawarma=document.getElementById('shawarma')
+
+shawarma.addEventListener('click',function(){
+	openInNewTab('shawarma.pdf')
+})
 console.log(karak)
