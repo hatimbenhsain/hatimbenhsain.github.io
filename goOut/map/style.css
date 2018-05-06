@@ -1,0 +1,25 @@
+#bg{
+	    position: absolute;
+	    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    	left: 50%; /* position the left edge of the element at the middle of the parent */
+    	transform: translate(-50%, -50%);
+    	height: :100%;
+    	z-index: -10
+}
+#logo{
+	position:fixed;
+	right:2%;
+	top:2%;
+}
+body{
+overflow:hidden;
+background-color:black;
+}
+iframe{
+		    position: absolute;
+	    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    	left: 50%; /* position the left edge of the element at the middle of the parent */
+    	transform: translate(-50%, -50%);
+    	height: :100%;
+    	z-index: -10
+}

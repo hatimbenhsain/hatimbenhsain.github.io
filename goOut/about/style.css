@@ -1,0 +1,56 @@
+#bg{
+	    position: absolute;
+	    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    	left: 50%; /* position the left edge of the element at the middle of the parent */
+    	transform: translate(-50%, -50%);
+    	height: :100%;
+}
+body{
+overflow:hidden;
+background-color:black;
+}
+#content{
+	position:fixed;
+	left:20%;
+	right:20%;
+	top:10%;
+}
+p{
+	color:white;
+	font-family:Helvetica;
+	font-size:1.5em;
+	font-weight:bold;
+	text-align: center;
+	text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+#social{
+	display:flex;
+	justify-content:center;
+}
+.socials{
+	margin-left:5%;
+	margin-right:5%;
+    -ms-transform: scale(0.8, 0.8); /* IE 9 */
+    -webkit-transform: scale(0.8, 0.8); /* Safari */
+    transform: scale(0.8, 0.8);
+}
+#logo{
+	position:fixed;
+	right:2%;
+	top:2%;
+}
+@media only screen and (orientation: portrait) {
+	#content{
+		left:0%;
+		right:0%;
+	}
+	body{
+		overflow:visible;
+	}
+	p{
+		font-size:2.8em;
+	}
+	#bg{
+		display:none;
+	}
+}

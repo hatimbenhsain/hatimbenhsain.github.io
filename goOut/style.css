@@ -10,8 +10,6 @@ body{
 overflow:hidden;
 background-color:black;
 }
-a{position:absolute;
-z-index: 50}
 #karak{
 	cursor:pointer;}
 #parotha{
@@ -22,6 +20,19 @@ z-index: 50}
 }
 img{
 	position:fixed;
+	cursor:pointer;
+}
+#logo{
+	right:2%;
+	top:2%;
+}
+#about{
+	left:2%;
+	bottom:2%;
+	z-index:10;
+}
+#map{
 	right:2%;
 	bottom:2%;
+	z-index:10;
 }
