@@ -2,17 +2,21 @@ h1{
 	font-family:'Comic Sans MS';
 }
 a{
-	font-size:50px;
-}
-a:visited{
-	color: green;
+	font-size:70px;
 }
 a:hover{
-	color: red;	
+	color:white;	
 }
 div{
 	position:absolute;
 	top:10%;
 	left:10%;
 	right:10%;
+}
+body{
+	background:url("stars.gif");
+}
+a{
+	color:red;
+	font-family:Helvetica;
 }
