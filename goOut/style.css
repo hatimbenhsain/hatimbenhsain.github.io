@@ -1,91 +1,57 @@
-svg{
-    position: absolute;
-    top: 50%;  /* position the top  edge of the element at the middle of the parent */
-    left: 50%; /* position the left edge of the element at the middle of the parent */
-
-    transform: translate(-50%, -50%);
-    height:100%;
+#bg{
+	    position: absolute;
+	    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    	left: 50%; /* position the left edge of the element at the middle of the parent */
+    	transform: translate(-50%, -50%);
+    	height: :100%;
 }
 body{
-overflow:hidden;
 background-color:black;
+overflow:visible;
 }
-image#karak{
-	cursor:pointer;
-	transition:transform linear 0.1s;
+#content{
+	position:absolute;
+	overflow:visible;
+	left:20%;
+	right:20%;
+	top:10%;
 }
-image#karak:hover{
-	transform:scale(1.2,1.2) translate(-8.5%,-8.5%);
+p{
+	color:white;
+	font-family:Helvetica;
+	font-size:1.5em;
+	font-weight:bold;
+	text-align: center;
+	text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
-image#parotha:hover{
-	transform:scale(1.2,1.2) translate(-8.5%,-12%);
+#social{
+	display:flex;
+	justify-content:center;
 }
-image#lugaimat:hover{
-	transform:scale(1.2,1.2) translate(-8.5%,-10.5%);
-}
-image#shawarma:hover{
-	transform:scale(1.2,1.2) translate(-8.5%,-14.5%);
-}
-#parotha{
-	cursor:pointer;
-	transition:transform linear 0.1s;
-}
-#lugaimat{
-	cursor:pointer;
-	transition:transform linear 0.1s;
-}
-#shawarma{
-	cursor:pointer;
-	transition:transform linear 0.1s;
-}
-img{
-	position:fixed;
-	cursor:pointer;
+.socials{
+	margin-left:5%;
+	margin-right:5%;
+    -ms-transform: scale(0.8, 0.8); /* IE 9 */
+    -webkit-transform: scale(0.8, 0.8); /* Safari */
+    transform: scale(0.8, 0.8);
 }
 #logo{
+	position:fixed;
 	right:2%;
 	top:2%;
 }
-#about{
-	left:2%;
-	bottom:2%;
-	z-index:10;
-}
-#map{
-	right:2%;
-	bottom:2%;
-	z-index:10;
-}
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-#guide{
-	display:none;
-}
-@media only screen and (orientation:portrait){
-	#guide{
-		display:initial;
-		position:absolute;	
+@media only screen and (orientation: portrait) {
+	#content{
 		left:0%;
 		right:0%;
-		margin-left:auto;
-		margin-right:auto;
-		height:0%;
-		font-size:8em;
-		text-align:center;
-		font-family:courier;
-		font-weight:bold;
-		color:white;
-		bottom:10%;
+	}
+	body{
+		overflow:visible;
+	}
+	p{
+		font-size:2.8em;
+	}
+	#bg{
+		display:none;
 	}
 }
