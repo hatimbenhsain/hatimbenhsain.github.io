@@ -89,7 +89,7 @@ function Closed(){
 		}else{
 			dsWidth=maxDSWidtch
 		}
-		background(bg)
+		
 		fill('gray')
 		rect(leftX,bottomY,dsWidth,dsHeight,0,0,10,10)
 		b1=color('#aaaaaa')
