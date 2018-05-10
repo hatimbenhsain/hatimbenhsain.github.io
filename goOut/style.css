@@ -4,6 +4,7 @@ svg{
     left: 50%; /* position the left edge of the element at the middle of the parent */
 
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
     height:100%;
 }
 body{
@@ -13,30 +14,39 @@ background-color:black;
 image#karak{
 	cursor:pointer;
 	transition:transform linear 0.1s;
+	-webkit-transition:transform linear 0.1s;
 }
 image#karak:hover{
 	transform:scale(1.2,1.2) translate(-8.5%,-8.5%);
+	-webkit-transform:scale(1.2,1.2) translate(-8.5%,-8.5%);
 }
 image#parotha:hover{
 	transform:scale(1.2,1.2) translate(-8.5%,-12%);
+	-webkit-transform:scale(1.2,1.2) translate(-8.5%,-12%);
+
 }
 image#lugaimat:hover{
 	transform:scale(1.2,1.2) translate(-8.5%,-10.5%);
+	-webkit-transform:scale(1.2,1.2) translate(-8.5%,-10.5%);
 }
 image#shawarma:hover{
 	transform:scale(1.2,1.2) translate(-8.5%,-14.5%);
+	-webkit-transform:scale(1.2,1.2) translate(-8.5%,-14.5%);
 }
 #parotha{
 	cursor:pointer;
 	transition:transform linear 0.1s;
+	-webkit-transition:transform linear 0.1s;
 }
 #lugaimat{
 	cursor:pointer;
 	transition:transform linear 0.1s;
+	-webkit-transition:transform linear 0.1s;
 }
 #shawarma{
 	cursor:pointer;
 	transition:transform linear 0.1s;
+	-webkit-transition:transform linear 0.1s;
 }
 img{
 	position:fixed;
