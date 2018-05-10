@@ -6,11 +6,12 @@
     	height: :100%;
 }
 body{
-overflow:hidden;
 background-color:black;
+overflow:visible;
 }
 #content{
-	position:fixed;
+	position:absolute;
+	overflow:visible;
 	left:20%;
 	right:20%;
 	top:10%;
