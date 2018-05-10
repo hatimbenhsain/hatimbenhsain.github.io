@@ -1,22 +1,106 @@
-h1{
-	font-family:'Comic Sans MS';
-}
-a{
-	font-size:70px;
-}
-a:hover{
-	color:white;	
-}
-div{
-	position:absolute;
-	top:10%;
-	left:10%;
-	right:10%;
-}
 body{
+	overflow:hidden;
 	background:url("stars.gif");
+
 }
-a{
-	color:red;
-	font-family:Helvetica;
+@font-face {
+    font-family:pixel;
+    src: url(pixel.ttf);
+}
+#up{
+	position:absolute;
+	z-index:10;
+	background:url("stars.gif");
+	width:600px;
+	height:40%;
+	left:0;
+	right:0;
+	top:5%;
+	margin-right: auto;
+	margin-left: auto;
+	opacity:0;
+	transition: opacity linear 1s;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+#bottom{
+	position:absolute;
+	z-index:5;
+	background:url("stars.gif");
+	width:520px;
+	height:40%;
+	left:0;
+	right:0;
+	top:54%;
+	margin-right: auto;
+	margin-left: auto;
+	opacity:1;
+	transition: opacity linear 1s;
+	overflow-y:hidden;
+	overflow-x:hidden;
+}
+p{
+	color:white;
+	font-family:pixel;
+	position:absolute;
+	top:0%;
+	font-size: 1em;
+	width:100%;
+	bottom:0%;
+	left:25%;
+}
+.des{
+	position:absolute;
+	margin-right:auto;
+	margin-left:auto;
+	left:0;
+	right:0;
+	width:80%;
+	top:10%;
+	font-size:1.5em;
+	text-align: left;
+	display:block;
+}
+.desHidden{
+	display:none;
+}
+
+
+.project{
+	position:relative;
+	border:3px double white;
+}
+.selected{
+	position:relative;
+	border:6px double #5d488e;
+}
+.image{
+	display:inline-block;
+}
+.text{
+	display:inline-block;
+}
+h1{
+	font-family:pixel;
+	font-size:1.5em;
+	z-index:-1;
+	color:white;
+	position:fixed;
+	right:0;
+	bottom:0;
+}
+@media only screen and (max-width:800px){
+	#up{
+		width:75%;
+	}
+	#bottom{
+		width:65%;
+	}
+}
+@media only screen and (max-width:1245px){
+	h1{display:none}
+}
+head{
+	display:none;
+	height:0%;
 }
