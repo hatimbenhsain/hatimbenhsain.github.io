@@ -1,10 +1,4 @@
-import toxi.sim.grayscott.*;
-import toxi.math.*;
-import toxi.color.*;
-
 import processing.sound.*;
-
-import com.dhchoi.*;
 
 import sprites.*;
 import sprites.maths.*;
