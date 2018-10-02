@@ -1,0 +1,20 @@
+body{
+	background-color:black;
+}
+canvas{
+	position:fixed;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+}
+h1{
+	position:fixed;
+	top:0;
+	color:white;
+	font-family:pixel;
+}
+
+@font-face {
+    font-family:pixel;
+    src: url(8bitoperator.ttf);
+}
