@@ -32,6 +32,22 @@ var orgShrinkRate;
 var shrinkNum;
 var theFont;
 var txtSize;
+var pressS;
+var redR;
+var greR;
+var bluR;
+var redB;
+var greB;
+var bluB;
+var aValue;
+var testSprite;
+var redDif, bluDig, greDif;
+var playerUpScale;
+var highScore;
+var music;
+var deathSound;
+var unboxedSound;
+var noMusic;
 
 class Box{
 	constructor(x,y,side){
@@ -64,6 +80,7 @@ class Box{
 		this.holeY=holeY
 		this.hole=createSprite(x+xPos+this.holeX,y+yPos+this.holeY,holeW,holeL);
 		this.hole.shapeColor=blu;
+
 
 	}
 	update(){
@@ -103,6 +120,7 @@ class Box{
 	}
 	go(dir){
 		this.moving=true;
+		unboxedSound.play();
 		//print(dir);
 		if(dir=="l"){
 			this.outR.setVelocity(this.speed,0);
@@ -127,15 +145,26 @@ class Box{
 }
 
 function setup(){
-	//theFont=loadFont('8bitoperator.ttf')
-	textFont('8bitoperator');
-	txtSize=20;
+	noMusic=true;
+	music=new sound("music.mp3");
+	deathSound=new sound("death.mp3");
+	unboxedSound=new sound("unboxed.mp3");
+	unboxedSound.volume=0.5;
+	music.loop=true;
+	playerUpScale=1.05;
+	aValue=0;
+	redB=60;
+	bluB=190;
+	greB=90;
+	pressS=0;
+	theFont=loadFont('https://hatimbenhsain.github.io/gamesNplay/unBoxing/8bitoperator.ttf');
+	textFont(theFont,width/10);
 	score=0;
 	textSize(txtSize);
 	shrinkNum=20;
 	directions=["l","r","u","b"];
 	collision=false;
-	blu=color(60,90,190);
+	blu=color(redB,greB,bluB);
 	createCanvas(245,245);
 	background(200);
 	shrinkRate=3;
@@ -153,17 +182,79 @@ function setup(){
 	box1=new Box(width/2,height/2,directions[k]);
 	player=createSprite(width/2,height/2,playerSide,playerSide);
 	player.shapeColor=color(255);
+	testSprite=createSprite(width/2,height/2,playerSide,playerSide);
+	testSprite.visible=false;
+	redR=250;
+	bluR=90;
+	greB=90;
+	if (typeof(Storage) !== "undefined") {
+    	if (localStorage.highScore!=null){
+    		highScore=localStorage.highScore;
+    	}else{
+    		localStorage.highScore=0;
+    	}
+	} else {
+    // Sorry! No Web Storage support..
+    	highScore=0;
+	}
+
 }
+
 function draw(){
+	//print(blu);
 	updateSprites();
 	background(blu);
 	drawSprites();
 	fill(255);
-		textFont('8bitoperator');
-
-	text(score,200,200);
+	textFont(theFont);
+	textSize(width/4);
+	if(testSprite.removed==false && testSprite.width*testSprite.scale<width){
+		testSprite.scale=testSprite.scale*playerUpScale;
+		aValue++;
+		//print(aValue);
+		if (testSprite.width*testSprite.scale>=width){
+			testSprite.remove();
+			redDif=(redR-255)/aValue;
+			greDif=(greR-255)/aValue;
+			bluDif=(bluR-255)/aValue;			
+		}
+	}
+	if(score<10){
+		text(score,200,240);
+	}else{
+		text(score,165,240);
+	}
+	if (frameCount%32>15 && pressS<5*16 && collision==false){
+		textSize(14);
+		textAlign(CENTER);
+		text("press the arrows to\nescape the boxes",width/2,height*5/40);
+		textSize(50);
+		pressS++;
+	}
 	if (collision==false){
 		box1.update();
+	}else if(player.width*player.scale<width){
+		music.stop();
+		deathSound.play();	
+		player.scale=player.scale*playerUpScale;
+		player.shapeColor=color(redR,player.shapeColor.levels[1]+bluDif,player.shapeColor.levels[2]+bluDif);
+	}else if(player.width*player.scale>=width){
+		if (frameCount%64>32){
+			textSize(14);
+			textAlign(CENTER);
+			text("press the space bar\nto replay",width/2,height*5/40);
+		}
+		if (score>highScore){
+			highScore=score;
+		}
+		if (typeof(Storage) !== "undefined") {
+			localStorage.highScore=highScore;
+		}
+		textAlign(CENTER);
+		textSize(14);
+		text("high score:",width/2,height*15/40);
+		textSize(width/4);
+		text(highScore,width/2,height*26/40);
 	}
 	if (box1.isActive==false){
 		k=Math.floor(Math.random()*4);
@@ -174,8 +265,8 @@ function draw(){
 		if(shrinkRate<41){
 			shrinkRate++;
 		}
-		print(shrinkRate);
-		print(getBaseLog(orgShrinkRate,shrinkRate));
+		//print(shrinkRate);
+		//print(getBaseLog(orgShrinkRate,shrinkRate));
 
 	}
 	//print(box1.x);
@@ -205,19 +296,31 @@ function checkOverlap(){
 	//	Math.pow(player.position.y-box1.inrR.position.y,2))-player.width,';',(player.overlap(box1.outR)));
 }
 function keyPressed(){
-	if (keyCode==LEFT_ARROW||keyCode=="a"){
+	if (noMusic==true){
+		music.play();
+		noMusic=false;
+	}
+	if (keyCode==LEFT_ARROW||key=="a"){
 		if(box1.isActive==true&&box1.moving==false){
 			box1.go("l");
 		}
-	}else if(keyCode==RIGHT_ARROW||keyCode=="d"){
+	}else if(keyCode==RIGHT_ARROW||key=="d"){
 		if(box1.isActive==true&&box1.moving==false)
 			box1.go("r");
-	}else if(keyCode==UP_ARROW||keyCode=="w"){
+	}else if(keyCode==UP_ARROW||key=="w"){
 		if(box1.isActive==true&&box1.moving==false)
 			box1.go("u");
-	}else if(keyCode==DOWN_ARROW||keyCode=="s"){
+	}else if(keyCode==DOWN_ARROW||key=="s"){
 		if(box1.isActive==true&&box1.moving==false){
 			box1.go("b");
+		}
+	}
+	if(key==" "){
+		music.stop();
+		print("spaceBar");
+		if(collision==true){
+			print("replay");
+			setup();
 		}
 	}
 }
@@ -225,11 +328,26 @@ function keyPressed(){
 function getBaseLog(x, y) {
   return Math.log(y) / Math.log(x);
 }
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
 
 //DONE increase difficulty 
 //maybe add a box on top of the other box (box2)
-//add score
-//add losing animation + replay
-//add music
+//DONE add score
+//DONE losing animation + replay
+//DONE music
 //add animation (pulse)
+//DONE highscore
 
