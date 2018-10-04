@@ -259,7 +259,9 @@ function draw(){
 	}
 	if (box1.isActive==false){
 		k=Math.floor(Math.random()*4);
-		box1.remove();
+		box1.inrR.remove();
+		box1.outR.remove();
+		box1.hole.remove();
 		box1=new Box(width/2,height/2,directions[k]);
 		player=createSprite(width/2,height/2,playerSide,playerSide);
 		player.shapeColor=color(255);
