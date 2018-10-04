@@ -188,7 +188,7 @@ function setup(){
 	bluR=90;
 	greB=90;
 	if (typeof(Storage) !== "undefined") {
-    	if (localStorage.highScore!=null){
+    	if (localStorage.highScore!=null && localStorage.highScore!="undefined"){
     		highScore=localStorage.highScore;
     	}else{
     		localStorage.highScore=0;
@@ -197,6 +197,7 @@ function setup(){
     // Sorry! No Web Storage support..
     	highScore=0;
 	}
+	print(typeof(Storage));
 
 }
 
