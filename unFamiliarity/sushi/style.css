@@ -6,7 +6,7 @@ img{
 		margin-left:0;
 		margin-right:0;
 }
-@media (min-width: 800px) {
+@media (min-width: 1000px) {
 	img{
 	width:800px;
     position: relative;          /* where the next element will be automatically positioned */
