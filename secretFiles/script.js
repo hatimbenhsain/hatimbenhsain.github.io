@@ -55,9 +55,12 @@ function gotContent(data){
 	p.imgUrl=content.slice(temp+10,content.length);
 	temp=p.imgUrl.search(" ");
 	p.imgUrl=p.imgUrl.slice(0,temp);
-	console.log("http://"+p.imgUrl);
+	console.log("https://"+p.imgUrl);
 	//console.log(temp);
-	createImg(p.imgUrl);
+	var img=document.createElement("img");
+	img.src="https://"+p.imgUrl;
+	document.body.appendChild(img);
+	//createImg(p.imgUrl);
 
 }
 
