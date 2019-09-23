@@ -1,5 +1,5 @@
 var userInput;
-var searchUrl="http://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=";
+var searchUrl="https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=";
 var contentUrl="https://en.wikipedia.org/w/api.php?action=parse&section=0&prop=text&format=json&page=";
 var url2 = "https://en.wikipedia.org/w/api.php"; 
 var people={};
@@ -23,7 +23,7 @@ function setup(){
 		let url=searchUrl + term;
 		url2 = url2 + "?origin=*";
 		Object.keys(params).forEach(function(key){url2 += "&" + key + "=" + params[key];});
-		loadJSON(url, gotData, 'jsonp');
+		//loadJSON(url, gotData, 'jsonp');
 	}
 }
 
@@ -35,7 +35,8 @@ function gotData(data){
 		people[names[names.length-1]]=new Person();
 		var title=response.query.search[0].title.replace(/\s+/g,'_');
 		var url=contentUrl+title;
-		loadJSON(url,gotContent,'jsonp');});
+		//loadJSON(url,gotContent,'jsonp');
+	});
 
 }
 
