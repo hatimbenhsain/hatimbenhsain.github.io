@@ -35,7 +35,7 @@ function gotData(data){
 		people[names[names.length-1]]=new Person();
 		var title=response.query.search[0].title.replace(/\s+/g,'_');
 		var url=contentUrl+title;
-		//loadJSON(url,gotContent,'jsonp');
+		loadJSON(url,gotContent,'jsonp');
 	});
 
 }
