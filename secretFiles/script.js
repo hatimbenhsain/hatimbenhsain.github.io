@@ -23,7 +23,7 @@ function setup(){
 		let url=searchUrl + term;
 		url2 = url2 + "?origin=*";
 		Object.keys(params).forEach(function(key){url2 += "&" + key + "=" + params[key];});
-		//loadJSON(url, gotData, 'jsonp');
+		loadJSON(url2, gotData, 'jsonp');
 	}
 }
 
