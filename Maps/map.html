@@ -21,27 +21,26 @@
 				.attr("width", 760)
 				.attr("height", 700)
 
-
-			d3.json("https://hatimbenhsain.github.io/Maps/southAmerica.geojson", function (data) {
+			d3.json("https://raw.githubusercontent.com/hatimbenhsain/hatimbenhsain.github.io/master/Maps/southAmerica.geojson").then(function (data) {
 
 				var group = canvas.selectAll("g")
 					.data(data.features)
 					.enter()
-					.append("g")
+					.append("g");
 
-				var projection = d3.geo.mercator().scale(7300).translate([0,1980]);
-				var path = d3.geo.path().projection(projection);
+				var projection = d3.geoMercator().scale(500).translate([1000,100]);
+				var path = d3.geoPath().projection(projection);
 
 
 				var areas = group.append("path")
 					.attr("d", path)
 					.attr("class", "area")
 					.attr("fill", "steelblue");
-
-				// group.append("text")
-				// 	.attr("x", function (d) {return.path.centroid(d)[0]; } )
-				// 	.attr("x", function (d) {return.path.centroid(d)[1]; } )
-				// 	.text( function (d) {return d .properties.LNNAMN; })
+				//console.log("done");
+				group.append("text")
+				 	.attr("x", function (d) {return path.centroid(d)[0]-20; })
+				 	.attr("y", function (d) {return path.centroid(d)[1]; })
+				 	.text( function (d) {return d.properties.name; });
 			});
 			
 		</script>
