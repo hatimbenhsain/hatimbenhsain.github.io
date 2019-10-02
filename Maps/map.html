@@ -22,21 +22,21 @@
 				.attr("height", 700)
 
 
-			d3.json("https://hatimbenhsain.github.io/Maps/brazil.json", function (data) {
+			d3.json("https://hatimbenhsain.github.io/Maps/southAmerica.geojson", function (data) {
 
 				var group = canvas.selectAll("g")
 					.data(data.features)
 					.enter()
 					.append("g")
 
-				var projection = d3.geo.mercator()
+				var projection = d3.geo.mercator().scale(7300).translate([0,1980]);
 				var path = d3.geo.path().projection(projection);
 
 
 				var areas = group.append("path")
 					.attr("d", path)
 					.attr("class", "area")
-					.attr("fill", "steelblue")
+					.attr("fill", "steelblue");
 
 				// group.append("text")
 				// 	.attr("x", function (d) {return.path.centroid(d)[0]; } )
