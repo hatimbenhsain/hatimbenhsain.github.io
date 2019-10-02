@@ -29,7 +29,7 @@
 					.enter()
 					.append("g")
 
-				var projection = d3.geo.mercator().scale(7300).translate([0, 1980])
+				var projection = d3.geo.mercator()
 				var path = d3.geo.path().projection(projection);
 
 
