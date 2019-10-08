@@ -2,6 +2,9 @@ var userInput;
 var searchUrl="https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=";
 var contentUrl="https://en.wikipedia.org/w/api.php?action=parse&section=0&prop=text&format=json&page=";
 var url2 = "https://en.wikipedia.org/w/api.php"; 
+var comicVineApiKey="e53dc1a04c86be39ff9f46200660a77c749a0c5a";
+var superHeroUrl="https://www.superheroapi.com/api.php/10217797341077162/";
+var comicVineUrl="https://comicvine.gamespot.com/api/characters/?api_key=e53dc1a04c86be39ff9f46200660a77c749a0c5a&format=json&filter=name:";
 var people={};
 var names=[];
 
@@ -32,7 +35,7 @@ function gotData(data){
     .then(function(response){return response.json();})
     .then(function(response){console.log(response.query.search[0].title);
     	names.push(response.query.search[0].title);
-		people[names[names.length-1]]=new Person();
+		people[names[names.length-1]]=new Person(names[names.length-1]);
 		var title=response.query.search[0].title.replace(/\s+/g,'_');
 		var url=contentUrl+title;
 		loadJSON(url,gotContent,'jsonp');
@@ -55,12 +58,15 @@ function gotContent(data){
 	p.imgUrl=content.slice(temp+10,content.length);
 	temp=p.imgUrl.search(" ");
 	p.imgUrl=p.imgUrl.slice(0,temp);
+
 	console.log("https://"+p.imgUrl);
-	//console.log(temp);
 	var img=document.createElement("img");
 	img.src="https://"+p.imgUrl;
 	document.body.appendChild(img);
-	//createImg(p.imgUrl);
+
+	p.id=data.parse.pageid;
+	p.heroName="";
+	p.getHero();
 
 }
 
@@ -69,5 +75,49 @@ class Person{
 		//this.name=name;
 		this.birthDate="";
 		this.imgUrl="";
+		this.id=0;
+		this.heroName="";
+		this.name=name;
+		this.powers=[];
 	}
+
+	getHero(){
+		var tempId=this.id%732;
+		var tempUrl=superHeroUrl+tempId;
+		var tempName;
+		var p=this;
+		fetch(tempUrl)
+		.then(function(response){return response.json();})
+		.then(function(response){
+			tempName=response.name;
+			p.heroName=tempName;
+			console.log(p.heroName);
+			p.getHeroData();
+		});
+
+	}
+
+	getHeroData(){
+		var tempUrl=comicVineUrl+this.heroName;
+		console.log(tempUrl);
+		var powers;
+		var p=this;
+		fetch(tempUrl)
+		.then(function(response){
+			console.log(response);
+			return response;})
+		.then(function(response){
+			tempUrl=response.results[0].api_detail_url;
+			tempUrl=tempUrl+"?api_key="+comicVineApiKey+"&format=json";
+			fetch(tempUrl)
+			.then(function(response){return response.json();})
+			.then(function(response){
+				powers=response.results.powers;
+			});
+			p.powers=powers;
+			console.log(p.powers);
+		});
+	}
+
+
 }
