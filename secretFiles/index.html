@@ -4,10 +4,33 @@
 		<script src="p5.js"></script>
 		<script language="javascript" type="text/javascript" src="p52.dom.js"></script>
 		<title>Secret Files</title>
+		<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
 		<link rel='stylesheet' href="style.css">
 	</head>
 	<body>
 		<input type="text" id="nameSearch" placeholder="Full Name">
+		<div id="loading">
+			<img src="loading.gif" id="loadingGif">
+			<h1>LOADING...</h1>
+		</div>
+		<div id="errorScreen">
+			<h1>ERROR: NOT IN OUR DATABASE.<br>PLEASE RELOAD.</h1>
+		</div>
+		<div id="myText">
+			<div id="img">
+			</div>
+			<div id="theText">
+				<div class="ref" id="name">
+					<h2>NAME:</h2>
+				</div>
+				<div class="ref" id="birth">
+					<h2>BORN:</h2>
+				</div>
+				<div class="ref" id="abilities">
+					<h2>ABILITIES:</h2>
+				</div>
+			</div>
+		</div>
 	</body>
 	<script src="script.js"></script>
 

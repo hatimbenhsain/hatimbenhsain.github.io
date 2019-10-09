@@ -6,8 +6,53 @@ body{
 	display:flex;
 	align-items:center;
 	justify-content:center;
+	font-family: 'Press Start 2P', cursive;
+	background-color:rgb(52, 79, 128);
+	color:rgb(119, 174, 217);
 }
 
 #nameSearch{
+	font-family: 'Press Start 2P', cursive;
+	background-color:rgb(52, 79, 128);
+	color:rgb(119, 174, 217);
+}
 
+#loading{
+	display:none;
+	opacity:0;
+}
+
+#myText{
+	display:none;
+}
+
+h1{
+	text-align:center;
+
+}
+
+h2{
+	color:rgb(204, 203, 141);
+}
+
+p{
+	padding-left:50px;
+}
+
+#img{
+	display:inline-block;
+	width:400px;
+}
+
+#theText{
+	display:inline-block;
+	transition:padding-bottom ease-in-out 1s;
+}
+
+#loadingGif{
+	width:300px;
+}
+
+#errorScreen{
+	display:none;
 }
