@@ -19,6 +19,10 @@ let metronomeEnv;
 let metronomeHitEnv;
 
 let activated;
+let lastMillis;
+
+let characters=[];
+
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
@@ -30,6 +34,9 @@ var synth;
 slider.oninput = function() {
   tempo = this.value;
   output.innerHTML = this.value;
+  for(i=0;i<characters.length;i++){
+  	characters[i].time=characters[i].time%tempo*1000/120;
+  }
 }
 
 function setup(){
@@ -41,15 +48,24 @@ document.onkeyup=function(e){
 		createDiv("<p id=\"text\"></p>");
 	}
 	let t=select("text");
-	word=word+e.key;
-	document.getElementById("text").innerHTML=word;
+	
 	if((e.keyCode>=65 && e.keyCode<=90)|| (e.keyCode>=97 && e.keyCode<=122)){
+		word=word+e.key;
+		document.getElementById("text").innerHTML=word;
 		console.log(word);
 		env.play();
 		var audio = new Audio();
-  		audio.src =synth.Animalese(word,false).dataURI;
+  		audio.src =synth.Animalese(e.key,false).dataURI;
   		audio.play();
+  		characters.push(new Letter(e.key,currentCount,(millis()-lastMillis)));
 		//env.play();
+	}else if(e.keyCode==8 && word!=""){
+		word=word.slice(0,word.length-1);
+		document.getElementById("text").innerHTML=word;
+		characters.pop();
+	}else if(e.keyCode==32){
+		word=word+" ";
+		document.getElementById("text").innerHTML=word;
 	}
 }
 
@@ -77,7 +93,7 @@ function touchStarted() {
 	currentCount=0;
 	activated=false;
   	activated=true;
-  	synth = new Animalese('animalese.wav', function() {});
+  	synth = new Animalese('https://github.com/Acedio/animalese.js/raw/master/animalese.wav', function() {});
   	beat();
   }
 
@@ -85,15 +101,30 @@ function touchStarted() {
 }
 
 function beat(){
+	lastMillis=millis();
+
+	for(i=0;i<characters.length;i++){
+		if(characters[i].count==currentCount){
+			characters[i].t=setTimeout(playCh,characters[i].time,characters[i].ch);
+		}
+	}
+
 	if(currentCount==3){
 		env.mult(1.5);
 		env.play();
 		t2=setTimeout(function(){env.mult(1/1.5);},tempo*1000/120);
 	}
 	env.play();
+
 	currentCount++;
 	currentCount=currentCount%bpm;
 	t=setTimeout(beat,tempo*1000/120);
+}
+
+function playCh(ch){
+	var aud = new Audio();
+  	aud.src =synth.Animalese(ch,false).dataURI;
+  	aud.play();
 }
 
 function draw(){
@@ -105,6 +136,7 @@ class Letter{
 		this.ch=ch;
 		this.count=count;
 		this.time=time;
+		this.t=[];
 	}
 }
 
