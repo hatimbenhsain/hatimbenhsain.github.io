@@ -2,16 +2,33 @@
 <html>
 	<head>
 
-		<title>What is Music</title>
+		<title>Global Music Machine</title>
+		<link href="https://fonts.googleapis.com/css?family=Sulphur+Point&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
 		<link rel='stylesheet' href="style.css">
 	</head>
 	<body>
+		<a href="Word%20Cloud/index.html"><button>word cloud</button></a>
+		<div id='intro'>move the slider to start</div>
 		<div class="slidecontainer">
   			<input type="range" min="20" max="250" value="80" class="slider" id="myRange">
-  			 <p>Value: <span id="demo"></span></p>
+  			 <p>beat length: <span id="demo"></span></p>
 		</div>
+		<div id="textStuff">
+			<span id="typed"></span>
+			<div id="input">
+				<span id="myBlink" class="blinking-cursor">|</span>
+			</div>
+
+		</div>
+		<div id="translations"></div>
+
+
 	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src ="d3.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
 	<script src="riffwave.js"></script>
 	<script src="Blob.js"></script>
 	<script src="FileSaver.min.js"></script>

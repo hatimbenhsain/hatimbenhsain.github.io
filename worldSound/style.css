@@ -3,14 +3,16 @@
 }
 
 .slidecontainer {
-  width: 100%;
+  width: 50%;
+  position: fixed;
+  bottom:0%;
 }
 
 .slider {
   -webkit-appearance: none;
   width: 100%;
   height: 25px;
-  background: #d3d3d3;
+  background: #4d5466;
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
@@ -26,13 +28,152 @@
   appearance: none;
   width: 25px;
   height: 25px;
-  background: #4CAF50;
+  background: #c29cff;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
-  background: #4CAF50;
+  background: #c29cff;
   cursor: pointer;
+}
+
+#typed{
+  height:100%;
+  display:inline-block;
+  align-items:center;
+  justify-content:center;
+
+}
+
+#myBlink{
+  display: none;
+}
+
+#textStuff{
+  display: flex;
+}
+
+html{
+  font-family: 'Sulphur Point', sans-serif;
+  height:100%;
+  font-size:25px;
+  overflow:hidden;
+  background-color: #2b303d;
+  color:white;
+}
+
+#intro{
+  transition: opacity 1s;
+}
+
+body{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align: center;
+}
+
+#defaultCanvas0{
+  display:none;
+}
+
+.blinking-cursor {
+  font-weight: 100;
+  font-size: 30px;
+  color: white;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+  display:none;
+}
+
+@keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: white;
+  }
+}
+
+span{
+  display: block;
+}
+
+p{
+  margin-block-start:0;
+  margin-block-end:0;
+}
+
+#input{
+  display:flex;
+  text-align: center;
+      align-items: center;
+    justify-content: center;
+}
+
+#translations{
+  position:fixed;
+  width:50%;
+  bottom:50%;
+}
+
+button {
+  background-color: #c29cff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  position:fixed;
+  top:5%;
+  right:5%;
+  opacity:0.5;
+}
+
+button:hover{
+  opacity:1;
 }

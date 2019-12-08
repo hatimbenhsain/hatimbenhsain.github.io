@@ -1,0 +1,32 @@
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    display: block;
+  }
+
+  html{
+  	  font-family: 'Sulphur Point', sans-serif;
+  	overflow:hidden;
+  	  background-color: #2b303d;
+  color:white;
+  }
+
+  button {
+  background-color: #c29cff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  position:fixed;
+  top:5%;
+  right:5%;
+}
+
+button:hover{
+  opacity:1;
+}
