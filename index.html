@@ -1,83 +1,40 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
-		<script src='scenemanager.js'></script>
-		<title>Hatim Benhsain</title>
-		<link rel="icon" href="icon.png">
+
+		<title>Global Music Machine</title>
+		<link href="https://fonts.googleapis.com/css?family=Sulphur+Point&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
 		<link rel='stylesheet' href="style.css">
 	</head>
 	<body>
-		<div id='up'>
-			<p class='des' id='des1'>Closure<br><br>A movie made in 30 minutes. About loss, fatherhood, illness, and regret. Nominated for Cannes, Golden Globes, and Razzy Awards.</p>
-			<p class='desHidden' id='des2'>A Day in a Dog's Life<br><br>A sound experience, best experienced with headphones. Follow the journey of a dog who must find its lost owner.</p>
-			<p class='desHidden' id='des3'>The Hero, The Dragon, and The Princess<br><br>An interactive comic. Make your own adventure and see the perspectives of three different characters of this timeless epic.</p>
-			<p class='desHidden' id='des4'>How To Cook Ramen<br><br>A movie. Help Jean-Paul François Martin Matin as he attempts to create the (almost) perfect Ramen. To be served warm.</p>
-			<p class='desHidden' id='des5'>A Doll's Life<br><br>A stopmotion video. What do the toys do when the humans aren't looking? Find out now.</p>
-			<p class='desHidden' id='des6'>Go Out Abu Dhabi<br><br>A street food-themed online comics-delivery system. Also the final project for the Temporary Experts class.</p>
+		<a href="Word%20Cloud/index.html"><button>word cloud</button></a>
+		<div id='intro'>move the slider to start</div>
+		<div class="slidecontainer">
+  			<input type="range" min="20" max="250" value="80" class="slider" id="myRange">
+  			 <p>beat length: <span id="demo"></span></p>
 		</div>
-		<div id='bottom'>
-			<div class='selected' id='project1'>
-				<div class='image'>
-					<img src='mff.png'>
-				</div>
-				<div class='text'>
-					<p>30 Minutes Film
-					</p>
-				</div>
+		<div id="textStuff">
+			<span id="typed"></span>
+			<div id="input">
+				<span id="myBlink" class="blinking-cursor">|</span>
 			</div>
-			<div class='project' id='project2'>
-				<div class='image'>
-					<img src='doge.gif'>
-				</div>
-				<div class='text'>
-					<p>
-						Sound Experience
-					</p>
-				</div>
-			</div>	
-			<div class='project' id='project3'>
-				<div class='image'>
-					<img src='dragon.png'>
-				</div>
-				<div class='text'>
-					<p>
-						Comic
-					</p>
-				</div>
-			</div>
-			<div class='project' id='project4'>
-				<div class='image'>
-					<img src='me.png'>
-				</div>
-				<div class='text'>
-					<p>
-						Movie
-					</p>
-				</div>
-			</div>
-			<div class='project' id='project5'>
-				<div class='image'>
-					<img src='moana.png'>
-				</div>
-				<div class='text'>
-					<p>
-						Stopmotion
-					</p>
-				</div>
-			</div>
-			<div class='project' id='project6'>
-				<div class='image'>
-					<img src='goOut.png'>
-				</div>
-				<div class='text'>
-					<p>
-						Food
-					</p>
-				</div>
-			</div>
+
 		</div>
-		<h1>Ⓒ Hatim <br>Benhsain<br>Comm Lab<br>2018</h1>
-	</body>		
+		<div id="translations"></div>
+
+
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src ="d3.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+	<script src="riffwave.js"></script>
+	<script src="Blob.js"></script>
+	<script src="FileSaver.min.js"></script>
+	<script src="animalese.js"></script>
+	<script src="p5.js"></script>
+	<script language="javascript" type="text/javascript" src="p5.dom.js"></script>
 	<script src="script.js"></script>
+	<script language="javascript" type="text/javascript" src="p5.sound.js"></script>
 </html>

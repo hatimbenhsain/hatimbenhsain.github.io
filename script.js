@@ -1,233 +1,310 @@
-	let Y_AXIS=1
-	let X_AXIS=2
-	let b1, b2, c1, c2;
-	let upperX=0
-	let upperY=0
-	let	dsWidth=0
-	let dsHeight=0
-	let maxDSWidtch=1000
-	let angle=0
-	let k=0
-	let yeah=0
-	let up=document.getElementById('up')
-	let bottom=document.getElementById('bottom')
-	let test=''
-	let bottomFinalHeight=40
-	let bottomFinalTop=54
-	let bottomInitialTop=94
-	let bg=0
-	let width=0
-	let leftX=0
-	let screenUpWidth=0
-	let screenUpHeight=0
-	let screenBottomWidth=0
-	let screenBottomHeight=0
-	let bottomY=0
-	let middleY=0
-	let sideWidth=0
-	let dPadWidth=0
-	let dPadWidthMax=144
-	let dPadFat=50
-	let dPadLength=0
-	let dPadUp=0
-	let dPadBottom=0
-	let selected=0
-	let project1=document.getElementById('project1')
-	let project2=document.getElementById('project2')
-	let project3=document.getElementById('project3')
-	let project4=document.getElementById('project4')
-	let project5=document.getElementById('project5')
-	let project6=document.getElementById('project6')
-	let des1=document.getElementById('des1')
-	let des2=document.getElementById('des2')
-	let des3=document.getElementById('des3')
-	let des4=document.getElementById('des4')
-	let des5=document.getElementById('des5')
-	let des6=document.getElementById('des6')
-	let projects=[project1,project2,project3,project4,project5,project6]
-	let dess=[des1,des2,des3,des4,des5,des6]
-	let links=['./project1/index.html','./project2/index.html','./project3/comic.html','./project4/index.html','./project5/index.html','./goOut/index.html']
-	let gradient=0
-	let r=0
-	let y=0
-	let b=0
+let attackLevel = 1.0;
+let releaseLevel = 0;
 
-function Closed(){
-	this.setup=function(){
-		bg=loadImage("stars.gif")
-		gradient=loadImage('gradient.png')
-		createCanvas(windowWidth,windowHeight)
-		fullscreen(true)
-		upperY=windowHeight*0.52
-		upperX=(windowWidth-dsWidth)/2
-		bottom.style.top=(bottomInitialTop*windowHeight/100).toString()+'px'
-		bottom.style.height='0px'
-		r=color('#cc7083')
-		y=color('#cacc70')
-		b=color('#aaaaaa')
-	}
-	this.draw=function(){
-		screenUpHeight=windowHeight*0.4
-		screenBottomHeight=windowHeight*0.4
-		dsHeight=windowHeight*0.44
-		bottomY=windowHeight*0.51
-		middleY=windowHeight*0.45
-		if (windowWidth>800){
-			screenBottomWidth=520
-			screenUpWidth=600
-		}else{
-			screenBottomWidth=0.65*windowWidth
-			screenUpWidth=0.75*windowWidth
-		}
-		sideWidth=(dsWidth-screenBottomWidth)/2
-		dPadWidth=sideWidth*3/5
-		leftX=(windowWidth-dsWidth)/2
-		noCanvas()
-		createCanvas(windowWidth,windowHeight)
-		if (windowWidth<maxDSWidtch){
-			dsWidth=windowWidth*0.96
-		}else{
-			dsWidth=maxDSWidtch
-		}
+let attackTime = 0.001;
+let decayTime = 0.2;
+let susPercent = 0.2;
+let releaseTime = 0.5;
+
+let env, triOsc;
+
+let word="";
+
+let tempo;
+let bpm;
+let currentCount;
+let metFreq;
+let metHitFreq;
+let metronomeEnv;
+let metronomeHitEnv;
+
+let activated;
+let lastMillis;
+
+let characters=[];
+
+
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+
+	var canvas;
+
+
+var t, t2;
+var synth;
+
+var typed;
+
+var languages=['az', 'sq', 'am', 'en', 'ar', 'hy', 'ml', 'mt', 'mk', 'mi', 'mr', 'mhr', 'af', 'mn', 'eu', 'de', 'ba', 'ne', 'be', 'no', 'bn', 'pa', 'my', 'pap', 'bg', 'fa', 'bs', 'pl', 'cy', 'pt', 'hu', 'ro', 'vi', 'ru', 'ht', 'ceb', 'gl', 'sr', 'nl', 'si', 'mrj', 'sk', 'el', 'sl', 'ka', 'sw', 'gu', 'su', 'da', 'tg', 'he', 'th', 'yi', 'tl', 'id', 'ta', 'ga', 'tt', 'it', 'te', 'is', 'tr', 'es', 'udm', 'kk', 'uz', 'kn', 'uk', 'ca', 'ur', 'ky', 'fi', 'zh', 'fr', 'ko', 'hi', 'xh', 'hr', 'km', 'cs', 'lo', 'sv', 'la', 'gd', 'lv', 'et', 'lt', 'eo', 'lb', 'jv', 'mg', 'ja', 'ms'];
+var wordText;
+var translation=[];		
+var index = 0;
+
+var enterPressed=false;
+
+
+function wordSubmitted() {
+
+	var wordText = word;
+	
+	let data = {wordText: wordText}
+
+	for ( var i=0; i<languages.length; i++) {
+		$.ajax({
+			url: "https://translate.yandex.net/api/v1.5/tr.json/translate"+
+			 "?key=trnsl.1.1.20191106T102433Z.735128d1d604053b.d023b232825c4c9e988730609f5d238455087492" +
+			 "&text=" + wordText +
+			 "&lang=en-" + languages[i] +
+			 "&[format=plain]" +
+			 "&[options=lang]" +
+			 "&[callback=getMov]",
+			method: 'GET',
+		}).done(function(result) {
+
+			 
+			console.log(result.text[0]); 
+			translation.push(result.text[0]);
+
 		
-		fill('gray')
-		rect(leftX,bottomY,dsWidth,dsHeight,0,0,10,10)
-		b1=color('#aaaaaa')
-		b2=color('#727272')
-		setGradient(leftX,bottomY,dsWidth,dsHeight,b1,b2,Y_AXIS)
-		fill(b1)
-		rect(leftX,middleY,dsWidth,windowHeight*0.06,0,0,0,0)
-		setGradient(leftX,middleY,dsWidth,windowHeight*0.06,b1,b2,Y_AXIS)
-		rect(leftX,middleY,dsWidth*0.041,windowHeight*0.06,0,0,0,0)
-		rect(leftX+dsWidth*(1-0.041),middleY,dsWidth*0.041,windowHeight*0.06,0,0,0,0)
-		width=6*dsWidth/20-Number(bottom.style.height.slice(0,-2))/2
-		//rect(leftX+((dsWidth)-800)/4,windowHeight*0.51+(dsHeight/2-width/2),100,width/3)
-		fill(b1)
-		stroke('#686868')
-		strokeWeight(6)
-		if (windowWidth>800){
-			fill('#7094cc')
-			rect(leftX+sideWidth/5,bottomY+(dsHeight-dPadFat)/2,dPadWidth/3,dPadFat)
-			fill('#70cc7f')
-			rect(leftX+sideWidth/5+(dPadWidth-dPadFat)/2+dPadFat,bottomY+(dsHeight-dPadFat)/2,dPadWidth/3,dPadFat)
+
+			if (translation.length >= languages.length) {
+				console.log("DONE");
+				
+				document.getElementById("textStuff").innerHTML = '';
+				//dispMap();
+				canvas=d3.select("body").append("svg")
+	.attr("width", 2000)
+	.attr("height", 1500);
+				dispMap();
+				dispTranslation();
+				
 			}
-		
-		fill(r)
-		dPadUp=rect(leftX+sideWidth/5+(dPadWidth-dPadFat)/2,bottomY+(dsHeight-dPadWidthMax)/2,dPadFat,dPadWidthMax/3)
-		fill(y)
-		dPadBottom=rect(leftX+sideWidth/5+(dPadWidth-dPadFat)/2,bottomY+(dsHeight-dPadFat)/2+dPadFat,dPadFat,dPadWidthMax/3)
-		fill(b)
-		ellipse(leftX+dsWidth-sideWidth/2,bottomY+dsHeight/2,100,100)
-		dPadUp
-		dPadBottom
-		fill('gray')
-		let bigRect=rect(upperX,upperY,dsWidth,dsHeight,angle,angle,10-angle,10-angle)
-		bigRect
-		setGradient(upperX,upperY,dsWidth,dsHeight,b1,b2,Y_AXIS)
-		let d1=dist(mouseX,mouseY,leftX+sideWidth/5+(dPadWidth-dPadFat)/2+dPadWidth/6,bottomY+(dsHeight-dPadFat)/2-dPadFat/4)
-		let d2=dist(mouseX,mouseY,leftX+sideWidth/5+(dPadWidth-dPadFat)/2+dPadFat/2,bottomY+(dsHeight-dPadFat)/2+dPadFat+dPadWidthMax/6)
-		let d3=dist(mouseX,mouseY,leftX+dsWidth-sideWidth/2,bottomY+dsHeight/2)
-		if ((d1<dPadWidthMax/5)||(d2<dPadWidthMax/6)||(d3<100/2)){
-			cursor(HAND)
-		}else{
-			cursor(ARROW)
-		}
-		if (d1<dPadWidthMax/5){
-			r='#ff214e'
-		}else{
-			r='#cc7083'
-		}
-		if (d2<dPadWidthMax/6){
-			y='#f1f44e'
-		}else{
-			y='#cacc70'
-		}
-		if(d3<100/2){
-			b='white'
-		}else{
-			b='#aaaaaa'
-		}
-		
-		this.open()
+			
+			//fail safe function in the event that the get function does not work	
+		}).fail(function(err) {
+			throw err;
+		});
 	}
-	this.open=function(){
-		if ((upperY>windowHeight*0.02) && (yeah==0))
-		{
-			upperY-=windowHeight*0.01
-			upperX=leftX
-			angle+=10/60
-			if (Number(bottom.style.top.slice(0,-2))*100/windowHeight>bottomFinalTop){
-			bottom.style.top=(upperY+windowHeight*0.47).toString()+'px'
-			bottom.style.height=((bottomInitialTop*windowHeight/100)-(upperY+windowHeight*0.47)).toString()+'px'
-			}
-			else
-			{
-				bottom.style.top=(bottomFinalTop*windowHeight/100)+'px'
-				bottom.style.height=(bottomFinalHeight*windowHeight/100)+'px'
-			}	
-		}
-		else
-		{
-			upperY=windowHeight*0.02
-			upperX=leftX
-			angle=10
-			yeah=1
-			up.style.top=(windowHeight*0.06).toString()+"px"
-			up.style.opacity='1'
-		}
-	}
+
+		
+
+	document.getElementById("textStuff").innerHTML = 'loading...';
+
+
+
+		$.post("http://localhost:3000/wordsInputted/words", {
+		wordText: wordText,
+		}, function (data, status){
+		console.log(status);
+		})
 }
-Closed()
-function mousePressed(){
-		let d1=dist(mouseX,mouseY,leftX+sideWidth/5+(dPadWidth-dPadFat)/2+dPadWidth/6,bottomY+(dsHeight-dPadFat)/2-dPadFat/4)
-		print(d1)
-		if (d1<dPadWidthMax/5){
-			print('ok')
-			if (k>0){
-				k-=1
-				projects[k].className='selected'
-				projects[k+1].className='project'
-				dess[k].className='des'
-				dess[k+1].className='desHidden'
-			}
-			bottom.scrollBy(0,-100)
 
-		}
-		let d2=dist(mouseX,mouseY,leftX+sideWidth/5+(dPadWidth-dPadFat)/2+dPadFat/2,bottomY+(dsHeight-dPadFat)/2+dPadFat+dPadWidthMax/6)
-		if(d2<dPadWidthMax/6){
-			print('cool')
-			if (k<5){
-				k+=1
-				projects[k].className='selected'
-				projects[k-1].className='project'
-				dess[k].className='des'
-				dess[k-1].className='desHidden'
-			}
-			bottom.scrollBy(0,100)
-		}
-		let d3=dist(mouseX,mouseY,leftX+dsWidth-sideWidth/2,bottomY+dsHeight/2)
-		if (d3<100/2){
-			window.location.href=links[k]
-		}
+
+function dispTranslation() {
+
+	if (index < translation.length) {
+		document.getElementById("translations").innerHTML = translation[index]; 
+		console.log(translation[index]);
+		index++;
+		setTimeout(dispTranslation, tempo*1000/120);
+	}else{
+		index=0;
+		setTimeout(dispTranslation, tempo*1000/120);
+	}
+
 }
-function setGradient(x, y, w, h, c1, c2, axis) {
 
-  noFill();
 
-  if (axis == Y_AXIS) {  // Top to bottom gradient
-    for (var i = y; i <= y+h; i++) {
-      var inter = map(i, y, y+h, 0, 1);
-      var c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(x, i, x+w, i);
-    }
-  }  
-  else if (axis == X_AXIS) {  // Left to right gradient
-    for (var i = x; i <= x+w; i++) {
-      var inter = map(i, x, x+w, 0, 1);
-      var c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(i, y, i, y+h);
-    }
+function dispMap() {
+
+
+
+if (index < 245) {
+	
+	d3.json("https://raw.githubusercontent.com/gabibranche/Mashups-Final/master/resources/Globe.json").then(function (data) {
+
+	console.log(index, ": ", data.features[index].properties.admin);
+
+	var group = canvas.selectAll("g")
+		.data([data.features[index]])
+		.enter()
+				
+		
+
+
+	var projection = d3.geoMercator().scale(170).translate([780,900]);
+	var path = d3.geoPath().projection(projection);
+
+
+	var areas = group.append("path")
+		.attr("d", path)
+		.attr("class", "area")
+		.attr("fill", "#c29cff");
+		//.attr("fill", "#000000");
+
+
+
+	index++;
+	setTimeout(dispMap, tempo*200/120);
+
+		})
+
+	}
+
+	};
+
+
+slider.oninput = function() {
+	var prevTempo=tempo;
+  tempo = this.value;
+  output.innerHTML = this.value;
+  for(i=0;i<characters.length;i++){
+  	characters[i].time=map(characters[i].time,0,prevTempo*1000/120,0,tempo*1000/120);
   }
+}
+
+function setup(){
+
+}
+
+document.onkeyup=function(e){
+	if (word==""){
+		//createDiv("<p id=\"text\"></p>");
+		var newPar=document.createElement("p");
+		newPar.setAttribute("id","text");
+		document.getElementById("input").insertBefore(newPar,document.getElementById("input").childNodes[0]);
+	}
+	let t=select("text");
+	
+	if((e.keyCode>=65 && e.keyCode<=90)|| (e.keyCode>=97 && e.keyCode<=122)){
+		word=word+e.key;
+		document.getElementById("text").innerHTML=word;
+		console.log(word);
+		env.play();
+		var audio = new Audio();
+  		audio.src =synth.Animalese(e.key,false).dataURI;
+  		audio.play();
+  		characters.push(new Letter(e.key,currentCount,(millis()-lastMillis)));
+		//env.play();
+	}else if(e.keyCode==8 && word!=""){
+		if (word.charAt(word.length-1)!=" "){
+			characters.pop()
+		}
+		word=word.slice(0,word.length-1);
+		document.getElementById("text").innerHTML=word;
+	}else if(e.keyCode==32){
+		word=word+" ";
+		document.getElementById("text").innerHTML=word;
+	}else if(e.keyCode==13 && enterPressed==false){
+		wordSubmitted();
+		enterPressed=true;
+	}
+}
+
+function touchStarted() {
+
+	
+	// let cnv = createCanvas(100, 100);
+ //  textAlign(CENTER);
+ //  text('click to play', width/2, height/2);
+ 	output.innerHTML = slider.value;
+  env = new p5.Envelope();
+  env.setADSR(attackTime, decayTime, susPercent, releaseTime);
+  env.setRange(attackLevel, releaseLevel);
+
+  triOsc = new p5.Oscillator('triangle');
+  triOsc.amp(env);
+  triOsc.start();
+  triOsc.freq(150);
+  getAudioContext().resume();
+
+  console.log(activated);
+  if(activated!=true){
+
+  	select('#intro').style('opacity',0);
+  	setTimeout(function(){
+  		select('#myBlink').style('display','flex');
+  		typed = new Typed('#typed', {strings: ["what is music?\n"],typeSpeed: 100,showCursor:false,onComplete:function(self){
+  		select('#textStuff').style('flex-direction','column');
+  	}});
+
+  		select('#intro').style('display','none');
+  		select("#myBlink").style('display','inline');
+
+  	},1000);  	
+  	tempo=80;
+	bpm=4;
+	metFreq=150;
+	currentCount=0;
+	activated=false;
+  	activated=true;
+  	synth = new Animalese('animalese.wav', function() {});
+  	beat();
+  }
+
+  activated=true;
+}
+
+function beat(){
+	lastMillis=millis();
+
+	for(i=0;i<characters.length;i++){
+		if(characters[i].count==currentCount){
+			characters[i].t=setTimeout(playCh,characters[i].time,characters[i].ch);
+		}
+	}
+
+	if(currentCount==3){
+		env.mult(1.5);
+		env.play();
+		t2=setTimeout(function(){env.mult(1/1.5);},tempo*1000/120);
+	}
+	env.play();
+
+	currentCount++;
+	currentCount=currentCount%bpm;
+	t=setTimeout(beat,tempo*1000/120);
+}
+
+function playCh(ch){
+	var aud = new Audio();
+  	aud.src =synth.Animalese(ch,false).dataURI;
+  	aud.play();
+}
+
+function draw(){
+
+}
+
+class Letter{
+	constructor(ch, count, time){
+		this.ch=ch;
+		this.count=count;
+		this.time=time;
+		this.t=[];
+	}
+}
+
+
+// function taken from animalese.js demo
+
+function dataURItoBlob(dataURI) {
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  var byteString;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0)
+    byteString = atob(dataURI.split(',')[1]);
+  else
+    byteString = unescape(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ia], {type:mimeString});
 }
