@@ -1,20 +1,44 @@
 fileNames=[];
 syllables=[];
 
+potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"];
+
 kala=80;	//tempo
 gati=4;		//akshara per beat
 
-$(document).ready(function () 
-{
-    $.get("./sounds/", function(data) 
-    {
-        $("#fileNames").append(data);
-        //console.log(data);
-        GetFileNames(data);
-        GetSyllables();
-        console.log(syllables);
-    });
+// $(document).ready(function () 
+// {
+//     $.get("./sounds/", function(data) 
+//     {
+//         $("#fileNames").append(data);
+//         //console.log(data);
+//         GetFileNames(data);
+//         GetSyllables();
+//         console.log(syllables);
+//     });
+// })
+
+$(document).ready(function () {
+	for(var i=0;i<potentialSyllableNames.length;i++){
+		AddFileName(potentialSyllableNames[i],1);
+	}
+	GetSyllables();
 })
+
+function AddFileName(sn,n){
+	$.ajax({
+		url:"./sounds/"+sn+String(n)+".mp3",
+		success:function(){
+			var s=this.url.substring(9,this.url.length-4);
+			fileNames.push(s);
+			console.log(s);
+			AddFileName(s.substr(0,s.length-1),parseInt(s.substr(s.length-1,1))+1);
+			GetSyllables();
+		},
+		error:function(){	
+		}
+	});
+}
 
 function GetFileNames(d){
 	//console.log(d.length);
