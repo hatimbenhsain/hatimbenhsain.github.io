@@ -21,3 +21,7 @@ textarea{
   height: 125px;
   width: 350px;
 }
+
+#loaded{
+  visibility: hidden;
+}

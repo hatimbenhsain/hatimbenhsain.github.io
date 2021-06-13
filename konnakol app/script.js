@@ -1,4 +1,5 @@
 fileNames=[];
+howls=[];
 syllables=[];
 
 potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"];
@@ -17,15 +18,19 @@ gati=4;		//akshara per beat
 //         console.log(syllables);
 //     });
 // })
+getAttempts=0;
+getDone=0;
+
+soundsLoaded=0;
 
 $(document).ready(function () {
 	for(var i=0;i<potentialSyllableNames.length;i++){
 		AddFileName(potentialSyllableNames[i],1);
 	}
-	GetSyllables();
 })
 
 function AddFileName(sn,n){
+	getAttempts++;
 	$.ajax({
 		url:"./sounds/"+sn+String(n)+".mp3",
 		success:function(){
@@ -34,10 +39,33 @@ function AddFileName(sn,n){
 			console.log(s);
 			AddFileName(s.substr(0,s.length-1),parseInt(s.substr(s.length-1,1))+1);
 			GetSyllables();
+			CheckGets();
 		},
 		error:function(){	
+			CheckGets();
 		}
 	});
+}
+
+function CheckGets(){
+	getDone++;
+	if(getDone>=getAttempts){
+		for(var i=0;i<howls.length;i++){
+			howls[i].once("load",function(){
+				CheckLoads();	
+			});
+			howls[i].load();
+		}
+	}
+}
+
+function CheckLoads(){
+	console.log("check loads");
+	soundsLoaded++;
+	if(soundsLoaded>=howls.length){
+		document.getElementById("load screen").style.visibility="hidden";
+		document.getElementById("loaded").style.visibility="visible";
+	}
 }
 
 function GetFileNames(d){
@@ -65,16 +93,31 @@ function GetSyllables(){
 		if(isNumeric(s.substr(s.length-1,1))){
 			for(var i=0;i<syllables.length;i++){
 				if(syllables[i].name==sn){
-					syllables[i].sounds.push("sounds/"+s+".mp3");
+					var snd=new Howl({
+						src:["sounds/"+s+".mp3"],
+						preload:"false"
+					});
+					howls.push(snd);
+					syllables[i].sounds.push(snd);
 					added=true;
 					break;
 				}
 			}
 			if(!added){
+				var snd=new Howl({
+					src:["sounds/"+s+".mp3"],
+					preload:"false"
+				});
+				var v=new Howl({
+					src:["sounds/"+s.substr(0,s.length-1)+".mp3"],
+					preload:"false"
+				});
+				howls.push(snd);
+				howls.push(v);
 				syllables.push({
 					name:s.substr(0,s.length-1),
-					sounds:["sounds/"+s+".mp3"],
-					voice:"sounds/"+s.substr(0,s.length-1)+".mp3"
+					sounds:[snd],
+					voice:v
 				});
 				AddButton(sn);
 			}
@@ -133,7 +176,8 @@ function analyze(txt,ns){
 		}else if(txt.substr(0,4)=="kala"){
 			s="kala";
 			sn=s;
-		}else if(txt.substr(0,1)=="g" || txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}"){
+		}else if(txt.substr(0,1)=="g" || txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" || txt.substr(0,1)=="."
+			|| txt.substr(0,1)=="_"){
 			s=txt.substr(0,1);
 			sn=s;
 		}else if(isNumeric(txt.substr(0,1))){
@@ -145,7 +189,7 @@ function analyze(txt,ns){
 			sn=s;
 		}else{
 			for(var i=0;i<syllables.length;i++){
-				if(txt.length>=syllables[i].name.length && syllables[i].name.length>s.length && syllables[i].name==txt.substring(0,syllables[i].name.length)){
+				if(txt.length>=syllables[i].name.length && syllables[i].name.length>sn.length && syllables[i].name==txt.substring(0,syllables[i].name.length)){
 					s=syllables[i];
 					sn=s.name;
 				}
@@ -177,10 +221,11 @@ function playMusic(ns){
 		}else if(ns[i]=="]" || ns[i]=="{"){
 			changeTempo(kala/2);
 		}else{
-			var fn=ns[i].sounds[Math.floor(Math.random()*ns[i].sounds.length)];
-			console.log("to play "+fn+" on "+delay);
-			setTimeout(playSound,delay,fn);
-			delay=delay+1000*(kala/60)/gati;
+			console.log("to play "+ns[i].name+" on "+delay);
+			if(ns[i]!="." && ns[i]!="_"){
+				setTimeout(playSyllable,delay,ns[i]);
+			}
+			delay=delay+1000*(60/kala)/gati;
 		}
 	}
 	setTimeout(function(){
@@ -196,16 +241,19 @@ function changeGati(g){
 	gati=g;
 }
 
-function playSound(fn){
-	var audio=new Audio(fn);
-	audio.play();
-	console.log("playing "+fn);
-	notePlayed.innerHTML=fn.slice(7,-5);
+function playSyllable(s){
+	var h=s.sounds[Math.floor(Math.random()*s.sounds.length)];
+	playSound(h);
+	console.log("playing "+s.name);
+	notePlayed.innerHTML=s.name;
+}
+
+function playSound(h){
+	h.play();
 }
 
 function syllable(txt,sounds){
 	this.txt=txt;
-	get
 }
 
 function isNumeric(str) {			//function from https://stackoverflow.com/a/175787
@@ -217,6 +265,7 @@ function isNumeric(str) {			//function from https://stackoverflow.com/a/175787
 function playVoice(n){
 	for(var i=0;i<syllables.length;i++){
 		if(n==syllables[i].name){
+			console.log("playing "+syllables[i].name);
 			playSound(syllables[i].voice);
 			break;
 		}
