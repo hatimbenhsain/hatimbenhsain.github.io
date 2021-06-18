@@ -1,4 +1,5 @@
 body{
+  width: 100%;
   margin: 0;
   position: absolute;
   top: 50%;
@@ -6,22 +7,86 @@ body{
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   text-align: center;
+  font-family: "Courier New";
+  background-color: lemonchiffon;
+  font-size: 16px;
+}
+
+span{
+  font-weight: bold;
 }
 
 .seqButton{
   margin: 3%;
 }
 
+input[type="button"]{
+  font-family: "Courier New";
+  background-color:#f2e394;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+input[type="button"]:hover{
+  background-color:#f2ae72;
+}
+
 #notePlayedDiv{
   visibility: hidden;
 }
 
-textarea{
+
+.editable{
+  display: inline;
+  outline: none;
+}
+
+#textBox{
   resize: none;
-  height: 125px;
-  width: 350px;
+  height: 200px;
+  width: 80%;
+  left-padding: 20%;
+  border: none;
+  outline: none;
+  font-size: 50px;
+  font-family: "Courier New";
+  background-color: lemonchiffon;
+  text-align: left;
+  display: block;
+  margin-left: 10%;
+  white-space: pre;
 }
 
 #loaded{
   visibility: hidden;
+}
+
+#sequencer{
+  width: 50%;
+  padding-left: 25%;
+}
+
+#buttons{
+  padding-top: 0%;
+}
+
+#tempo{
+  position: fixed;
+  left: 2%;
+  bottom: -5%;
+}
+
+#gati{
+  position: fixed;
+  right: 2%;
+  bottom: -5%;
+}
+
+#notePlayedDiv{
+  position: fixed;
+  top: -5%;
+  left: 50%;
+  -ms-transform: translate(-50%,0%);
+  transform: translate(-50%,0%);
 }

@@ -12,10 +12,14 @@
 			<div id="notePlayedDiv">note played:<br><br>
 				<div id="notePlayed"></div><br><br>
 			</div>
-			<div>text here:</div><br>
-			<textarea id="textBox" name="fname"></textarea><br><br>
-			<input type="button" value="play" id="playButton"><br><br>
-			<div id="sequencer"></div>
+
+			<div id="textBox" name="fname"></div><br><br>
+			<div id="buttons">
+				<input type="button" value="play" id="playButton"><br><br>
+				<div id="sequencer"></div>
+			</div>
+			<div id="tempo">tempo: <p contenteditable="true" id="tempoInput" class="editable" tabIndex=1>80</p></div>
+			<div id="gati">gati: <p contenteditable="true" id="gatiInput" class="editable" tabIndex=2>4</p></div>
 		</div>
 	</body>
 	<script src="script.js"></script>
