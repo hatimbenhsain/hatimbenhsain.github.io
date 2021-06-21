@@ -11,6 +11,15 @@ eqSyllables=[{
 
 kala=80;	//tempo
 gati=4;		//akshara per beat
+tSignature=2;
+tModifier=1;
+
+overflowMode=false;
+playing=false;
+
+timeOuts=[];
+
+
 
 // $(document).ready(function () 
 // {
@@ -136,7 +145,21 @@ function GetSyllables(){
 					sounds:[snd],
 					voice:v
 				});
+				var l=syllables.length-1;
 				AddButton(sn);
+				for(var k=0;k<eqSyllables.length;k++){
+					if(eqSyllables[k].name==syllables[l].name){
+						console.log(eqSyllables[k])
+						for(var p=0;p<eqSyllables[k].equivalencies.length;p++){
+							syllables.push({
+								name:eqSyllables[k].equivalencies[p],
+								sounds:syllables[l].sounds,
+								voice:v
+							});
+							AddButton(eqSyllables[k].equivalencies[p]);
+						}
+					}
+				}
 			}
 		}
 		GetSyllables();
@@ -152,19 +175,53 @@ function AddButton(sn){
 	but.id=sn+"Button";
 	but.className="seqButton";
 	but.addEventListener("click",function(){
+		overflowMode=false;
 		var v=this.id.slice(0,-6);
-		AddText(v);
-		playVoice(v);
+		if(AddText(v)){
+			playVoice(v);
+		}
+		if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
+			overflowMode=true;
+		}
+		ChangeButtonColors();
 	})
 }
 
+function ChangeButtonColors(){
+	var bs=document.getElementsByClassName("seqButton");
+	for(var i=0;i<bs.length;i++){
+		if(bs[i].value!="back" && bs[i].value!="clear" && bs[i].value!="[" && bs[i].value!="]" && bs[i].value!="{" && bs[i].value!="}"){
+			if(overflowMode){
+				bs[i].disabled=true;
+			}else{
+				bs[i].disabled=false;
+			}
+		}
+	}
+}
+
 function AddText(v){
-		if(v!="back" && v!="clear"){
-		if(v!="[" && v!="]" && v!="{" && v!="}" && v!="_"){
-			sCounter++;
-			if(sCounter>gati){
+	if(v!="back" && v!="clear"){
+		if(v!="[" && v!="]" && v!="{" && v!="}"){
+			if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
+				return false;
+			}
+			sCounter+=1/tModifier;
+			if(sCounter>gati*tSignature){
 				textBox.innerHTML=textBox.innerHTML+"<br>";
-				sCounter=1;
+				sCounter=1/tModifier;
+			}
+		}else if(v=="[" || v=="}"){
+			tModifier=tModifier*2;
+			if(sCounter==gati*tSignature){
+				textBox.innerHTML=textBox.innerHTML+"<br>";
+				sCounter=0;
+			}
+		}else if(v=="]" || v=="{"){
+			tModifier=tModifier/2;
+			if(sCounter==gati*tSignature){
+				textBox.innerHTML=textBox.innerHTML+"<br>";
+				sCounter=0;
 			}
 		}
 		textBox.innerHTML=textBox.innerHTML+v+" ";
@@ -174,15 +231,34 @@ function AddText(v){
 		Clear();
 	}
 	textBox.focus();
+
+	AdjustFontSize();
+	return true;
+}
+
+function AdjustFontSize(){
+	var f=parseFloat(window.getComputedStyle(textBox).fontSize);
+	if(textBox.scrollHeight>textBox.clientHeight){
+		textBox.style.fontSize=(f-1)+"px";
+		AdjustFontSize();
+	}else if(textBox.scrollHeight<=textBox.clientHeight && f<maxFontSize){
+		textBox.style.fontSize=(f+1)+"px";
+		if(textBox.scrollHeight>textBox.clientHeight){
+			textBox.style.fontSize=(f-1)+"px";
+		}else{
+			AdjustFontSize();
+		}
+	}
 }
 
 function Clear(){
 	textBox.innerHTML="";
 	sCounter=0;
+	tModifier=1;
 }
 
 function BackSpace(){
-	console.log("back space "+textBox.innerHTML.substr(textBox.innerHTML.length-1,1));
+	//console.log("back space "+textBox.innerHTML.substr(textBox.innerHTML.length-1,1));
 	c=textBox.innerHTML.substr(textBox.innerHTML.length-1,1);
 	textBox.innerHTML=textBox.innerHTML.substr(0,textBox.innerHTML.length-1);
 	if(textBox.innerHTML.substr(textBox.innerHTML.length-4,4)=="<br>"){
@@ -190,15 +266,19 @@ function BackSpace(){
 	}
 	if(textBox.innerHTML.substr(textBox.innerHTML.length-1,1)!=" " && textBox.innerHTML.length>0){
 		BackSpace();
-	}else if(isLetter(c)){
-		sCounter--;
+	}else if(isLetter(c) || c=="_"){
+		sCounter-=1/tModifier;
 		if(sCounter<=0){
 			if(textBox.innerHTML.length>0){
-				sCounter=gati;
+				sCounter=gati*tSignature;
 			}else{
 				sCounter=0;
 			}
 		}
+	}else if(c=="[" || c=="}"){
+		tModifier=tModifier/2;
+	}else if(c=="]" || c=="{"){
+		tModifier=tModifier*2;
 	}
 }
 
@@ -227,12 +307,20 @@ notePlayed=document.getElementById("notePlayed");
 
 playButton.addEventListener("click",play);
 
+maxFontSize=parseFloat(window.getComputedStyle(textBox).fontSize);
+
 function play(){
-	var ns=[]
-	analyze(textBox.innerHTML.trim().toLowerCase(),ns);
-	console.log(ns);
-	playMusic(ns);
-	notePlayedDiv.style.visibility="visible";
+	if(!playing){
+		var ns=[]
+		analyze(textBox.innerHTML.trim().toLowerCase(),ns);
+		console.log(ns);
+		playMusic(ns);
+		notePlayedDiv.style.visibility="visible";
+		tempoInput.contentEditable="false";
+		gatiInput.contentEditable="false";
+	}else{
+		StopAll();
+	}
 	//console.log(fileNames);
 }
 
@@ -270,8 +358,8 @@ function analyze(txt,ns,sCounter=0,pos=0){
 			s.isSyllable=isSyllable;
 			ns.push(s);
 		}
-		if(isSyllable){
-			sCounter++;
+		if(isSyllable || s.text=="_"){
+			sCounter+=1/tModifier;
 		}
 		console.log(txt);
 		analyze(txt.slice(Math.max(s.text.length,1)),ns,sCounter,pos+Math.max(s.text.length,1));
@@ -282,6 +370,8 @@ function analyze(txt,ns,sCounter=0,pos=0){
 
 function playMusic(ns){
 	var delay=0
+	playing=true;
+	playButton.value="stop";
 	for(var i=0;i<ns.length;i++){
 		if(ns[i].text=="tempo" || ns[i].text=="kala"){
 			if(i+1<ns.length && isNumeric(ns[i+1])){
@@ -300,16 +390,32 @@ function playMusic(ns){
 		}else{
 			console.log("to play "+ns[i].text+" on "+delay);
 			if(ns[i].text!="." && ns[i].text!="_"){
-				setTimeout(playSyllable,delay,ns[i].data);
+				timeOuts.push(setTimeout(playSyllable,delay,ns[i].data));
 			}
-			setTimeout(BoldAt,delay,ns[i]);
+			timeOuts.push(setTimeout(BoldAt,delay,ns[i]));
 			delay=delay+1000*(60/kala)/gati;
 		}
 	}
-	setTimeout(function(){
-		notePlayedDiv.style.visibility="hidden";
-		NoBold();
-	},delay+1000*(kala/60)/gati)
+	timeOuts.push(setTimeout(function(){
+		timeOuts=[];
+		StopAll();
+	},delay+1000*(kala/60)/gati))
+}
+
+function StopAll(){
+	notePlayedDiv.style.visibility="hidden";
+	NoBold();
+	for(var i=0;i<timeOuts.length;i++){
+		clearTimeout(timeOuts[i]);
+	}
+	for(var i=0;i<howls.length;i++){
+		howls[i].stop();
+	}
+	playButton.value="play";
+	timeOuts=[];
+	playing=false;
+	tempoInput.contentEditable="true";
+	gatiInput.contentEditable="true";
 }
 
 function BoldAt(e){
