@@ -500,7 +500,7 @@ function analyze(txt,ns,sCounter=0,pos=0){
 			pos:pos
 		};	
 		isSyllable=false;
-		if(txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" || txt.substr(0,1)=="."
+		if(txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" 
 			|| txt.substr(0,1)=="_"){
 			s.text=txt.substr(0,1);
 		}else{
