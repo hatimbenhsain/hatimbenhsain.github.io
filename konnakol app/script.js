@@ -2,11 +2,16 @@ fileNames=[];
 howls=[];
 syllables=[];
 
+cursorPosition=0;
+
 potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"];
 
 eqSyllables=[{
 	name:"dhi",
 	equivalencies:["ka","ki"]
+},{
+	name:"cha",
+	equivalencies:["lam"]
 }]
 
 kala=80;	//tempo
@@ -19,7 +24,9 @@ playing=false;
 
 timeOuts=[];
 
+let mediaDest, audioChunks, mediaRecorder;
 
+downloadButton=document.getElementById("downloadButton");
 
 // $(document).ready(function () 
 // {
@@ -73,12 +80,30 @@ function CheckGets(){
 		AddButton("_");
 		AddButton("back");
 		AddButton("clear");
+		AddButton("paste");
+		AddButton("<-");
+		AddButton("->");
+		document.addEventListener("keydown",function(e){
+			var key=e.key;
+			if(document.activeElement!=tempoInput && document.activeElement!=gatiInput){
+				if(key=="ArrowLeft"){
+					ButtonPressed("<-")
+				}else if(key=="ArrowRight"){
+					ButtonPressed("->")
+				}else if(key=="Backspace"){
+					ButtonPressed("back")
+				}else if(key=="_" || key=="}" || key=="{" || key=="[" || key=="]"){
+					ButtonPressed(key)
+				}
+			}
+		})
 		for(var i=0;i<howls.length;i++){
 			howls[i].once("load",function(){
 				CheckLoads();	
 			});
 			howls[i].load();
 		}
+
 	}
 }
 
@@ -91,6 +116,21 @@ function CheckLoads(){
 		changeTempo(kala);
 		changeGati(gati);
 		textBox.focus();
+		// code borrowed from https://stackoverflow.com/questions/60177249/how-to-pipe-howler-mastergain-output-to-mediarecorder
+		mediaDest=Howler.ctx.createMediaStreamDestination();
+		Howler.masterGain.connect(mediaDest);
+		audioChunks = []
+		mediaRecorder = new MediaRecorder(mediaDest.stream, {mimeType: 'audio/webm'})
+		mediaRecorder.onstart = (event) => { console.log('Started recording Howl output...') }
+		mediaRecorder.ondataavailable = (e) => { if (e.data.size) audioChunks.push(e.data) }
+		mediaRecorder.onstop = (event) => {
+  		console.log('Completed Recording', audioChunks);
+  		var buffer = new Blob(audioChunks,{type:"audio/webm"});
+  		var url=URL.createObjectURL(buffer);
+      downloadButton.href=url;
+      downloadButton.download="konnakolDemo.webm";
+		}
+		// end of borrowed code
 	}
 }
 
@@ -151,10 +191,14 @@ function GetSyllables(){
 					if(eqSyllables[k].name==syllables[l].name){
 						console.log(eqSyllables[k])
 						for(var p=0;p<eqSyllables[k].equivalencies.length;p++){
+							var ve=new Howl({
+								src:["sounds/"+eqSyllables[k].equivalencies[p]+".mp3"],
+								preload:"false"
+							});
 							syllables.push({
 								name:eqSyllables[k].equivalencies[p],
 								sounds:syllables[l].sounds,
-								voice:v
+								voice:ve
 							});
 							AddButton(eqSyllables[k].equivalencies[p]);
 						}
@@ -175,22 +219,38 @@ function AddButton(sn){
 	but.id=sn+"Button";
 	but.className="seqButton";
 	but.addEventListener("click",function(){
-		overflowMode=false;
-		var v=this.id.slice(0,-6);
-		if(AddText(v)){
-			playVoice(v);
-		}
-		if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
-			overflowMode=true;
-		}
-		ChangeButtonColors();
+		ButtonPressed(this.id.slice(0,-6));
 	})
+}
+
+function ButtonPressed(tx){
+	TrimText();
+	overflowMode=false;
+	if(AddText(tx)){
+		playVoice(tx);
+	}
+	// if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
+	// 	overflowMode=true;
+	// }
+	if(cursorPosition<textBox.innerHTML.length && tx!="->" && tx!="<-")	ReFormat();
+	ChangeButtonColors();
+	Cursor();
+}
+
+function Cursor(){
+	TrimText();
+	t=textBox.innerHTML;
+	var c=cursorPosition;
+	if(c>=t.length){
+		c=t.length-1;
+	}
+	textBox.innerHTML=t.substr(0,c)+"<span id=\"sUL\">"+t.substr(c,1)+"</span>"+t.substr(c+1)
 }
 
 function ChangeButtonColors(){
 	var bs=document.getElementsByClassName("seqButton");
 	for(var i=0;i<bs.length;i++){
-		if(bs[i].value!="back" && bs[i].value!="clear" && bs[i].value!="[" && bs[i].value!="]" && bs[i].value!="{" && bs[i].value!="}"){
+		if(bs[i].value!="back" && bs[i].value!="clear" && bs[i].value!="->" && bs[i].value!="<-" && bs[i].value!="[" && bs[i].value!="]" && bs[i].value!="{" && bs[i].value!="}"){
 			if(overflowMode){
 				bs[i].disabled=true;
 			}else{
@@ -201,49 +261,142 @@ function ChangeButtonColors(){
 }
 
 function AddText(v){
-	if(v!="back" && v!="clear"){
+	if(textBox.innerHTML.substr(textBox.innerHTML.length-5)=="<br> "){
+		textBox.innerHTML=textBox.innerHTML.substr(0,textBox.innerHTML.length-1);
+		cursorPosition--;
+	}
+	if(v!="back" && v!="clear" && v!="->" && v!="<-" && v!="paste"){
 		if(v!="[" && v!="]" && v!="{" && v!="}"){
-			if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
-				return false;
-			}
+			// if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
+			// 	return false;
+			// }
 			sCounter+=1/tModifier;
-			if(sCounter>gati*tSignature){
-				textBox.innerHTML=textBox.innerHTML+"<br>";
-				sCounter=1/tModifier;
-			}
+			// if(sCounter>gati*tSignature){
+			// 	textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+"<br>"+textBox.innerHTML.substring(cursorPosition);
+			// 	cursorPosition+=4;
+			// 	//sCounter=1/tModifier;
+			// }
 		}else if(v=="[" || v=="}"){
 			tModifier=tModifier*2;
-			if(sCounter==gati*tSignature){
-				textBox.innerHTML=textBox.innerHTML+"<br>";
-				sCounter=0;
-			}
+			// if(sCounter>=gati*tSignature){
+			// 	textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+"<br>"+textBox.innerHTML.substring(cursorPosition);
+			// 	cursorPosition+=4;
+			// 	//sCounter=0;
+			// }
 		}else if(v=="]" || v=="{"){
 			tModifier=tModifier/2;
-			if(sCounter==gati*tSignature){
-				textBox.innerHTML=textBox.innerHTML+"<br>";
-				sCounter=0;
-			}
+			// if(sCounter>=gati*tSignature){
+			// 	textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+"<br>"+textBox.innerHTML.substring(cursorPosition);
+			// 	cursorPosition+=4;
+			// 	//sCounter=0;
+			// }
 		}
-		textBox.innerHTML=textBox.innerHTML+v+" ";
+		textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+v+" "+textBox.innerHTML.substring(cursorPosition);
+		cursorPosition+=1;
+		cursorPosition+=v.length;
+		if(sCounter>=gati*tSignature){
+				textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+"<br> "+textBox.innerHTML.substring(cursorPosition);
+				cursorPosition+=5;
+				//sCounter=0;
+		}
+		if(cursorPosition>textBox.innerHTML.length){
+			cursorPosition=textBox.innerHTML.length;
+		}
 	}else if(v=="back"){
 		BackSpace();
-	}else{
+	}else if(v=="clear"){
 		Clear();
+	}else if(v=="->"){
+		RightArrow();
+	}else if(v=="<-"){
+		LeftArrow();
+	}else if(v=="paste"){
+		Paste();
 	}
 	textBox.focus();
 
 	AdjustFontSize();
+	// cursor.style.top=String(textBox.getBoundingClientRect().top)+"px";
+	// cursor.style.left=String(textBox.getBoundingClientRect().left+xPos)+"px";
+	// cursorPosition+=v;
+	sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
 	return true;
+}
+
+function Paste(){
+	navigator.clipboard.readText()
+  .then(text => {
+  	TrimText();
+    textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+text+" "+textBox.innerHTML.substring(cursorPosition);
+    ReFormat();
+    while(cursorPosition<t.length){
+    	RightArrow();
+    }
+    Cursor();
+  })
+}
+
+function RightArrow(){
+	TrimText();
+	t=textBox.innerHTML;
+	if(cursorPosition<t.length){
+		cursorPosition++;
+		if((t.substr(cursorPosition-1,1)!=" " || t.substr(cursorPosition,1)=="<") && t.substr(cursorPosition-1,1)!=">"){
+			RightArrow();
+		}else{
+			if(t.substr(cursorPosition-1,1)!=" "){
+				var c=t.substr(cursorPosition-2,1);
+			}else{
+				var c=t.substr(cursorPosition-6,1);
+			}
+			if(isLetter(c) || c=="_"){
+				sCounter++;
+				sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
+			}else if(c=="[" || c=="}"){
+				tModifier=tModifier*2;
+			}else if(c=="]" || c=="{"){
+				tModifier=tModifier/2;
+			}
+			Cursor();
+		}
+	}else{
+		cursorPosition=t.length;
+	}
+}
+
+function LeftArrow(){
+	TrimText();
+	t=textBox.innerHTML;
+	//console.log(t.substr(cursorPosition-1,1));
+	if(cursorPosition>0){
+		cursorPosition--;
+		if((t.substr(cursorPosition-1,1)!=" " || t.substr(cursorPosition,1)=="<") && t.substr(cursorPosition-1,1)!=">"){
+			LeftArrow();
+		}else{
+			var c=t.substr(cursorPosition,1);
+			if(isLetter(c) || c=="_"){
+				sCounter--;
+				sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
+			}else if(c=="[" || c=="}"){
+				tModifier=tModifier/2;
+			}else if(c=="]" || c=="{"){
+				tModifier=tModifier*2;
+			}
+			Cursor();
+		}
+	}else{
+		cursorPosition=0;
+	}
 }
 
 function AdjustFontSize(){
 	var f=parseFloat(window.getComputedStyle(textBox).fontSize);
-	if(textBox.scrollHeight>textBox.clientHeight){
+	if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
 		textBox.style.fontSize=(f-1)+"px";
 		AdjustFontSize();
-	}else if(textBox.scrollHeight<=textBox.clientHeight && f<maxFontSize){
+	}else if((textBox.scrollHeight<=textBox.clientHeight || textBox.scrollWidth<=textBox.clientWidth) && f<maxFontSize){
 		textBox.style.fontSize=(f+1)+"px";
-		if(textBox.scrollHeight>textBox.clientHeight){
+		if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
 			textBox.style.fontSize=(f-1)+"px";
 		}else{
 			AdjustFontSize();
@@ -255,26 +408,40 @@ function Clear(){
 	textBox.innerHTML="";
 	sCounter=0;
 	tModifier=1;
+	cursorPosition=0;
 }
 
 function BackSpace(){
 	//console.log("back space "+textBox.innerHTML.substr(textBox.innerHTML.length-1,1));
-	c=textBox.innerHTML.substr(textBox.innerHTML.length-1,1);
-	textBox.innerHTML=textBox.innerHTML.substr(0,textBox.innerHTML.length-1);
-	if(textBox.innerHTML.substr(textBox.innerHTML.length-4,4)=="<br>"){
-		textBox.innerHTML=textBox.innerHTML.substr(0,textBox.innerHTML.length-4)
+	TrimText();
+	t=textBox.innerHTML.substring(0,cursorPosition);
+	c=t.substr(t.length-1,1);
+	t=t.substr(0,t.length-1);
+	console.log(textBox.innerHTML);
+	console.log(t);
+	if(t.substr(t.length-4,4)=="<br>"){
+		//t=t.substr(0,t.length-4)
+		t=t+" ";
+		cursorPosition++;
+		console.log("add space");
+	}else if(t.substr(t.length-3,3)==" <b"){
+		t=t.substr(0,t.length-3);
+		cursorPosition-=3;
 	}
-	if(textBox.innerHTML.substr(textBox.innerHTML.length-1,1)!=" " && textBox.innerHTML.length>0){
+	textBox.innerHTML=t+textBox.innerHTML.substring(cursorPosition);
+	cursorPosition--;
+	if(t.substr(t.length-1,1)!=" " && t.length>0){
 		BackSpace();
 	}else if(isLetter(c) || c=="_"){
 		sCounter-=1/tModifier;
-		if(sCounter<=0){
-			if(textBox.innerHTML.length>0){
-				sCounter=gati*tSignature;
-			}else{
-				sCounter=0;
-			}
-		}
+		// if(sCounter<=0){
+		// 	if(textBox.innerHTML.length>0){
+		// 		sCounter=gati*tSignature;
+		// 	}else{
+		// 		sCounter=0;
+		// 	}
+		// }
+		sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
 	}else if(c=="[" || c=="}"){
 		tModifier=tModifier/2;
 	}else if(c=="]" || c=="{"){
@@ -305,6 +472,7 @@ playButton=document.getElementById("playButton");
 notePlayedDiv=document.getElementById("notePlayedDiv");
 notePlayed=document.getElementById("notePlayed");
 
+
 playButton.addEventListener("click",play);
 
 maxFontSize=parseFloat(window.getComputedStyle(textBox).fontSize);
@@ -332,19 +500,9 @@ function analyze(txt,ns,sCounter=0,pos=0){
 			pos:pos
 		};	
 		isSyllable=false;
-		if(txt.substr(0,5)=="tempo"){
-			s.text="tempo";
-		}else if(txt.substr(0,4)=="kala"){
-			s.text="kala";
-		}else if(txt.substr(0,1)=="g" || txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" || txt.substr(0,1)=="."
+		if(txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" || txt.substr(0,1)=="."
 			|| txt.substr(0,1)=="_"){
 			s.text=txt.substr(0,1);
-		}else if(isNumeric(txt.substr(0,1))){
-			var l=1;
-			while(isNumeric(txt.substr(0,l+1)) && l<txt.length){
-				l+=1;
-			}
-			s.text=txt.substr(0,l);
 		}else{
 			for(var i=0;i<syllables.length;i++){
 				if(txt.length>=syllables[i].name.length && syllables[i].name.length>s.text.length && syllables[i].name==txt.substring(0,syllables[i].name.length)){
@@ -372,6 +530,8 @@ function playMusic(ns){
 	var delay=0
 	playing=true;
 	playButton.value="stop";
+	mediaRecorder.start();
+	downloadButton.style.visibility="hidden";
 	for(var i=0;i<ns.length;i++){
 		if(ns[i].text=="tempo" || ns[i].text=="kala"){
 			if(i+1<ns.length && isNumeric(ns[i+1])){
@@ -399,12 +559,13 @@ function playMusic(ns){
 	timeOuts.push(setTimeout(function(){
 		timeOuts=[];
 		StopAll();
+		downloadButton.style.visibility="visible";
 	},delay+1000*(kala/60)/gati))
 }
 
 function StopAll(){
 	notePlayedDiv.style.visibility="hidden";
-	NoBold();
+	TrimText();
 	for(var i=0;i<timeOuts.length;i++){
 		clearTimeout(timeOuts[i]);
 	}
@@ -416,10 +577,12 @@ function StopAll(){
 	playing=false;
 	tempoInput.contentEditable="true";
 	gatiInput.contentEditable="true";
+	mediaRecorder.stop();
+	Cursor();
 }
 
 function BoldAt(e){
-	NoBold();
+	TrimText();
 	var pos=e.pos;
 	var h=textBox.innerHTML;
 	// for(var i=0;i<pos && i<h.length;i++){
@@ -427,13 +590,13 @@ function BoldAt(e){
 	// 		pos+=4;
 	// 	}
 	// }
-	h=h.substr(0,pos)+"<span>"+e.text+"</span>"+h.substr(pos+e.text.length);
+	h=h.substr(0,pos)+"<span id=\"sBold\">"+e.text+"</span>"+h.substr(pos+e.text.length);
 	textBox.innerHTML=h;
 	console.log(h);
 }
 
-function NoBold(){
-	textBox.innerHTML=textBox.innerHTML.replace("<span>","");
+function TrimText(){
+	textBox.innerHTML=textBox.innerHTML.replace(/<span.{0,15}>/g,"");
 	textBox.innerHTML=textBox.innerHTML.replace("</span>","");
 }
 
@@ -450,19 +613,48 @@ function changeGati(g){
 	}
 }
 
-function ReFormat(i=0,ns=[]){
+function ReFormat(i=0,ns=[],cp=0){
 	if(i==0){
+		var t=textBox.innerHTML;
+		var c=0;
+		for(i=0;i<cursorPosition;i++){
+			if(t.substr(i,4)=="<br>" && i<=cursorPosition-4){
+				i+=4;
+			}
+			c++;
+		}
+		TrimText();
 		ns=[];
 		analyze(textBox.innerHTML,ns);
 		textBox.innerHTML="";
+		cursorPosition=0;
 		sCounter=0;
 		console.log(ns);
+	}else{
+		var c=cp;
 	}
 	if(ns.length>0){
 		i++;
 		var e=ns.shift();
 		AddText(e.text);
-		ReFormat(i,ns);
+		ReFormat(i,ns,c);
+	}else{
+		var t=textBox.innerHTML;
+		var c=0;
+		for(i=0;i<textBox.innerHTML.length;i++){
+			if(t.substr(i,4)=="<br>"){
+				i+=4;
+			}
+			c++;
+			if(c>cp){
+				c=i;
+				break;
+			}
+		}
+		while(cursorPosition>c){
+			LeftArrow();
+		}
+		Cursor();
 	}
 }
 
@@ -512,12 +704,24 @@ tempoInput.addEventListener("input",function(){
 	}
 })
 
+tempoInput.addEventListener("blur",function(){
+	if(tempoInput.innerHTML==""){
+		tempoInput.innerHTML=kala.toString();
+	}
+})
+
 gatiInput=document.getElementById("gatiInput")
 
 gatiInput.addEventListener("input",function(){
 	numOnly(this);
 	if(isNumeric(this.innerHTML) && this.innerHTML!=""){
 		changeGati(parseFloat(this.innerHTML));
+	}
+})
+
+gatiInput.addEventListener("blur",function(){
+	if(gatiInput.innerHTML==""){
+		gatiInput.innerHTML=gati.toString();
 	}
 })
 
