@@ -24,6 +24,15 @@ playing=false;
 
 timeOuts=[];
 
+hands=["pixelHand004.png","pixelHand001.png","pixelHand002.png","pixelHand003.png","pixelHand004.png",
+"pixelHand005.png","pixelHand004.png","pixelHand005.png"]
+handStep=0;
+handImg=document.getElementById("handImg");
+aboutButton=document.getElementById("aboutButton");
+aboutButton.addEventListener("click",function(){
+	document.getElementById("aboutPage").classList.toggle("aboutPageActive");
+})
+
 let mediaDest, audioChunks, mediaRecorder;
 
 downloadButton=document.getElementById("downloadButton");
@@ -391,9 +400,13 @@ function LeftArrow(){
 
 function AdjustFontSize(){
 	var f=parseFloat(window.getComputedStyle(textBox).fontSize);
+	var colN=parseFloat(window.getComputedStyle(textBox).columnCount);
 	if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
 		textBox.style.fontSize=(f-1)+"px";
 		AdjustFontSize();
+		// if(f<24){
+		// 	textBox.style.columnCount = "2";
+		// }
 	}else if((textBox.scrollHeight<=textBox.clientHeight || textBox.scrollWidth<=textBox.clientWidth) && f<maxFontSize){
 		textBox.style.fontSize=(f+1)+"px";
 		if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
@@ -483,7 +496,7 @@ function play(){
 		analyze(textBox.innerHTML.trim().toLowerCase(),ns);
 		console.log(ns);
 		playMusic(ns);
-		notePlayedDiv.style.visibility="visible";
+		//notePlayedDiv.style.visibility="visible";
 		tempoInput.contentEditable="false";
 		gatiInput.contentEditable="false";
 	}else{
@@ -532,6 +545,7 @@ function playMusic(ns){
 	playButton.value="stop";
 	mediaRecorder.start();
 	downloadButton.style.visibility="hidden";
+	handStep=0;
 	for(var i=0;i<ns.length;i++){
 		if(ns[i].text=="tempo" || ns[i].text=="kala"){
 			if(i+1<ns.length && isNumeric(ns[i+1])){
@@ -556,6 +570,16 @@ function playMusic(ns){
 			delay=delay+1000*(60/kala)/gati;
 		}
 	}
+	for(var t=0;t<delay;t+=1000*(60/kala)){
+		timeOuts.push(setTimeout(function(){
+			handImg.src=hands[handStep];
+		},t));
+		timeOuts.push(setTimeout(function(){
+			handImg.src="pixelHand000.png";
+			handStep++;
+			handStep=handStep%8;
+		},t+1000*(60/kala)/2));
+	}
 	timeOuts.push(setTimeout(function(){
 		timeOuts=[];
 		StopAll();
@@ -564,8 +588,9 @@ function playMusic(ns){
 }
 
 function StopAll(){
-	notePlayedDiv.style.visibility="hidden";
+	//notePlayedDiv.style.visibility="hidden";
 	TrimText();
+	handImg.src="pixelHand000.png";
 	for(var i=0;i<timeOuts.length;i++){
 		clearTimeout(timeOuts[i]);
 	}
@@ -662,7 +687,7 @@ function playSyllable(s){
 	var h=s.sounds[Math.floor(Math.random()*s.sounds.length)];
 	playSound(h);
 	console.log("playing "+s.name);
-	notePlayed.innerHTML=s.name;
+	//notePlayed.innerHTML=s.name;
 }
 
 function playSound(h){

@@ -1,4 +1,41 @@
+html{
+  overflow: hidden;
+  font-size:2vh; 
+}
+
+.aboutPageInactive{
+  position: absolute;
+  background-color: lemonchiffon;
+  font-size: 1.2rem;
+  height: 100vh;
+  width: 100%;
+  top: -100%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  -webkit-transition: all 0.5s ease;  
+  -moz-transition: all 0.5s ease;  
+  -o-transition: all 0.5s ease;  
+  -ms-transition: all 0.5s ease;  
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
+.aboutPageActive{
+  opacity: 100%;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#aboutP{
+  padding: 5%;
+}
+
 body{
+  height: 100%;
   width: 100%;
   margin: 0;
   position: absolute;
@@ -9,7 +46,7 @@ body{
   text-align: center;
   font-family: "Courier New";
   background-color: lemonchiffon;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 #sBold{
@@ -25,12 +62,22 @@ body{
   margin: 3%;
 }
 
+img{
+  position: fixed;
+  width: 64px;
+  left: 50%;
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  top: 0%;
+  z-index: -1;
+}
+
 input[type="button"]{
   font-family: "Courier New";
   background-color:#f2e394;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 input[type="button"]:hover{
@@ -53,23 +100,32 @@ input[type="button"]:disabled{
 
 #downloadButton{
   position: fixed;
-  right: 5%;
-  top: -10%;
+  right: 2%;
+  top: 2%;
   visibility: hidden;
+   z-index: -1;
+}
+
+#aboutButton{
+  position: fixed;
+  left: 2%;
+  top: 2%;
+  z-index: 1;
 }
 
 #textBox{
   resize: none;
-  height: 300px;
-  width:  90%;
-  padding-left: 5%;
+  height: 42vh;
+  width:  90vw;
+  padding-top:10vh;
+  padding-right: 5vw;
+  padding-left: 5vw;
   border: none;
   outline: none;
-  background-color: lemonchiffon;
   text-align: left;
   white-space: pre;
   display: block;
-  font-size: 50px;
+  font-size: 3.1rem;
   font-family: "Courier New";
 }
 
@@ -77,32 +133,43 @@ input[type="button"]:disabled{
 
 #loaded{
   visibility: hidden;
+  height: 100%;
 }
 
 #sequencer{
-  width: 50%;
-  padding-left: 25%;
+  display: flex;
+  padding:0px max(calc((100vw - 660px) / 2) , 0px);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.seqButton{
+  margin: 2vh 0.5vw;
 }
 
 #buttons{
   padding-top: 0%;
+  height: 100%;
 }
 
 #tempo{
   position: fixed;
   left: 2%;
-  bottom: -5%;
+  bottom: 2%;
+  z-index: -1;
 }
 
 #gati{
   position: fixed;
   right: 2%;
-  bottom: -5%;
+  bottom: 2%;
+   z-index: -1;
 }
 
 #notePlayedDiv{
   position: fixed;
-  top: -5%;
+  top: 0%;
   left: 50%;
   -ms-transform: translate(-50%,0%);
   transform: translate(-50%,0%);
@@ -113,8 +180,9 @@ input[type="button"]:disabled{
   position: fixed;
   top: 0;
   left: 0;
-  font-size: 50px;
+  font-size: 3.1rem;
   font-family: "Courier New";
+  z-index: -1;
 }
 
 @-webkit-keyframes blink {
