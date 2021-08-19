@@ -13,7 +13,7 @@ html{
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: 1;
   -webkit-transition: all 0.5s ease;  
   -moz-transition: all 0.5s ease;  
   -o-transition: all 0.5s ease;  
@@ -103,7 +103,7 @@ input[type="button"]:disabled{
   right: 2%;
   top: 2%;
   visibility: hidden;
-   z-index: -1;
+   z-index: 0;
 }
 
 #aboutButton{
@@ -157,14 +157,14 @@ input[type="button"]:disabled{
   position: fixed;
   left: 2%;
   bottom: 2%;
-  z-index: -1;
+  z-index: 0;
 }
 
 #gati{
   position: fixed;
   right: 2%;
   bottom: 2%;
-   z-index: -1;
+  z-index: 0;
 }
 
 #notePlayedDiv{

@@ -1,179 +1,49 @@
-#p5_loading{
-	visibility:hidden;
+
+@font-face{
+  font-family: codersCrux;
+  src: url("Coders-Crux.woff");
 }
 
-.slidecontainer {
-  width: 50%;
-  position: fixed;
-  bottom:0%;
-}
-
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 25px;
-  background: #4d5466;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.slider:hover {
-  opacity: 1;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background: #c29cff;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #c29cff;
-  cursor: pointer;
-}
-
-#typed{
-  height:100%;
-  display:inline-block;
-  align-items:center;
-  justify-content:center;
-
-}
-
-#myBlink{
-  display: none;
-}
-
-#textStuff{
-  display: flex;
-}
-
-html{
-  font-family: 'Sulphur Point', sans-serif;
-  height:100%;
-  font-size:25px;
-  overflow:hidden;
-  background-color: #2b303d;
-  color:white;
-}
-
-#intro{
-  transition: opacity 1s;
+h1{
+  font-family: codersCrux;
+  text-align: center;
+  font-size: 5em;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 body{
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background-color: #319f63;
+  font-family: codersCrux;
   text-align: center;
+  vertical-align: center;
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
-#defaultCanvas0{
-  display:none;
-}
-
-.blinking-cursor {
-  font-weight: 100;
-  font-size: 30px;
-  color: white;
-  -webkit-animation: 1s blink step-end infinite;
-  -moz-animation: 1s blink step-end infinite;
-  -ms-animation: 1s blink step-end infinite;
-  -o-animation: 1s blink step-end infinite;
-  animation: 1s blink step-end infinite;
-  display:none;
-}
-
-@keyframes "blink" {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: white;
-  }
-}
-
-@-moz-keyframes blink {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: white;
-  }
-}
-
-@-webkit-keyframes "blink" {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: white;
-  }
-}
-
-@-ms-keyframes "blink" {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: white;
-  }
-}
-
-@-o-keyframes "blink" {
-  from, to {
-    color: transparent;
-  }
-  50% {
-    color: white;
-  }
-}
-
-span{
-  display: block;
-}
-
-p{
-  margin-block-start:0;
-  margin-block-end:0;
-}
-
-#input{
-  display:flex;
+ul{
   text-align: center;
-      align-items: center;
-    justify-content: center;
+  list-style-type: none;
+  padding-left: 0;
 }
 
-#translations{
-  position:fixed;
-  width:50%;
-  bottom:50%;
-}
-
-button {
-  background-color: #c29cff;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
+li{
   display: inline-block;
-  font-size: 20px;
-  position:fixed;
-  top:5%;
-  right:5%;
-  opacity:0.5;
+  padding: 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 2em;
 }
 
-button:hover{
-  opacity:1;
+.button{
+  border: none;
+  background-color: #319f63;
+  font-family: codersCrux;
+  color: white;
+  font-size: 1em;
 }
+
