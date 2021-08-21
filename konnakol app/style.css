@@ -127,6 +127,7 @@ input[type="button"]:disabled{
   display: block;
   font-size: 3.1rem;
   font-family: "Courier New";
+  overflow: auto;
 }
 
 

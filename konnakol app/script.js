@@ -401,7 +401,7 @@ function LeftArrow(){
 function AdjustFontSize(){
 	var f=parseFloat(window.getComputedStyle(textBox).fontSize);
 	var colN=parseFloat(window.getComputedStyle(textBox).columnCount);
-	if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
+	if((textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth) && f>minFontSize){
 		textBox.style.fontSize=(f-1)+"px";
 		AdjustFontSize();
 		// if(f<24){
@@ -409,9 +409,9 @@ function AdjustFontSize(){
 		// }
 	}else if((textBox.scrollHeight<=textBox.clientHeight || textBox.scrollWidth<=textBox.clientWidth) && f<maxFontSize){
 		textBox.style.fontSize=(f+1)+"px";
-		if(textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth){
+		if((textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth) && f>minFontSize){
 			textBox.style.fontSize=(f-1)+"px";
-		}else{
+		}else if(f>minFontSize){
 			AdjustFontSize();
 		}
 	}
@@ -489,6 +489,7 @@ notePlayed=document.getElementById("notePlayed");
 playButton.addEventListener("click",play);
 
 maxFontSize=parseFloat(window.getComputedStyle(textBox).fontSize);
+minFontSize=26;
 
 function play(){
 	if(!playing){
