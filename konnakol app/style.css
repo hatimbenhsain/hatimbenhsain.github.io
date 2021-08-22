@@ -13,7 +13,7 @@ html{
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: -2;
   -webkit-transition: all 0.5s ease;  
   -moz-transition: all 0.5s ease;  
   -o-transition: all 0.5s ease;  
@@ -28,6 +28,7 @@ html{
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 #aboutP{
@@ -62,7 +63,7 @@ body{
   margin: 3%;
 }
 
-img{
+#handImg{
   position: fixed;
   width: 64px;
   left: 50%;
@@ -70,6 +71,26 @@ img{
   transform: translate(-50%, 0%);
   top: 0%;
   z-index: -1;
+}
+
+#metronomeImg{
+  position: fixed;
+  width: 64px;
+  left: 45%;
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  top: 0%;
+  z-index: 0;
+}
+
+#drumImg{
+  position: fixed;
+  width: 64px;
+  left: 55%;
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  top: 0%;
+  z-index: 0;
 }
 
 input[type="button"]{

@@ -2,6 +2,9 @@ fileNames=[];
 howls=[];
 syllables=[];
 
+percussionOn=true;
+metronomeOn=true;
+
 cursorPosition=0;
 
 potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"];
@@ -18,6 +21,7 @@ kala=80;	//tempo
 gati=4;		//akshara per beat
 tSignature=2;
 tModifier=1;
+playTModifier=1;
 
 overflowMode=false;
 playing=false;
@@ -32,6 +36,23 @@ aboutButton=document.getElementById("aboutButton");
 aboutButton.addEventListener("click",function(){
 	document.getElementById("aboutPage").classList.toggle("aboutPageActive");
 })
+
+bellSound=new Howl({
+	src:"sounds/bell.wav",
+	preload:false
+});
+bellClickSound=new Howl({
+	src:"sounds/bellClick.wav",
+	preload:false
+});
+clickSound=new Howl({
+	src:"sounds/click.wav",
+	preload:false
+});
+
+howls.push(bellSound);
+howls.push(bellClickSound);
+howls.push(clickSound);
 
 let mediaDest, audioChunks, mediaRecorder;
 
@@ -54,6 +75,26 @@ getDone=0;
 soundsLoaded=0;
 
 sCounter=0;
+
+document.getElementById("metronomeImg").addEventListener("click",function(){
+	metronomeOn=!metronomeOn;
+	if(metronomeOn){
+		this.style.opacity=1;
+	}else{
+		this.style.opacity=0.5;
+	}
+});
+
+document.getElementById("drumImg").addEventListener("click",function(){
+	percussionOn=!percussionOn;
+	if(percussionOn){
+		this.style.opacity=1;
+	}else{
+		this.style.opacity=0.5;
+	}
+});
+
+
 
 $(document).ready(function () {
 	for(var i=0;i<potentialSyllableNames.length;i++){
@@ -112,7 +153,6 @@ function CheckGets(){
 			});
 			howls[i].load();
 		}
-
 	}
 }
 
@@ -130,7 +170,9 @@ function CheckLoads(){
 		Howler.masterGain.connect(mediaDest);
 		audioChunks = []
 		mediaRecorder = new MediaRecorder(mediaDest.stream, {mimeType: 'audio/webm'})
-		mediaRecorder.onstart = (event) => { console.log('Started recording Howl output...') }
+		mediaRecorder.onstart = (event) => {
+			audioChunks = [];
+			console.log('Started recording Howl output...'); }
 		mediaRecorder.ondataavailable = (e) => { if (e.data.size) audioChunks.push(e.data) }
 		mediaRecorder.onstop = (event) => {
   		console.log('Completed Recording', audioChunks);
@@ -234,6 +276,9 @@ function AddButton(sn){
 
 function ButtonPressed(tx){
 	TrimText();
+	if(cursorPosition>=textBox.innerHTML.length && textBox.scrollHeight>textBox.clientHeight){
+		textBox.scrollTop=textBox.scrollHeight-textBox.clientHeight;
+	}
 	overflowMode=false;
 	if(AddText(tx)){
 		playVoice(tx);
@@ -338,11 +383,22 @@ function Paste(){
   	TrimText();
     textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+text+" "+textBox.innerHTML.substring(cursorPosition);
     ReFormat();
-    while(cursorPosition<t.length){
-    	RightArrow();
-    }
+    ResetPosition();
     Cursor();
   })
+}
+
+function ResetPosition(){
+	while(cursorPosition>0){
+  	LeftArrow();
+  	console.log(cursorPosition+" "+sCounter);
+  }
+  tModifier=1;
+  while(cursorPosition<t.length){
+  	RightArrow();
+  	console.log(cursorPosition+" "+sCounter);
+  }
+  
 }
 
 function RightArrow(){
@@ -353,18 +409,19 @@ function RightArrow(){
 		if((t.substr(cursorPosition-1,1)!=" " || t.substr(cursorPosition,1)=="<") && t.substr(cursorPosition-1,1)!=">"){
 			RightArrow();
 		}else{
-			if(t.substr(cursorPosition-1,1)!=" "){
-				var c=t.substr(cursorPosition-2,1);
-			}else{
-				var c=t.substr(cursorPosition-6,1);
-			}
+			var c=t.substr(cursorPosition-2,1);
+			// if(t.substr(cursorPosition-1,1)!=" "){
+			// 	var c=t.substr(cursorPosition-2,1);
+			// }else{
+			// 	var c=t.substr(cursorPosition-6,1);
+			// }
 			if(isLetter(c) || c=="_"){
-				sCounter++;
+				sCounter+=tModifier;
 				sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
 			}else if(c=="[" || c=="}"){
-				tModifier=tModifier*2;
-			}else if(c=="]" || c=="{"){
 				tModifier=tModifier/2;
+			}else if(c=="]" || c=="{"){
+				tModifier=tModifier*2;
 			}
 			Cursor();
 		}
@@ -384,12 +441,12 @@ function LeftArrow(){
 		}else{
 			var c=t.substr(cursorPosition,1);
 			if(isLetter(c) || c=="_"){
-				sCounter--;
+				sCounter-=tModifier;
 				sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
 			}else if(c=="[" || c=="}"){
-				tModifier=tModifier/2;
-			}else if(c=="]" || c=="{"){
 				tModifier=tModifier*2;
+			}else if(c=="]" || c=="{"){
+				tModifier=tModifier/2;
 			}
 			Cursor();
 		}
@@ -493,9 +550,11 @@ minFontSize=26;
 
 function play(){
 	if(!playing){
+		ResetPosition();
 		var ns=[]
 		analyze(textBox.innerHTML.trim().toLowerCase(),ns);
 		console.log(ns);
+		playTModifier=1;
 		playMusic(ns);
 		//notePlayedDiv.style.visibility="visible";
 		tempoInput.contentEditable="false";
@@ -533,7 +592,7 @@ function analyze(txt,ns,sCounter=0,pos=0){
 		if(isSyllable || s.text=="_"){
 			sCounter+=1/tModifier;
 		}
-		console.log(txt);
+		console.log(txt + tModifier);
 		analyze(txt.slice(Math.max(s.text.length,1)),ns,sCounter,pos+Math.max(s.text.length,1));
 	}else{
 		return ns;
@@ -559,16 +618,18 @@ function playMusic(ns){
 				i++;
 			}
 		}else if(ns[i].text=="[" || ns[i].text=="}"){
-			changeTempo(kala*2);
+			//changeTempo(kala*2);
+			playTModifier=playTModifier*2;
 		}else if(ns[i].text=="]" || ns[i].text=="{"){
-			changeTempo(kala/2);
+			//changeTempo(kala/2);
+			playTModifier=playTModifier/2;
 		}else{
 			console.log("to play "+ns[i].text+" on "+delay);
-			if(ns[i].text!="." && ns[i].text!="_"){
+			if(ns[i].text!="." && ns[i].text!="_" && percussionOn){
 				timeOuts.push(setTimeout(playSyllable,delay,ns[i].data));
 			}
 			timeOuts.push(setTimeout(BoldAt,delay,ns[i]));
-			delay=delay+1000*(60/kala)/gati;
+			delay=delay+1000*(60/(kala*playTModifier))/gati;
 		}
 	}
 	for(var t=0;t<delay;t+=1000*(60/kala)){
@@ -580,6 +641,17 @@ function playMusic(ns){
 			handStep++;
 			handStep=handStep%8;
 		},t+1000*(60/kala)/2));
+		var snd;
+		if(metronomeOn){
+			if(t%(8000*60/kala)==0){
+				snd=bellSound;
+			}else if((t/(1000*(60/kala)))%8==4){
+				snd=bellClickSound;
+			}else{
+				snd=clickSound;
+			}
+			timeOuts.push(setTimeout(playSound,t,snd));
+		}
 	}
 	timeOuts.push(setTimeout(function(){
 		timeOuts=[];
@@ -636,6 +708,7 @@ function changeGati(g){
 	if(gati!=prevG){
 		console.log("gati changed");
 		ReFormat();
+		ResetPosition();
 	}
 }
 
@@ -655,6 +728,7 @@ function ReFormat(i=0,ns=[],cp=0){
 		textBox.innerHTML="";
 		cursorPosition=0;
 		sCounter=0;
+		tModifier=1;
 		console.log(ns);
 	}else{
 		var c=cp;
@@ -677,9 +751,11 @@ function ReFormat(i=0,ns=[],cp=0){
 				break;
 			}
 		}
+
 		while(cursorPosition>c){
 			LeftArrow();
 		}
+
 		Cursor();
 	}
 }
