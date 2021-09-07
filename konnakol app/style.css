@@ -93,6 +93,17 @@ body{
   z-index: 0;
 }
 
+#voiceImg{
+  position: fixed;
+  width: 64px;
+  left: 60%;
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  top: 0%;
+  z-index: 0;
+  opacity: 0.5;
+}
+
 input[type="button"]{
   font-family: "Courier New";
   background-color:#f2e394;

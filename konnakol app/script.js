@@ -4,6 +4,7 @@ syllables=[];
 
 percussionOn=true;
 metronomeOn=true;
+voiceOn=false;
 
 cursorPosition=0;
 
@@ -27,6 +28,7 @@ overflowMode=false;
 playing=false;
 
 timeOuts=[];
+timeOutParams=[];
 
 hands=["pixelHand004.png","pixelHand001.png","pixelHand002.png","pixelHand003.png","pixelHand004.png",
 "pixelHand005.png","pixelHand004.png","pixelHand005.png"]
@@ -58,23 +60,16 @@ let mediaDest, audioChunks, mediaRecorder;
 
 downloadButton=document.getElementById("downloadButton");
 
-// $(document).ready(function () 
-// {
-//     $.get("./sounds/", function(data) 
-//     {
-//         $("#fileNames").append(data);
-//         //console.log(data);
-//         GetFileNames(data);
-//         GetSyllables();
-//         console.log(syllables);
-//     });
-// })
 getAttempts=0;
 getDone=0;
 
 soundsLoaded=0;
 
 sCounter=0;
+
+keyboardRows=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m"]]
+wiredKeys=[];
+rowY=[];
 
 document.getElementById("metronomeImg").addEventListener("click",function(){
 	metronomeOn=!metronomeOn;
@@ -93,6 +88,16 @@ document.getElementById("drumImg").addEventListener("click",function(){
 		this.style.opacity=0.5;
 	}
 });
+
+document.getElementById("voiceImg").addEventListener("click",function(){
+	voiceOn=!voiceOn;
+	if(voiceOn){
+		this.style.opacity=1;
+	}else{
+		this.style.opacity=0.5;
+	}
+});
+
 
 
 
@@ -123,16 +128,16 @@ function AddFileName(sn,n){
 function CheckGets(){
 	getDone++;
 	if(getDone>=getAttempts){
-		AddButton("[");
-		AddButton("]");
-		AddButton("{");
-		AddButton("}");
-		AddButton("_");
-		AddButton("back");
-		AddButton("clear");
-		AddButton("paste");
-		AddButton("<-");
-		AddButton("->");
+		AddButton("[",false);
+		AddButton("]",false);
+		AddButton("{",false);
+		AddButton("}",false);
+		AddButton("_",false);
+		AddButton("back",false);
+		AddButton("clear",false);
+		AddButton("paste",false);
+		AddButton("<-",false);
+		AddButton("->",false);
 		document.addEventListener("keydown",function(e){
 			var key=e.key;
 			if(document.activeElement!=tempoInput && document.activeElement!=gatiInput){
@@ -144,6 +149,15 @@ function CheckGets(){
 					ButtonPressed("back")
 				}else if(key=="_" || key=="}" || key=="{" || key=="[" || key=="]"){
 					ButtonPressed(key)
+				}else{
+					console.log("pressed "+key);
+					for(var i=0;i<wiredKeys.length;i++){
+						if(key==wiredKeys[i][0]){
+							console.log("detected "+key);
+							ButtonPressed(wiredKeys[i][1]);
+							break;
+						}
+					}
 				}
 			}
 		})
@@ -199,7 +213,6 @@ function GetFileNames(d){
 			}
 		}
 	}
-	//console.log(fileNames);
 }
 
 function GetSyllables(){
@@ -237,7 +250,7 @@ function GetSyllables(){
 					voice:v
 				});
 				var l=syllables.length-1;
-				AddButton(sn);
+				AddButton(sn,true);
 				for(var k=0;k<eqSyllables.length;k++){
 					if(eqSyllables[k].name==syllables[l].name){
 						console.log(eqSyllables[k])
@@ -251,7 +264,7 @@ function GetSyllables(){
 								sounds:syllables[l].sounds,
 								voice:ve
 							});
-							AddButton(eqSyllables[k].equivalencies[p]);
+							AddButton(eqSyllables[k].equivalencies[p],true);
 						}
 					}
 				}
@@ -261,7 +274,7 @@ function GetSyllables(){
 	}
 }
 
-function AddButton(sn){
+function AddButton(sn,isSyllable){
 	var seq=document.getElementById("sequencer");
 	var but=document.createElement("input");
 	seq.appendChild(but);
@@ -272,6 +285,14 @@ function AddButton(sn){
 	but.addEventListener("click",function(){
 		ButtonPressed(this.id.slice(0,-6));
 	})
+	var k;
+	if(isSyllable){
+		if(rowY.length<3 && (rowY.length==0 || rowY[rowY.length-1]!=but.getBoundingClientRect().y)){
+			rowY.push(but.getBoundingClientRect().y);
+		}
+		k=keyboardRows[rowY.length-1].shift();
+		wiredKeys.push([k,sn]);
+	}
 }
 
 function ButtonPressed(tx){
@@ -283,9 +304,6 @@ function ButtonPressed(tx){
 	if(AddText(tx)){
 		playVoice(tx);
 	}
-	// if(sCounter<gati*tSignature && sCounter+1/tModifier>gati*tSignature){
-	// 	overflowMode=true;
-	// }
 	if(cursorPosition<textBox.innerHTML.length && tx!="->" && tx!="<-")	ReFormat();
 	ChangeButtonColors();
 	Cursor();
@@ -433,7 +451,6 @@ function RightArrow(){
 function LeftArrow(){
 	TrimText();
 	t=textBox.innerHTML;
-	//console.log(t.substr(cursorPosition-1,1));
 	if(cursorPosition>0){
 		cursorPosition--;
 		if((t.substr(cursorPosition-1,1)!=" " || t.substr(cursorPosition,1)=="<") && t.substr(cursorPosition-1,1)!=">"){
@@ -482,7 +499,6 @@ function Clear(){
 }
 
 function BackSpace(){
-	//console.log("back space "+textBox.innerHTML.substr(textBox.innerHTML.length-1,1));
 	TrimText();
 	t=textBox.innerHTML.substring(0,cursorPosition);
 	c=t.substr(t.length-1,1);
@@ -490,7 +506,6 @@ function BackSpace(){
 	console.log(textBox.innerHTML);
 	console.log(t);
 	if(t.substr(t.length-4,4)=="<br>"){
-		//t=t.substr(0,t.length-4)
 		t=t+" ";
 		cursorPosition++;
 		console.log("add space");
@@ -504,13 +519,6 @@ function BackSpace(){
 		BackSpace();
 	}else if(isLetter(c) || c=="_"){
 		sCounter-=1/tModifier;
-		// if(sCounter<=0){
-		// 	if(textBox.innerHTML.length>0){
-		// 		sCounter=gati*tSignature;
-		// 	}else{
-		// 		sCounter=0;
-		// 	}
-		// }
 		sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
 	}else if(c=="[" || c=="}"){
 		tModifier=tModifier/2;
@@ -527,9 +535,7 @@ function isLetter(c){
 	}
 }
 
-//console.log(files);
 
-//syllables=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"]
 notes=[];
 
 maxSyllableLength=1;
@@ -600,10 +606,11 @@ function analyze(txt,ns,sCounter=0,pos=0){
 }
 
 function playMusic(ns){
+	
+	timeOutParams=[];
 	var delay=0
 	playing=true;
 	playButton.value="stop";
-	mediaRecorder.start();
 	downloadButton.style.visibility="hidden";
 	handStep=0;
 	for(var i=0;i<ns.length;i++){
@@ -618,29 +625,38 @@ function playMusic(ns){
 				i++;
 			}
 		}else if(ns[i].text=="[" || ns[i].text=="}"){
-			//changeTempo(kala*2);
 			playTModifier=playTModifier*2;
 		}else if(ns[i].text=="]" || ns[i].text=="{"){
-			//changeTempo(kala/2);
 			playTModifier=playTModifier/2;
 		}else{
 			console.log("to play "+ns[i].text+" on "+delay);
-			if(ns[i].text!="." && ns[i].text!="_" && percussionOn){
-				timeOuts.push(setTimeout(playSyllable,delay,ns[i].data));
+			if(ns[i].text!="." && ns[i].text!="_"){
+				//timeOuts.push(setTimeout(playSyllable,delay,ns[i].data));
+				if(percussionOn) timeOutParams.push([playSyllable,delay,ns[i].data]);
+				if(voiceOn) timeOutParams.push([playVoice,delay,ns[i].text]);
 			}
-			timeOuts.push(setTimeout(BoldAt,delay,ns[i]));
+			//timeOuts.push(setTimeout(BoldAt,delay,ns[i]));
+			timeOutParams.push([BoldAt,delay,ns[i]]);
 			delay=delay+1000*(60/(kala*playTModifier))/gati;
 		}
 	}
 	for(var t=0;t<delay;t+=1000*(60/kala)){
-		timeOuts.push(setTimeout(function(){
+		// timeOuts.push(setTimeout(function(){
+		// 	handImg.src=hands[handStep];
+		// },t));
+		timeOutParams.push([function(){
 			handImg.src=hands[handStep];
-		},t));
-		timeOuts.push(setTimeout(function(){
+		},t]);
+		// timeOuts.push(setTimeout(function(){
+		// 	handImg.src="pixelHand000.png";
+		// 	handStep++;
+		// 	handStep=handStep%8;
+		// },t+1000*(60/kala)/2));
+		timeOutParams.push([function(){
 			handImg.src="pixelHand000.png";
 			handStep++;
 			handStep=handStep%8;
-		},t+1000*(60/kala)/2));
+		},t+1000*(60/kala)/2]);
 		var snd;
 		if(metronomeOn){
 			if(t%(8000*60/kala)==0){
@@ -650,14 +666,33 @@ function playMusic(ns){
 			}else{
 				snd=clickSound;
 			}
-			timeOuts.push(setTimeout(playSound,t,snd));
+			//timeOuts.push(setTimeout(playSound,t,snd));
+			timeOutParams.push([playSound,t,snd]);
 		}
 	}
-	timeOuts.push(setTimeout(function(){
+	// timeOuts.push(setTimeout(function(){
+	// 	timeOuts=[];
+	// 	StopAll();
+	// 	downloadButton.style.visibility="visible";
+	// },delay+1000*(kala/60)/gati))//
+	timeOutParams.push([function(){
 		timeOuts=[];
 		StopAll();
 		downloadButton.style.visibility="visible";
-	},delay+1000*(kala/60)/gati))
+	},delay+1000*(kala/60)/gati]);
+	SetTimeOuts();
+}
+
+function SetTimeOuts(){
+	preDelay=1000*timeOutParams.length/100;
+	timeOuts.push(setTimeout(function(){mediaRecorder.start();},preDelay-1));
+	for(var i=0;i<timeOutParams.length;i++){
+		if(timeOutParams[i].length==3){
+			timeOuts.push(setTimeout(timeOutParams[i][0],timeOutParams[i][1]+preDelay,timeOutParams[i][2]));
+		}else if(timeOutParams[i].length==2){
+			timeOuts.push(setTimeout(timeOutParams[i][0],timeOutParams[i][1]+preDelay));
+		}
+	}
 }
 
 function StopAll(){
@@ -835,13 +870,11 @@ function numOnly(el){
 	}
 	r=r&&el.innerHTML!="";
 	if(r){
-		// following code from https://stackoverflow.com/a/40633263
 		var range = document.createRange();
 	  var sel = window.getSelection();
 	  range.setStart(el.childNodes[0],el.innerHTML.length);
 	  range.collapse(true);
 	  sel.removeAllRanges();
 	  sel.addRange(range);
-	  // end of borrowed code
 	}
 }
