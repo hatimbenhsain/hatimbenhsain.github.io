@@ -3,6 +3,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OpusMediaRecorder.umd.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/encoderWorker.umd.js"></script>
 	<head>
 		<title>Konnakol App</title>		
 		<link rel='stylesheet' href="style.css">
@@ -21,13 +23,18 @@
 			</div>
 			<input id="aboutButton" type="button" value="about">
 			<a id="downloadButton" download><input type="button" value="download"></a>
+			<div id="ioButtons">
+				<label for="importInput" id="importButton" type="button">import</label>
+				<input id="importInput" type="file" value="import" accept=".txt">
+				<input id="exportButton" type="button" value="export">
+			</div>
 			<img src="pixelHand000.png" id="handImg">
 			<img src="metronome.png" id="metronomeImg">
 			<img src="drum.png" id="drumImg">
 			<img src="voice.png" id="voiceImg">
 			<div id="textBox"><span id="sUL"></span></div><br><br>
 			<div id="buttons">
-				<input type="button" value="play" id="playButton"><br><br>
+				<input type="button" value="play" id="playButton"><br>
 				<div id="sequencer"></div>
 			</div>
 			<div id="tempo">tempo: <p contenteditable="true" id="tempoInput" class="editable" tabIndex=1>80</p></div>

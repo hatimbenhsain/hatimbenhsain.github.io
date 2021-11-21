@@ -1,16 +1,16 @@
 fileNames=[];
-howls=[];
+howls=[];								//all sounds to be loaded and used
 syllables=[];
 
-percussionOn=true;
-metronomeOn=true;
-voiceOn=false;
+percussionOn=true;			//is the percussion sound activated
+metronomeOn=true;				//is the metronome sound activated
+voiceOn=false;					//is the voice sound activated
 
-cursorPosition=0;
+cursorPosition=0;				//position of the cursor in the text
 
-potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"];
+potentialSyllableNames=["bheem","cha","dheem","dhi","dhin","dhom","num","ta","tha","tham"]; //every possible syllable
 
-eqSyllables=[{
+eqSyllables=[{			//syllables with equivalents (e.g: dhi sounds the same as ka)
 	name:"dhi",
 	equivalencies:["ka","ki"]
 },{
@@ -18,28 +18,34 @@ eqSyllables=[{
 	equivalencies:["lam"]
 }]
 
-kala=80;	//tempo
-gati=4;		//akshara per beat
-tSignature=2;
-tModifier=1;
-playTModifier=1;
+kala=80;						//tempo
+gati=4;							//akshara per beat
+tSignature=2;				//time signature
+tModifier=1;				//tempo modifier used to keep track of text alignment
+playTModifier=1;		//tempo modifier used for playing sound at the right time
 
-overflowMode=false;
-playing=false;
+overflowMode=false;	//is the text overflowing?
+playing=false;			//are we currently playing sound?
 
-timeOuts=[];
-timeOutParams=[];
+timeOuts=[];				//timeouts to be set when playing sound
+timeOutParams=[];		//parameters for the timeouts
 
 hands=["pixelHand004.png","pixelHand001.png","pixelHand002.png","pixelHand003.png","pixelHand004.png",
 "pixelHand005.png","pixelHand004.png","pixelHand005.png"]
-handStep=0;
+handStep=0;					//what step is the hand on
 handImg=document.getElementById("handImg");
 aboutButton=document.getElementById("aboutButton");
-aboutButton.addEventListener("click",function(){
+aboutButton.addEventListener("click",function(){	//opening the about section
 	document.getElementById("aboutPage").classList.toggle("aboutPageActive");
 })
 
-bellSound=new Howl({
+importButton=document.getElementById("importButton");
+importInput=document.getElementById("importInput");
+importInput.addEventListener("change",ImportText);
+exportButton=document.getElementById("exportButton");
+exportButton.addEventListener("click",ExportText);
+
+bellSound=new Howl({			//the three metronome sounds
 	src:"sounds/bell.wav",
 	preload:false
 });
@@ -56,19 +62,26 @@ howls.push(bellSound);
 howls.push(bellClickSound);
 howls.push(clickSound);
 
-let mediaDest, audioChunks, mediaRecorder;
+let mediaDest, audioChunks, mediaRecorder;		//variables for recording our composition
+const workerOptions = {
+	OggOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OggOpusEncoder.wasm',
+	WebMOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WebMOpusEncoder.wasm',
+	WavOpusEncoderWasmPath: 'https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/WavOpusEncoder.wasm'
+};
 
-downloadButton=document.getElementById("downloadButton");
+downloadButton=document.getElementById("downloadButton");		
 
-getAttempts=0;
-getDone=0;
+getAttempts=0;		//attempts to retrieve sound files
+getDone=0;				
 
-soundsLoaded=0;
+soundsLoaded=0;		//sound files retrieved
 
-sCounter=0;
+sCounter=0;				//counter for the number of syllables at the current line/cursor position
 
 keyboardRows=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m"]]
-wiredKeys=[];
+wiredKeys=[["a","dheem"],["s","tham"],["d","dhom"],["f","tha"],["h","num"],["j","ta"],["k","ka"],["l","dhin"],[";","cha"],["'","lam"],
+["b","bheem"],["n","ki"],["m","dhi"]];			//keys and what they're connected to
+syllablesFound=[];
 rowY=[];
 
 document.getElementById("metronomeImg").addEventListener("click",function(){
@@ -105,6 +118,7 @@ $(document).ready(function () {
 	for(var i=0;i<potentialSyllableNames.length;i++){
 		AddFileName(potentialSyllableNames[i],1);
 	}
+	window.MediaRecorder = OpusMediaRecorder;
 })
 
 function AddFileName(sn,n){
@@ -128,6 +142,11 @@ function AddFileName(sn,n){
 function CheckGets(){
 	getDone++;
 	if(getDone>=getAttempts){
+		for(var i=0;i<wiredKeys.length;i++){
+			if(syllablesFound.includes(wiredKeys[i][1])){
+				AddButton(wiredKeys[i][1],true);
+			}
+		}
 		AddButton("[",false);
 		AddButton("]",false);
 		AddButton("{",false);
@@ -140,15 +159,15 @@ function CheckGets(){
 		AddButton("->",false);
 		document.addEventListener("keydown",function(e){
 			var key=e.key;
-			if(document.activeElement!=tempoInput && document.activeElement!=gatiInput){
+			if(document.activeElement!=tempoInput && document.activeElement!=gatiInput && !e.ctrlKey && !e.metaKey){
 				if(key=="ArrowLeft"){
-					ButtonPressed("<-")
+					ButtonPressed("<-");
 				}else if(key=="ArrowRight"){
-					ButtonPressed("->")
+					ButtonPressed("->");
 				}else if(key=="Backspace"){
-					ButtonPressed("back")
+					ButtonPressed("back");
 				}else if(key=="_" || key=="}" || key=="{" || key=="[" || key=="]"){
-					ButtonPressed(key)
+					ButtonPressed(key);
 				}else{
 					console.log("pressed "+key);
 					for(var i=0;i<wiredKeys.length;i++){
@@ -170,7 +189,7 @@ function CheckGets(){
 	}
 }
 
-function CheckLoads(){
+function CheckLoads(){		//checks if all the sounds have been loaded
 	console.log("check loads");
 	soundsLoaded++;
 	if(soundsLoaded>=howls.length){
@@ -183,17 +202,18 @@ function CheckLoads(){
 		mediaDest=Howler.ctx.createMediaStreamDestination();
 		Howler.masterGain.connect(mediaDest);
 		audioChunks = []
-		mediaRecorder = new MediaRecorder(mediaDest.stream, {mimeType: 'audio/webm'})
+		let options = { mimeType: 'audio/wav' };
+		mediaRecorder = new MediaRecorder(mediaDest.stream, options, workerOptions)
 		mediaRecorder.onstart = (event) => {
 			audioChunks = [];
 			console.log('Started recording Howl output...'); }
 		mediaRecorder.ondataavailable = (e) => { if (e.data.size) audioChunks.push(e.data) }
 		mediaRecorder.onstop = (event) => {
   		console.log('Completed Recording', audioChunks);
-  		var buffer = new Blob(audioChunks,{type:"audio/webm"});
+  		var buffer = new Blob(audioChunks,{type:"audio/wav"});
   		var url=URL.createObjectURL(buffer);
       downloadButton.href=url;
-      downloadButton.download="konnakolDemo.webm";
+      downloadButton.download="konnakolDemo.wav";
 		}
 		// end of borrowed code
 	}
@@ -215,7 +235,7 @@ function GetFileNames(d){
 	}
 }
 
-function GetSyllables(){
+function GetSyllables(){		//gets available syllables from what sound files are available and adds respective buttons
 	if(fileNames.length>0){
 		var s=fileNames.pop();
 		var sn=s.substr(0,s.length-1);
@@ -250,7 +270,8 @@ function GetSyllables(){
 					voice:v
 				});
 				var l=syllables.length-1;
-				AddButton(sn,true);
+				syllablesFound.push(sn);
+				//AddButton(sn,true);
 				for(var k=0;k<eqSyllables.length;k++){
 					if(eqSyllables[k].name==syllables[l].name){
 						console.log(eqSyllables[k])
@@ -264,7 +285,8 @@ function GetSyllables(){
 								sounds:syllables[l].sounds,
 								voice:ve
 							});
-							AddButton(eqSyllables[k].equivalencies[p],true);
+							syllablesFound.push(eqSyllables[k].equivalencies[p]);
+							//AddButton(eqSyllables[k].equivalencies[p],true);
 						}
 					}
 				}
@@ -286,13 +308,13 @@ function AddButton(sn,isSyllable){
 		ButtonPressed(this.id.slice(0,-6));
 	})
 	var k;
-	if(isSyllable){
-		if(rowY.length<3 && (rowY.length==0 || rowY[rowY.length-1]!=but.getBoundingClientRect().y)){
-			rowY.push(but.getBoundingClientRect().y);
-		}
-		k=keyboardRows[rowY.length-1].shift();
-		wiredKeys.push([k,sn]);
-	}
+	// if(isSyllable){
+	// 	if(rowY.length<3 && (rowY.length==0 || rowY[rowY.length-1]!=but.getBoundingClientRect().y)){
+	// 		rowY.push(but.getBoundingClientRect().y);
+	// 	}
+	// 	k=keyboardRows[rowY.length-1].shift();
+	// 	wiredKeys.push([k,sn]);
+	// }
 }
 
 function ButtonPressed(tx){
@@ -302,7 +324,7 @@ function ButtonPressed(tx){
 	}
 	overflowMode=false;
 	if(AddText(tx)){
-		playVoice(tx);
+		playVoice(tx,true);
 	}
 	if(cursorPosition<textBox.innerHTML.length && tx!="->" && tx!="<-")	ReFormat();
 	ChangeButtonColors();
@@ -399,12 +421,41 @@ function Paste(){
 	navigator.clipboard.readText()
   .then(text => {
   	TrimText();
-    textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+text+" "+textBox.innerHTML.substring(cursorPosition);
+    textBox.innerHTML=textBox.innerHTML.substring(0,cursorPosition)+text.toLowerCase()+" "+textBox.innerHTML.substring(cursorPosition);
     ReFormat();
     ResetPosition();
     Cursor();
   })
 }
+
+function ImportText(){
+	var fr=new FileReader();
+	fr.onload=function(){
+		Clear();
+		textBox.innerHTML=fr.result;
+		ReFormat();
+    ResetPosition();
+    Cursor();
+	}
+}
+
+function ExportText(){
+	console.log("export");
+	download("exportedText.txt",textBox.innerText);
+}
+
+//borrowed code from https://stackoverflow.com/a/45831280
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  console.log("download");
+  document.body.removeChild(element);
+}
+//end of borrowed code
 
 function ResetPosition(){
 	while(cursorPosition>0){
@@ -419,7 +470,7 @@ function ResetPosition(){
   
 }
 
-function RightArrow(){
+function RightArrow(){	//handles what happens when you press right arrow
 	TrimText();
 	t=textBox.innerHTML;
 	if(cursorPosition<t.length){
@@ -428,11 +479,6 @@ function RightArrow(){
 			RightArrow();
 		}else{
 			var c=t.substr(cursorPosition-2,1);
-			// if(t.substr(cursorPosition-1,1)!=" "){
-			// 	var c=t.substr(cursorPosition-2,1);
-			// }else{
-			// 	var c=t.substr(cursorPosition-6,1);
-			// }
 			if(isLetter(c) || c=="_"){
 				sCounter+=tModifier;
 				sCounter=(sCounter+gati*tSignature)%(gati*tSignature);
@@ -448,7 +494,7 @@ function RightArrow(){
 	}
 }
 
-function LeftArrow(){
+function LeftArrow(){	//handles what happens when you press left arrow
 	TrimText();
 	t=textBox.innerHTML;
 	if(cursorPosition>0){
@@ -472,7 +518,7 @@ function LeftArrow(){
 	}
 }
 
-function AdjustFontSize(){
+function AdjustFontSize(){	//adjusts the font size as text gets bigger or smaller to fit the window
 	var f=parseFloat(window.getComputedStyle(textBox).fontSize);
 	var colN=parseFloat(window.getComputedStyle(textBox).columnCount);
 	if((textBox.scrollHeight>textBox.clientHeight || textBox.scrollWidth>textBox.clientWidth) && f>minFontSize){
@@ -491,14 +537,14 @@ function AdjustFontSize(){
 	}
 }
 
-function Clear(){
+function Clear(){	//clears the window
 	textBox.innerHTML="";
 	sCounter=0;
 	tModifier=1;
 	cursorPosition=0;
 }
 
-function BackSpace(){
+function BackSpace(){	//handles what happens when pressing backspace
 	TrimText();
 	t=textBox.innerHTML.substring(0,cursorPosition);
 	c=t.substr(t.length-1,1);
@@ -527,7 +573,7 @@ function BackSpace(){
 	}
 }
 
-function isLetter(c){
+function isLetter(c){	//checks if the character is a letter
 	if((c.charCodeAt(0)>=65 && c.charCodeAt(0)<=90) || (c.charCodeAt(0)>=97 && c.charCodeAt(0)<=122)){
 		return true;
 	}else{
@@ -554,7 +600,7 @@ playButton.addEventListener("click",play);
 maxFontSize=parseFloat(window.getComputedStyle(textBox).fontSize);
 minFontSize=26;
 
-function play(){
+function play(){	//called when you press play
 	if(!playing){
 		ResetPosition();
 		var ns=[]
@@ -568,10 +614,9 @@ function play(){
 	}else{
 		StopAll();
 	}
-	//console.log(fileNames);
 }
 
-function analyze(txt,ns,sCounter=0,pos=0){
+function analyze(txt,ns,sCounter=0,pos=0){	//parses the text into elements in an array
 	if(txt!=""){
 		var s={
 			text:"",
@@ -582,6 +627,8 @@ function analyze(txt,ns,sCounter=0,pos=0){
 		if(txt.substr(0,1)=="[" || txt.substr(0,1)=="]" || txt.substr(0,1)=="{" || txt.substr(0,1)=="}" 
 			|| txt.substr(0,1)=="_"){
 			s.text=txt.substr(0,1);
+		}else if(txt.substr(0,1)=="."){
+			s.text="_";
 		}else{
 			for(var i=0;i<syllables.length;i++){
 				if(txt.length>=syllables[i].name.length && syllables[i].name.length>s.text.length && syllables[i].name==txt.substring(0,syllables[i].name.length)){
@@ -605,14 +652,14 @@ function analyze(txt,ns,sCounter=0,pos=0){
 	}
 }
 
-function playMusic(ns){
-	
+function playMusic(ns){	//plays all the sound after pressing play
 	timeOutParams=[];
 	var delay=0
 	playing=true;
 	playButton.value="stop";
 	downloadButton.style.visibility="hidden";
 	handStep=0;
+	handImg.style.visibility="visible";
 	for(var i=0;i<ns.length;i++){
 		if(ns[i].text=="tempo" || ns[i].text=="kala"){
 			if(i+1<ns.length && isNumeric(ns[i+1])){
@@ -632,8 +679,8 @@ function playMusic(ns){
 			console.log("to play "+ns[i].text+" on "+delay);
 			if(ns[i].text!="." && ns[i].text!="_"){
 				//timeOuts.push(setTimeout(playSyllable,delay,ns[i].data));
-				if(percussionOn) timeOutParams.push([playSyllable,delay,ns[i].data]);
-				if(voiceOn) timeOutParams.push([playVoice,delay,ns[i].text]);
+				timeOutParams.push([playSyllable,delay,ns[i].data]);
+				timeOutParams.push([playVoice,delay,ns[i].text]);
 			}
 			//timeOuts.push(setTimeout(BoldAt,delay,ns[i]));
 			timeOutParams.push([BoldAt,delay,ns[i]]);
@@ -646,6 +693,7 @@ function playMusic(ns){
 		// },t));
 		timeOutParams.push([function(){
 			handImg.src=hands[handStep];
+			handImg.style.opacity="0.8";
 		},t]);
 		// timeOuts.push(setTimeout(function(){
 		// 	handImg.src="pixelHand000.png";
@@ -656,19 +704,18 @@ function playMusic(ns){
 			handImg.src="pixelHand000.png";
 			handStep++;
 			handStep=handStep%8;
+			handImg.style.opacity="0";
 		},t+1000*(60/kala)/2]);
-		var snd;
-		if(metronomeOn){
-			if(t%(8000*60/kala)==0){
-				snd=bellSound;
-			}else if((t/(1000*(60/kala)))%8==4){
-				snd=bellClickSound;
-			}else{
-				snd=clickSound;
-			}
-			//timeOuts.push(setTimeout(playSound,t,snd));
-			timeOutParams.push([playSound,t,snd]);
+		var snd;	
+		if(t%(8000*60/kala)==0){
+			snd=bellSound;
+		}else if((t/(1000*(60/kala)))%8==4){
+			snd=bellClickSound;
+		}else{
+			snd=clickSound;
 		}
+		//timeOuts.push(setTimeout(playSound,t,snd));
+		timeOutParams.push([playMetronome,t,snd]);
 	}
 	// timeOuts.push(setTimeout(function(){
 	// 	timeOuts=[];
@@ -699,6 +746,7 @@ function StopAll(){
 	//notePlayedDiv.style.visibility="hidden";
 	TrimText();
 	handImg.src="pixelHand000.png";
+	handImg.style.visibility = "hidden";
 	for(var i=0;i<timeOuts.length;i++){
 		clearTimeout(timeOuts[i]);
 	}
@@ -795,11 +843,18 @@ function ReFormat(i=0,ns=[],cp=0){
 	}
 }
 
-function playSyllable(s){
-	var h=s.sounds[Math.floor(Math.random()*s.sounds.length)];
-	playSound(h);
-	console.log("playing "+s.name);
+function playSyllable(s,override=false){
+	if(percussionOn || override){
+		var h=s.sounds[Math.floor(Math.random()*s.sounds.length)];
+		playSound(h);
+	}
 	//notePlayed.innerHTML=s.name;
+}
+
+function playMetronome(s,override=false){
+	if(metronomeOn){
+		playSound(s);
+	}
 }
 
 function playSound(h){
@@ -816,12 +871,14 @@ function isNumeric(str) {			//function from https://stackoverflow.com/a/175787
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-function playVoice(n){
-	for(var i=0;i<syllables.length;i++){
-		if(n==syllables[i].name){
-			console.log("playing "+syllables[i].name);
-			playSound(syllables[i].voice);
-			break;
+function playVoice(n,override=false){
+	if(voiceOn || override){
+		for(var i=0;i<syllables.length;i++){
+			if(n==syllables[i].name){
+				console.log("playing "+syllables[i].name);
+				playSound(syllables[i].voice);
+				break;
+			}
 		}
 	}
 }

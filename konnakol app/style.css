@@ -65,58 +65,79 @@ body{
 
 #handImg{
   position: fixed;
-  width: 64px;
+  width: 136px;
   left: 50%;
-  -ms-transform: translate(-50%, 0%);
-  transform: translate(-50%, 0%);
-  top: 0%;
-  z-index: -1;
+  -ms-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
+  top: 20%;
+  z-index: 0;
+  opacity: 80%;
+  transition: opacity ease-out 0.1s;
+  visibility: hidden;
 }
 
 #metronomeImg{
   position: fixed;
-  width: 64px;
-  left: 45%;
+  width: 68px;
+  left: calc(50% - max(68px,5%));
   -ms-transform: translate(-50%, 0%);
   transform: translate(-50%, 0%);
   top: 0%;
   z-index: 0;
+  cursor: pointer;
 }
 
 #drumImg{
   position: fixed;
-  width: 64px;
-  left: 55%;
+  width: 68px;
+  left: 50%;
   -ms-transform: translate(-50%, 0%);
   transform: translate(-50%, 0%);
   top: 0%;
   z-index: 0;
+  cursor: pointer;
 }
 
 #voiceImg{
   position: fixed;
-  width: 64px;
-  left: 60%;
+  width: 68px;
+  left: calc(50% + max(68px,5%));
   -ms-transform: translate(-50%, 0%);
   transform: translate(-50%, 0%);
   top: 0%;
   z-index: 0;
   opacity: 0.5;
+  cursor: pointer;
 }
 
-input[type="button"]{
+input[type="button"],label{
   font-family: "Courier New";
   background-color:#f2e394;
   border: none;
   padding: 10px 20px;
   font-size: 1rem;
+  cursor: pointer;
+}
+
+input[type="file"]{
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
 }
 
 input[type="button"]:hover{
   background-color:#f2ae72;
 }
 
+label:hover{
+  background-color:#f2ae72;
+}
+
 input[type="button"]:disabled{
+  background-color:#ede1a4;
+}
+
+label:disabled{
   background-color:#ede1a4;
 }
 
@@ -143,6 +164,15 @@ input[type="button"]:disabled{
   left: 2%;
   top: 2%;
   z-index: 1;
+  cursor: pointer;
+}
+
+#ioButtons{
+  position: fixed;
+  left: 50%;
+  -ms-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  bottom: 2%;
 }
 
 #textBox{
@@ -171,7 +201,7 @@ input[type="button"]:disabled{
 
 #sequencer{
   display: flex;
-  padding:0px max(calc((100vw - 660px) / 2) , 0px);
+  padding:0.5% max(calc((100vw - 800px) / 2) , 0px);
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
