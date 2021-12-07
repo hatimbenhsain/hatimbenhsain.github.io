@@ -111,7 +111,7 @@ document.getElementById("voiceImg").addEventListener("click",function(){
 	}
 });
 
-
+changed=true;
 
 
 $(document).ready(function () {
@@ -186,6 +186,19 @@ function CheckGets(){
 			});
 			howls[i].load();
 		}
+		AddTitles();
+	}
+}
+
+function AddTitles(){
+	document.getElementById("[Button").setAttribute("title","Double time");
+	document.getElementById("]Button").setAttribute("title","Double time");
+	document.getElementById("{Button").setAttribute("title","Half time");
+	document.getElementById("}Button").setAttribute("title","Half time");
+	document.getElementById("_Button").setAttribute("title","Rest");
+	document.getElementById("backButton").setAttribute("title","Delete the last addition");
+	for(var i=0;i<wiredKeys.length;i++){
+		document.getElementById(wiredKeys[i][1]+"Button").setAttribute("title",wiredKeys[i][0].toUpperCase());
 	}
 }
 
@@ -329,6 +342,9 @@ function ButtonPressed(tx){
 	if(cursorPosition<textBox.innerHTML.length && tx!="->" && tx!="<-")	ReFormat();
 	ChangeButtonColors();
 	Cursor();
+	if(tx!="->" && tx!="<-" && tx!="play" && tx!="stop"){
+		changed=true;
+	}
 }
 
 function Cursor(){
@@ -600,14 +616,20 @@ playButton.addEventListener("click",play);
 maxFontSize=parseFloat(window.getComputedStyle(textBox).fontSize);
 minFontSize=26;
 
+analysisResults=[];
+
 function play(){	//called when you press play
 	if(!playing){
 		ResetPosition();
-		var ns=[]
-		analyze(textBox.innerHTML.trim().toLowerCase(),ns);
-		console.log(ns);
+		if(changed){
+			analysisResults=[];
+			analyze(textBox.innerHTML.trim().toLowerCase(),analysisResults);
+		}else{
+			console.log("not changed");
+		}
+		//console.log(analysisResults);
 		playTModifier=1;
-		playMusic(ns);
+		playMusic(analysisResults);
 		//notePlayedDiv.style.visibility="visible";
 		tempoInput.contentEditable="false";
 		gatiInput.contentEditable="false";
@@ -656,7 +678,7 @@ function playMusic(ns){	//plays all the sound after pressing play
 	timeOutParams=[];
 	var delay=0
 	playing=true;
-	playButton.value="stop";
+	playButton.value="loading...";
 	downloadButton.style.visibility="hidden";
 	handStep=0;
 	handImg.style.visibility="visible";
@@ -732,7 +754,8 @@ function playMusic(ns){	//plays all the sound after pressing play
 
 function SetTimeOuts(){
 	preDelay=1000*timeOutParams.length/100;
-	timeOuts.push(setTimeout(function(){mediaRecorder.start();},preDelay-1));
+	timeOuts.push(setTimeout(function(){mediaRecorder.start();
+	playButton.value="stop";},preDelay-1));
 	for(var i=0;i<timeOutParams.length;i++){
 		if(timeOutParams[i].length==3){
 			timeOuts.push(setTimeout(timeOutParams[i][0],timeOutParams[i][1]+preDelay,timeOutParams[i][2]));
@@ -760,6 +783,7 @@ function StopAll(){
 	gatiInput.contentEditable="true";
 	mediaRecorder.stop();
 	Cursor();
+	changed=false;
 }
 
 function BoldAt(e){
