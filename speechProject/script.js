@@ -13,6 +13,18 @@ let howler;
 
 let randomNodes;
 
+let broker = {
+    hostname: 'public.cloud.shiftr.io',
+    port: 443
+};
+let topic = "car_eyesOn";
+let client;
+let creds = {
+    clientID: 'p5Client',
+    userName: 'public',
+    password: 'public'
+}
+
 class Node{
 	constructor(line){
 		this.line=line;
@@ -155,6 +167,19 @@ let voice;
 let lastRecordedTime=0;
 
 function setup(){
+	client = new Paho.MQTT.Client(broker.hostname, broker.port, creds.clientID);
+	client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+    // connect to the MQTT broker:
+    client.connect(
+        {
+            onSuccess: onConnect,       // callback function for when you connect
+            userName: creds.userName,   // username
+            password: creds.password,   // password
+            useSSL: true                // use SSL
+        }
+    );
+
 	howlerCTX=Howler.ctx;
 
 	date=new Date();
@@ -228,6 +253,43 @@ function setup(){
 
 }
 
+function onConnect() {
+	print("client is connected");
+    client.subscribe(topic);
+}
+
+function onConnectionLost(response) {
+    if (response.errorCode !== 0) {
+        print('onConnectionLost:' + response.errorMessage);
+    }
+}
+
+function onMessageArrived(message) {
+    print('I got a message:' + message.payloadString);
+    // assume the message is two numbers, mouseX and mouseY.
+    // Split it into an array:
+    let values = split(message.payloadString, ',');
+    // convert the array values into numbers:
+}
+
+function sendMqttMessage(msg) {
+    // if the client is connected to the MQTT broker:
+    if (client.isConnected()) {
+        // start an MQTT message:
+        message = new Paho.MQTT.Message(msg);
+        // choose the destination topic:
+        message.destinationName = topic;
+        // send it:
+        client.send(message);
+        // print what you sent:
+        print('I sent: ' + message.payloadString);
+    }else{
+    	setTimeout(function(){
+			sendMqttMessage(msg);
+		},500)
+    }
+}
+
 function draw(){
 	timeElapsed=timeElapsed+deltaTime/1000;
 }
@@ -283,6 +345,11 @@ function LoadSettings(){
 		timeElapsed=parseInt(localStorage.getItem("timeElapsed"));
 	}else{
 		timeElapsed=0;
+	}
+	if(currentMode=="talking"){
+		sendMqttMessage("true");
+	}else{
+		sendMqttMessage("false");
 	}
 }
 
