@@ -169,6 +169,8 @@ let lastRecordedTime=0;
 
 let spoke=false;
 
+let waitTime=1000;
+
 function setup(){
 	client = new Paho.MQTT.Client(broker.hostname, broker.port, creds.clientID);
 	client.onConnectionLost = onConnectionLost;
@@ -202,11 +204,13 @@ function setup(){
 	voice.onLoad=function(){
 		if(currentMode=="talking"){
 			voice.onEnd=FinishedTalking;
-			voice.setVoice(defaultVoice);
-			if(!spoke) voice.speak(currentNode.line);
-			spoke=true;
-			voiceStarted=true;
-			console.log("said "+currentNode.line)
+			setTimeout(function(){
+				voice.setVoice(defaultVoice);
+				if(!spoke) voice.speak(currentNode.line);
+				console.log("said "+currentNode.line);
+				spoke=true;
+				voiceStarted=true;
+			},waitTime)			
 		}
 	}
 
@@ -256,11 +260,15 @@ function setup(){
 			speechRec.start(continuous,interim);
 			speechRecStarted=true;
 		}else if(currentMode=="talking" && !voiceStarted){
+			print("mode 2");
 			voice.onEnd=FinishedTalking;
-			voice.setVoice(defaultVoice);
-			if(!spoke) voice.speak(currentNode.line);
-			spoke=true;
-			voiceStarted=true;
+			setTimeout(function(){
+				voice.setVoice(defaultVoice);
+				if(!spoke) voice.speak(currentNode.line);
+				console.log("said "+currentNode.line);
+				spoke=true;
+				voiceStarted=true;
+			},waitTime)		
 		}
 	});
 
@@ -364,6 +372,12 @@ function LoadSettings(){
 	}else{
 		defaultVoice=0;
 	}
+	if(localStorage.getItem("waitTime")!=null && !isNaN(localStorage.getItem("waitTime"))){
+		waitTime=parseInt(localStorage.getItem("waitTime"));
+	}else{
+		waitTime=1000;
+	}
+	
 	if(currentMode=="talking"){
 		sendMqttMessage("0");
 	}else{
@@ -381,6 +395,7 @@ function SaveSettings(){
 	localStorage.setItem("currentMode",currentMode);
 	localStorage.setItem("timeElapsed",timeElapsed);
 	localStorage.setItem("defaultVoice",defaultVoice);
+	localStorage.setItem("waitTime",waitTime);
 }
 
 function FinishedTalking(){
@@ -422,4 +437,8 @@ function shuffleArray(array) {
 
 function setDefaultVoice(k){
 	defaultVoice=k;
+}
+
+function setWaitTime(k){
+	waitTime=k;
 }
