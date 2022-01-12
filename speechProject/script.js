@@ -166,6 +166,8 @@ let voice;
 
 let lastRecordedTime=0;
 
+let spoke=false;
+
 function setup(){
 	client = new Paho.MQTT.Client(broker.hostname, broker.port, creds.clientID);
 	client.onConnectionLost = onConnectionLost;
@@ -185,15 +187,23 @@ function setup(){
 	date=new Date();
 	LoadSettings();
 
+
+
 	noCanvas();
 	lang=navigator.language || 'en-US';
 	speechRec=new p5.SpeechRec(lang,gotSpeech);
 	voice=new p5.Speech();
 
+	print(voice.listVoices());
+
+
+
 	voice.onLoad=function(){
 		if(currentMode=="talking"){
 			voice.onEnd=FinishedTalking;
-			voice.speak(currentNode.line);
+			voice.setVoice(0);
+			if(!spoke) voice.speak(currentNode.line);
+			spoke=true;
 			voiceStarted=true;
 			console.log("said "+currentNode.line)
 		}
@@ -246,7 +256,9 @@ function setup(){
 			speechRecStarted=true;
 		}else if(currentMode=="talking" && !voiceStarted){
 			voice.onEnd=FinishedTalking;
-			voice.speak(currentNode.line);
+			voice.setVoice(0);
+			if(!spoke) voice.speak(currentNode.line);
+			spoke=true;
 			voiceStarted=true;
 		}
 	});
@@ -347,9 +359,9 @@ function LoadSettings(){
 		timeElapsed=0;
 	}
 	if(currentMode=="talking"){
-		sendMqttMessage("true");
+		sendMqttMessage("0");
 	}else{
-		sendMqttMessage("false");
+		sendMqttMessage("1");
 	}
 }
 
