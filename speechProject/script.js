@@ -5,6 +5,7 @@ let timeElapsed=0;
 let timeBeforeChange=15;
 let possibleModes=["listening","talking"];
 let sav="";
+let defaultVoice=0;
 
 let startTime;
 let date;
@@ -201,7 +202,7 @@ function setup(){
 	voice.onLoad=function(){
 		if(currentMode=="talking"){
 			voice.onEnd=FinishedTalking;
-			voice.setVoice(0);
+			voice.setVoice(defaultVoice);
 			if(!spoke) voice.speak(currentNode.line);
 			spoke=true;
 			voiceStarted=true;
@@ -256,7 +257,7 @@ function setup(){
 			speechRecStarted=true;
 		}else if(currentMode=="talking" && !voiceStarted){
 			voice.onEnd=FinishedTalking;
-			voice.setVoice(0);
+			voice.setVoice(defaultVoice);
 			if(!spoke) voice.speak(currentNode.line);
 			spoke=true;
 			voiceStarted=true;
@@ -358,6 +359,11 @@ function LoadSettings(){
 	}else{
 		timeElapsed=0;
 	}
+	if(localStorage.getItem("defaultVoice")!=null && !isNaN(localStorage.getItem("defaultVoice"))){
+		defaultVoice=parseInt(localStorage.getItem("defaultVoice"));
+	}else{
+		defaultVoice=0;
+	}
 	if(currentMode=="talking"){
 		sendMqttMessage("0");
 	}else{
@@ -374,6 +380,7 @@ function SaveSettings(){
 	localStorage.setItem("currentNode",nodeList.indexOf(currentNode));
 	localStorage.setItem("currentMode",currentMode);
 	localStorage.setItem("timeElapsed",timeElapsed);
+	localStorage.setItem("defaultVoice",defaultVoice);
 }
 
 function FinishedTalking(){
@@ -411,4 +418,8 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+}
+
+function setDefaultVoice(k){
+	defaultVoice=k;
 }
