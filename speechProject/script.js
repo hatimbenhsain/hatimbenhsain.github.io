@@ -125,9 +125,10 @@ let node30=new Node("How can we get in touch?");
 let node31=new Node("I love you");
 let node32=new Node("I like you ");
 let node33=new Node("Jumairy");
+let node34=new Node("Do you know Jumairy?")
 
 randomNodes=[node1,node10,node11,node12,node13,node14,node15,node16,node17,node18,node19,node20,node21,
-node22,node23,node24,node25,node33]
+node22,node23,node24,node25,node33,node34]
 
 
 node1.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
@@ -149,7 +150,8 @@ node29.childOfAll(["have to leave","leaving"]);
 node30.childOfAll(["bye","goodbye","see you","later"]);
 node31.childOfAll(["love"]);
 node32.childOfAll(["i like you"]);
-node33.childOfAll(["name","who","come from","owns","why are you","you from"]);
+node33.childOfAll(["name","who","come from","owns","why are you","you from","hookah","jo me","tu me","jhumar","true mary","joe me","jo ma","joe ma","tumhare","juber","junaid"]);
+node34.childOfAll(["jo me","tu me","jhumar","true mary","joe me","jo ma","joe ma","tumhare","juber","junaid"]);
 node10.forceConnection(node33);
 node12.forceConnection(node33);
 node24.forceConnection(node33);
