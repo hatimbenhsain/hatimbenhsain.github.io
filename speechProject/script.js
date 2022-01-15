@@ -66,9 +66,9 @@ class Node{
 				}
 			}
 		}
-		if(this.forcedConnections.length>0){
+		if(this.forcedConnections.length==0){
 			print("no word recognized, getting next random")
-			return this.getRandomNext();
+			return this.getRandomNext2();
 		}
 		return null;
 	}
@@ -83,6 +83,18 @@ class Node{
 			return(randomNodes[i]);
 		}
 	}
+
+	getRandomNext2(){
+		if(this.forcedConnections.length>0){
+			print("return forced connection");
+			return(this.forcedConnections[Math.floor(Math.random()*this.forcedConnections.length)]);
+		}else{
+			print("get a random node");
+			let i=Math.floor(Math.random()*randomNodes2.length);
+			print(i);
+			return(randomNodes2[i]);
+		}
+	}
 }
 
 class Connection{
@@ -94,14 +106,14 @@ class Connection{
 
 let node1=new Node("hala walla!");
 let node2=new Node("would you like to get to know me?");
-let node3=new Node("Please talk to me!");
-let node4=new Node("Are you ok?");
+let node3=new Node("I would like to know you.");
+let node4=new Node("Hi, Are you ok?");
 let node5=new Node("I’m concerned about you");
 let node6=new Node("Where are you going?");
 let node7=new Node("Please stay!!!");
 let node8=new Node("How was your day?");
 let node9=new Node("What's your name?");
-let node10=new Node("Would you like to play a game?");
+let node10=new Node("My name is Jumairy");
 let node11=new Node("Can we please go outside?");
 let node12=new Node("Can i tell you a secret?");
 let node13=new Node("Do you love me?");
@@ -110,10 +122,10 @@ let node15=new Node("LOVE ME");
 let node16=new Node("I’m BORED");
 let node17=new Node("HEY, Where do you live?");
 let node18=new Node("Wanna go for a ride?");
-let node19=new Node("Take me away with you!!!");
+let node19=new Node("Take me away with you");
 let node20=new Node("What are you doing tonight?");
 let node21=new Node("What are you doing today?");
-let node22=new Node("I love driving around too...");
+let node22=new Node("I love driving.");
 let node23=new Node("HEY, What’s your friend’s name?");
 let node24=new Node("Please help me!!!");
 let node25=new Node("Hey, I can’t live without you!!!");
@@ -123,40 +135,71 @@ let node28=new Node("Are you just going to leave me here?");
 let node29=new Node("At least say goodbye!!!");
 let node30=new Node("How can we get in touch?");
 let node31=new Node("I love you");
-let node32=new Node("I like you ");
+let node32=new Node("I really like you ");
 let node33=new Node("Jumairy");
-let node34=new Node("Do you know Jumairy?")
+let node34=new Node("Do you know Jumairy?");
+let node35=new Node("You’re beautiful");
+let node36=new Node("You’re gorgeous");
+let node37=new Node("We’re in heaven");
+let node38=new Node("Jumairy was here");
+let node39=new Node("I live in Jumeirah");
+let node40=new Node("Meet me on Jumeirah Road");
+let node41=new Node("Jumairy is my friend");
+let node42=new Node("Jumairy was here");
+let node43=new Node("because i love you");
+let node44=new Node("I come from Jumeirah");
+let node45=new Node("Jumairy told me to be here");
+let node46=new Node("I came to  spread love");
+let node47=new Node("nice to meet you");
+let node48=new Node("Can i get your number?");
 
-randomNodes=[node1,node10,node11,node12,node13,node14,node15,node16,node17,node18,node19,node20,node21,
-node22,node23,node24,node25,node33,node34]
+randomNodes=[node1];
+
+randomNodes2=[node11,node12,node13,node14,node15,node16,node17,node18,node19,node20,node21,
+node22,node23,node24,node25,node31,node9,node35,node36];
 
 
-node1.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
+//node1.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
 node2.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
 node2.forceConnection(node3);
 node4.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
 node5.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
+node34.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
+node48.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
 node4.forceConnection(node5);
 node6.childOfAll(["talkin","talking","what is this","weird"]);
 node6.forceConnection(node7);
 node8.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
-node9.childOfAll(["name"]);
 node4.forceConnection(node26);
-node5.forceConnection(node27);
+node4.forceConnection(node27);
 node26.childOfAll(["worried","worries","anxiety"]);
 node27.childOfAll(["worried","worries","anxiety"]);
 node28.childOfAll(["bye","goodbye","see you","later"]);
-node29.childOfAll(["have to leave","leaving"]);
+node29.childOfAll(["have to leave","leaving","have to live"]);
 node30.childOfAll(["bye","goodbye","see you","later"]);
-node31.childOfAll(["love"]);
+node31.childOfAll(["love","you bored","you're bored"]);
 node32.childOfAll(["i like you"]);
-node33.childOfAll(["name","who","come from","owns","why are you","you from","hookah","jo me","tu me","jhumar","true mary","joe me","jo ma","joe ma","tumhare","juber","junaid"]);
-node34.childOfAll(["jo me","tu me","jhumar","true mary","joe me","jo ma","joe ma","tumhare","juber","junaid"]);
-node10.forceConnection(node33);
+node34.childOfAll(["salim","solemn","sanam","hi","hello","salam","alaikum","good morning","good evening","good afternoon","good after noon","sup","what's up"]);
+//node10.forceConnection(node33);
 node12.forceConnection(node33);
 node24.forceConnection(node33);
 node25.forceConnection(node33);
 node18.forceConnection(node33);
+node10.childOfAll(["your name","you're name"]);
+node11.makeConnection(node37,["yes","no"]);
+node13.makeConnection(node31,["yes","no"]);
+node12.makeConnection(node38,["yes","no"]);
+node39.childOfAll(["where do you live","where do you leave","you live where","were do you live","were do you leave"]);
+node18.makeConnection(node40,["yes","no"]);
+node40.childOfAll(["tonight","today","what are you doing"]);
+node41.childOfAll(["your friend","you're friend"]);
+node42.childOfAll(["why are you concerned","concerned"]);
+node43.childOfAll(["why are you concerned","concerned"]);
+node44.childOfAll(["where do you come","come from","where are you from","you from","from where"]);
+node45.childOfAll(["why are you here","why you here","why're you here"]);
+node46.childOfAll(["why are you here","why you here","why're you here"]);
+node47.childOfAll(["bye","goodbye","see you","later"]);
+node33.childOfAll(["your name","you're name","who are you","who're you","who owns","owner"]);
 
 // node1.makeConnection(node2,["hi","hello","sup"]);
 // node2.makeConnection(node3,["bad","not good","not"]);
