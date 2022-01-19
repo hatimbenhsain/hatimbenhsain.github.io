@@ -124,7 +124,6 @@ let node10=new Node("look at that smile",["good afternoon"]);
 let node11=new Node("evening? what time is it?",["good evening"]);
 let node12=new Node("my day is better that you’re with me now",["my day was good"]);
 let node13=new Node("it’s getting late… where are you going?",["good night"]);
-let node14=new Node("alhamdulilah rabi ya afeekum",["shehalik"]);
 let node15=new Node("i’m just a car in love",["what’s this"]);
 let node16=new Node("i’m in love with you",["who are you in love with","in love with"]);
 let node17=new Node("i love you",["who do you love"]);
@@ -203,9 +202,17 @@ let node89=new Node("What’s your name?",[]);
 let node90=new Node("Please help me!!!",[]);
 let node91=new Node("You’re beautiful",[]);
 let node92=new Node("You’re gorgeous",[]);
+let node93=new Node("Hello, lets get to know each other",["hala","halla","walla","wala"]);
+let node94=new Node("better now that you’re here",["how are you doing","how you doing","how are you"]);
+let node95=new Node("aah i love your name",["my name is","my name's"]);
+let node96=new Node("You're my everything",["tell me something"]);
+let node97=new Node("i can’t tell you that",["you have a girlfriend","you have girlfriend"]);
+let node98=new Node("shh that’s a secret",["who is your girlfriend","who's your girlfriend"]);
+let node99=new Node("allah hayhum",[]);
+let node100=new Node("I'm bored",[]);
 
 randomNodes=[node1];
-randomNodes2=[node89,node88,node90,node91,node92]
+randomNodes2=[node89,node88,node90,node91,node92,node99,node100]
 
 ConnectAll();
 
