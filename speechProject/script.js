@@ -91,6 +91,7 @@ class Node{
 			return(this.forcedConnections[Math.floor(Math.random()*this.forcedConnections.length)]);
 		}else{
 			print("get a random node");
+			shuffleArray(randomNodes2);
 			let i=Math.floor(Math.random()*randomNodes2.length);
 			print(i);
 			return(randomNodes2[i]);
@@ -208,11 +209,11 @@ let node95=new Node("aah i love your name",["my name is","my name's"]);
 let node96=new Node("You're my everything",["tell me something"]);
 let node97=new Node("i can’t tell you that",["you have a girlfriend","you have girlfriend"]);
 let node98=new Node("shh that’s a secret",["who is your girlfriend","who's your girlfriend"]);
-let node99=new Node("allah hayhum",[]);
-let node100=new Node("I'm bored",[]);
+//let node99=new Node("allah hayhum",[]);
+//let node100=new Node("I'm bored",[]);
 
 randomNodes=[node1];
-randomNodes2=[node89,node88,node90,node91,node92,node99,node100]
+randomNodes2=[node89,node88,node90,node91,node92]
 
 ConnectAll();
 
