@@ -198,7 +198,7 @@ let node84=new Node("Haha! you’re funny",["no"]);
 let node85=new Node("Great",["yes"]);
 let node86=new Node("i know",["you are beautiful","you're beautiful"]);
 let node87=new Node("thank you, i love you",["you're gorgeous","you are gorgeous"]);
-let node88=new Node("Hmm What’s your friend’s  name?",[]);
+//let node88=new Node("Hmm What’s your friend’s  name?",[]);
 let node89=new Node("What’s your name?",[]);
 let node90=new Node("Please help me!!!",[]);
 let node91=new Node("You’re beautiful",[]);
@@ -209,11 +209,21 @@ let node95=new Node("aah i love your name",["my name is","my name's"]);
 let node96=new Node("You're my everything",["tell me something"]);
 let node97=new Node("i can’t tell you that",["you have a girlfriend","you have girlfriend"]);
 let node98=new Node("shh that’s a secret",["who is your girlfriend","who's your girlfriend"]);
+let node99=new Node("you're so sweet");
+let node100=new Node("what's your number?");
+let node101=new Node("i adore you");
+let node102=new Node("Fdeitkum");
+let node103=new Node("aalli Fdakum");
+let node104=new Node("look at those eyes");
+let node105=new Node("wow");
+let node106=new Node("i like your smile");
+let node107=new Node("i’m so happy you’re here");
+let node108=new Node("where have you been all my life?");
 //let node99=new Node("allah hayhum",[]);
 //let node100=new Node("I'm bored",[]);
 
-randomNodes=[node1];
-randomNodes2=[node89,node88,node90,node91,node92]
+randomNodes=[node1,node17,node89,node90,node91,node92,node99,node100,node101,node102,node103,node104,node105,node106,node108];
+randomNodes2=[node89,node90,node91,node92,node99,node100,node101,node102,node103,node104,node105,node106,node108];
 
 ConnectAll();
 

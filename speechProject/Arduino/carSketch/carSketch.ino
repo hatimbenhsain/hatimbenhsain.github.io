@@ -1,17 +1,7 @@
-#include <ArduinoMqttClient.h>
-#include <WiFiNINA.h>
-#include "arduino_secrets.h"
+#include <ArduinoBLE.h>
 
-///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = SECRET_SSID;        // your network SSID
-char pass[] = SECRET_PASS;    // your network password
-
-WiFiClient wifiClient;
-MqttClient mqttClient(wifiClient);
-
-const char broker[] = "public.cloud.shiftr.io";
-int        port     = 443;
-const char topic[]  = "car_eyesOn";
+BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1214");
+BLEByteCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 
 bool eyesOn=false;
 int lampPin1=3;
@@ -25,82 +15,42 @@ void setup() {
   pinMode(lampPin1, OUTPUT);
   pinMode(lampPin2, OUTPUT);
 
-  //Initialize serial and wait for port to open:
   Serial.begin(9600);
 
-  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
-    // failed, retry
-    Serial.print(".");
-    delay(5000);
-  }
-
-  Serial.println("You're connected to the network");
-  Serial.println();
-
-  Serial.print("Attempting to connect to the MQTT broker: ");
-  Serial.println(broker);
-
-  if (!mqttClient.connect(broker, port)) {
-    Serial.print("MQTT connection failed! Error code = ");
-    Serial.println(mqttClient.connectError());
-
+  if (!BLE.begin()) {
+    Serial.println("starting BLE failed!");
     while (1);
   }
 
-  Serial.println("You're connected to the MQTT broker!");
-  Serial.println();
+  BLE.setLocalName("ButtonLED");
 
-  // set the message receive callback
-  mqttClient.onMessage(onMqttMessage);
+  BLE.setAdvertisedService(ledService);
 
-  Serial.print("Subscribing to topic: ");
-  Serial.println(topic);
-  Serial.println();
+  ledService.addCharacteristic(ledCharacteristic);
 
-  // subscribe to a topic
-  mqttClient.subscribe(topic);
+  BLE.addService(ledService);
 
-  // topics can be unsubscribed using:
-  // mqttClient.unsubscribe(topic);
+  ledCharacteristic.writeValue(0);
+
+  BLE.advertise();
+  Serial.println("Bluetooth device active, waiting for connections...");
+
 }
 
 void loop() {
-  // call poll() regularly to allow the library to receive MQTT messages and
-  // send MQTT keep alive which avoids being disconnected by the broker
-  mqttClient.poll();
+  BLE.poll();
 
-  analogWrite(lampPin1, lampIntensity);
-  analogWrite(lampPin2, lampIntensity);
-
-  if(eyesOn && lampIntensity<255){
-    lampIntensity+=lightSpeed;
-  }else if(!eyesOn && lampIntensity>0){
-    lampIntensity-=lightSpeed;
-  }
-
-}
-
-void onMqttMessage(int messageSize) {
-  // we received a message, print out the topic and contents
-  Serial.println("Received a message with topic '");
-  Serial.print(mqttClient.messageTopic());
-  Serial.print("', length ");
-  Serial.print(messageSize);
-  Serial.println(" bytes:");
-
-  // use the Stream interface to print the contents
-  char msg;
-  while (mqttClient.available()) {
-    msg=(char)mqttClient.read();
-    if(msg=='0'){
-      eyesOn=false;
-      break;
-    }else if(msg=='1'){
-      eyesOn=true;
-      break;
+  if (ledCharacteristic.written()) {
+    // update LED, either central has written to characteristic or button state has changed
+    if (ledCharacteristic.value()) {
+      Serial.println("LED on");
+      digitalWrite(lampPin1, HIGH);
+      digitalWrite(lampPin2, HIGH);
+    } else {
+      Serial.println("LED off");
+      digitalWrite(lampPin1, LOW);
+      digitalWrite(lampPin2, LOW);
     }
   }
 
-  Serial.println();
-  Serial.println();
 }
