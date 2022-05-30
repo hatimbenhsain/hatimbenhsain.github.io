@@ -4,25 +4,159 @@
   src: url("Coders-Crux.woff");
 }
 
+@font-face{
+  font-family: pixellari;
+  src: url("Pixellari.ttf");
+}
+
 h1{
-  font-family: codersCrux;
-  text-align: center;
-  font-size: 5em;
+  font-family: pixellari;
+  text-align: right;
+  font-size: 4em;
   color: white;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  width: 98%;
+  position: absolute;
+  left: 0px;
+  top: -50px;
+
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.desktopIcon{
+  position: absolute;
+  width: 160px;
+  display: block;
+  z-index: 0;
+}
+
+.iconText{
+  color: white;
+  font-family: pixellari;
+  font-size: 1.5rem;
+
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  word-wrap: break-word;
+  text-align: center;
+}
+
+#aboutIcon{
+  top: 100px;
+  left: 100px;
+}
+
+#gamesIcon{
+  top: 105px;
+  left: 280px;
+}
+
+#comicsIcon{
+  top: 103px;
+  left: 470px;
+}
+
+#musicIcon{
+  top: 100px;
+  left: 650px;
+}
+
+#cvIcon{
+  top: 300px;
+  left: 100px;
+}
+
+#artstationIcon{
+  bottom: 30px;
+  left: 850px;
+}
+
+#twitterIcon{
+  bottom: 28px;
+  left: 465px;
+}
+
+#igIcon{
+  bottom: 23px;
+  left: 650px;
+}
+
+#itchIcon{
+  bottom: 25px;
+  left: 285px;
+}
+
+#log{
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  vertical-align: bottom;
+  visibility: visible;
 }
 
 body{
-  background-color: #319f63;
-  font-family: codersCrux;
+  background-image: url('imgs/bg1.png');
+
+  font-family: pixellari;
   text-align: center;
   vertical-align: center;
-    position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  position: absolute;
+  width: 99%;
+  height: 100%;
+  top: -2%;
+  cursor: none;
+  
+  overflow: hidden;
+
+      user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+a{
+  cursor: none;
+    user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.cursorImg{
+  position: absolute;
+  text-align: center;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.dragstart{
+  pointer-events: none;
+}
+
+.iconImg{
+  width: 128px;
+    user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  image-rendering: pixelated;
 }
 
 ul{
@@ -47,3 +181,138 @@ li{
   font-size: 1em;
 }
 
+.window{
+  z-index: 100;
+  position: absolute;
+  width: 1000px;
+  background-color: white;
+  top: 100px;
+  left: 100px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  box-shadow: black 3px 3px;
+  visibility: hidden
+}
+
+#aboutWindow{
+  top: 175px;
+  left: 230px;
+}
+
+#comicsWindow{
+  width: 950px;
+  top: 95px;
+  left: 365px;
+}
+
+#gamesWindow{
+  width: 1100px;
+  visibility: visible;
+}
+
+
+.windowContent{
+  background-color: #346969;
+  border: 2px #346969;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: normal;
+  display: flex;
+}
+
+.tagSection{
+  padding: 0.8rem;
+  border-right: 3px solid white;
+  width: 225px;
+  max-width: 225px;
+  font-size: 1.25rem;
+  word-break: break-word;
+}
+
+.fileBrowser{
+  width: 100%;
+  padding: 0.3rem;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+p{
+  padding: 2rem;
+  margin: 0px;
+}
+
+.clearButton{
+  background-color: transparent;
+  font-family: inherit;
+  border: none;
+  padding: 0px;
+  cursor: none;
+}
+
+
+h4{
+  margin: 0px;
+  font-weight: normal;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.checkbox{
+  display: inline-block;
+  vertical-align: top;
+  padding-left: 0px;
+  position: relative;
+  color: #71948d;
+  cursor: none;
+}
+
+[type="checkbox"]:checked + span{
+  color: white;
+}
+
+.checkbox input{
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+
+
+.folderIcon{
+  width: 160px;
+  display: block;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.windowBanner{
+  padding: 0.3rem 0.8rem;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  color: #4f1447;
+  font-size: 2rem;
+}
+
+
+
+
+.crossImg{
+  width: 30px;
+  height: 29px;
+  vertical-align: center;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  image-rendering: pixelated;
+}
