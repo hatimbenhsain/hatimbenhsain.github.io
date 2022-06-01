@@ -2,8 +2,8 @@
 
 abtButton=document.getElementById("abtButton");
 
-gallerySources={"amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
-"kidloki.jpg","skeleguy.gif"}
+gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
+"kidloki.jpg","skeleguy.gif"]
 
 // abtButton.addEventListener("click",function(){
 // 	console.log("abt clicked");
@@ -22,6 +22,15 @@ const gamesInfo={window:gamesWindow,initLeft:gamesWindow.style.left,initTop:game
 
 var musicWindow=document.getElementById("musicWindow");
 const musicInfo={window:musicWindow,initLeft:musicWindow.style.left,initTop:musicWindow.style.top};
+
+var galleryWindow=document.getElementById("galleryWindow");
+const galleryInfo={window:galleryWindow,initLeft:galleryWindow.style.left,initTop:galleryWindow.style.top};
+
+var infos=[aboutInfo,comicsInfo,gamesInfo,musicInfo,galleryInfo];
+for(var i=0;i<infos.length;i++){
+	infos[i].initRight=infos[i].window.style.right;
+	infos[i].initBottom=infos[i].window.style.bottom;
+}
 
 const cursorNormal = document.getElementById('cursorNormal');
 const cursorHover = document.getElementById('cursorHover');
@@ -59,8 +68,7 @@ const moveCursor = (e)=> {
 	//log.innerHTML=log.innerHTML+"<br>moving";
 	if(draggedElement!=-1 && mouseClicked){
 		if(crossClicked==-1){
-			if(!draggedElement.classList.contains("folderIcon") && !draggedElement.classList.contains("checkbox") &&
-				!draggedElement.classList.contains("clearButton")){
+			if(draggedElement.classList.contains("desktopIcon") || draggedElement.classList.contains("window")){
 				draggedElement.style.left=mouseX+disX+"px";
 				draggedElement.style.top=mouseY+disY+"px";
 				draggedElement.style.bottom="auto";
@@ -211,8 +219,20 @@ clickableStuff=clickableStuff.concat(labels);
 
 clickableStuff=clickableStuff.concat(clearButtons);
 
+var buttonImgs=Array.from(document.getElementsByClassName("buttonImg"));
+clickableStuff=clickableStuff.concat(buttonImgs);
+clickableStuff.push(document.getElementById("seekSlider"));
+
+
 for(var i=0;i<windows.length;i++){
 	windows[i]=windows[i].parentElement;
+	windows[i].addEventListener("click",function(e){
+		var w=e.target;
+		while(!w.classList.contains("window") && w.parentElement!=null){
+			w=w.parentElement;
+		}
+		putOnTop(w,windows,100);
+	})
 }
 
 var log=document.getElementById("log");
@@ -233,7 +253,7 @@ for(var i=0;i<crosses.length;i++){
 				w=w.parentElement;
 			}
 			w.style.visibility="hidden";
-			if(w.id="musicWindow"){
+			if(w.id=="musicWindow"){
 				stopMusic();
 			}
 		}
@@ -268,7 +288,11 @@ for(var i=0;i<clickableStuff.length;i++){
 	clickableStuff[i].addEventListener('mousedown',function(e){
 		draggedElement=e.target.parentElement;
 		
-		while(!draggedElement.classList.contains("clearButton") &&
+
+
+		while(!draggedElement.classList.contains("buttonImg") &&
+			!draggedElement.classList.contains("windowContent") &&
+			!draggedElement.classList.contains("clearButton") &&
 			!draggedElement.classList.contains("checkbox") && !draggedElement.classList.contains("folderIcon") && 
 			!draggedElement.classList.contains("desktopIcon") && 
 			!draggedElement.classList.contains("window") && draggedElement.parentElement!=null){
@@ -282,11 +306,15 @@ for(var i=0;i<clickableStuff.length;i++){
 		const mouseX = e.clientX-64;
 		disX=draggedElement.offsetLeft-mouseX;
 		disY=draggedElement.offsetTop-mouseY;
+
+		console.log(draggedElement);
 	})
 
 	clickableStuff[i].addEventListener('mouseup',function(e){
 		var elem=e.target;
-		if(!elem.classList.contains("checkbox") && !elem.classList.contains("clearButton")){
+		if(!elem.classList.contains("checkbox") && !elem.classList.contains("clearButton") &&
+			!draggedElement.classList.contains("buttonImg") &&
+			!draggedElement.classList.id!="seekSlider"){
 			console.log(elem);
 			var elem=elem.parentElement;
 			while(!elem.classList.contains("desktopIcon") && !elem.classList.contains("window") && elem.parentElement!=null){
@@ -295,25 +323,32 @@ for(var i=0;i<clickableStuff.length;i++){
 			if(!mouseMoved && elem==draggedElement){
 				if(elem.classList.contains("desktopIcon")){
 					var win=null;
+					var info=null;
 					switch(elem.id){
 						case "aboutIcon":
-							win=aboutWindow;
+							info=aboutInfo;
 							break;
 						case "comicsIcon":
-							win=comicsWindow;
+							info=comicsInfo;
 							break;
 						case "gamesIcon":
-							win=gamesWindow;
+							info=gamesInfo;
 							break;
 						case "musicIcon":
-							win=musicWindow;
+							info=musicInfo;
 							loadMusicInfo();
 							break;
+						case "galleryIcon":
+							info=galleryInfo;
+							break;
 					}
-					if(win!=null){
+					if(info!=null){
+						win=info.window;
 						win.style.visibility="visible";
-						win.style.top=aboutInfo.initTop;
-						win.style.left=aboutInfo.initLeft;
+						win.style.top=info.initTop;
+						win.style.left=info.initLeft;
+						win.style.bottom=info.initBottom;
+						win.style.right=info.initRight;
 						putOnTop(win,windows,100);
 					}
 				}
@@ -333,7 +368,23 @@ function putOnTop(div, divs,minZ){
 	}
 }
 
+var currentImg=0;
 
+var galleryNextButton=document.getElementById("galleryNextButton");
+var galleryPrevButton=document.getElementById("galleryPrevButton");
+var galleryImg=document.getElementById("galleryImage");
+
+galleryNextButton.addEventListener("click",function(){
+	currentImg++;
+	currentImg=((currentImg%gallerySources.length)+gallerySources.length)%gallerySources.length;
+	galleryImg.src="imgs/gallery/"+gallerySources[currentImg];
+})
+
+galleryPrevButton.addEventListener("click",function(){
+	currentImg--;
+	currentImg=((currentImg%gallerySources.length)+gallerySources.length)%gallerySources.length;
+	galleryImg.src="imgs/gallery/"+gallerySources[currentImg];
+})
 
 var songs=Array.from(document.getElementsByClassName("song"));
 var currentSong=0;
