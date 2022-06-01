@@ -11,10 +11,9 @@
 
 h1{
   font-family: pixellari;
-  text-align: right;
+  text-align: left;
   font-size: 4em;
   color: white;
-  width: 98%;
   position: absolute;
   left: 0px;
   top: -50px;
@@ -23,6 +22,21 @@ h1{
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+
+  opacity: 10%;
+  width: 3000px;
+}
+
+.h11{
+  left: 10px;
+}
+
+.h12{
+  left: 110px;
+}
+
+.h13{
+  left: 110px;
 }
 
 .desktopIcon{
@@ -47,48 +61,83 @@ h1{
 }
 
 #aboutIcon{
-  top: 100px;
-  left: 100px;
+  top: 44px;
+  left: 37px;
 }
 
 #gamesIcon{
-  top: 105px;
-  left: 280px;
+  top: 53px;
+  left: 216px;
 }
 
 #comicsIcon{
-  top: 103px;
-  left: 470px;
+  top: 57px;
+  left: 405px;
 }
 
 #musicIcon{
-  top: 100px;
-  left: 650px;
+  top: 48px;
+  left: 578px;
+}
+
+#galleryIcon{
+  top: 238px;
+  left: 228px;
+}
+
+#internetIcon{
+  top: 240px;
+  left: 403px;
+}
+
+#trashIcon{
+  top: 47px;
+  right: 40px;
 }
 
 #cvIcon{
-  top: 300px;
-  left: 100px;
+  top: 237px;
+  left: 38px;
 }
 
 #artstationIcon{
-  bottom: 30px;
-  left: 850px;
+  bottom:  202px;
+  right: 420px;
 }
 
 #twitterIcon{
-  bottom: 28px;
-  left: 465px;
+  bottom: 36px;
+  right: 610px;
 }
 
 #igIcon{
-  bottom: 23px;
-  left: 650px;
+  right:  422px;
+  bottom: 32px;
 }
 
 #itchIcon{
-  bottom: 25px;
-  left: 285px;
+  bottom: 35px;
+  right: 790px;
+}
+
+#githubIcon{
+  bottom: 205px;
+  right: 40px;
+}
+
+#paypalIcon{
+  bottom: 32px;
+  right: 42px;
+}
+
+#ko-fiIcon{
+  bottom: 35px;
+  right: 230px;
+}
+
+#soundcloudIcon{
+  bottom: 200px;
+  right: 230px;
 }
 
 #log{
@@ -96,22 +145,37 @@ h1{
   bottom: 50%;
   left: 50%;
   vertical-align: bottom;
-  visibility: visible;
+  visibility: hidden;
+}
+
+html, body { 
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow: auto;
 }
 
 body{
   background-image: url('imgs/bg1.png');
 
+  background-repeat: no-repeat;
+  background-position: center center; 
+  background-attachment: fixed;
+  background-size: cover;
+
   font-family: pixellari;
   text-align: center;
   vertical-align: center;
   position: absolute;
-  width: 99%;
+  width: 100%;
   height: 100%;
-  top: -2%;
   cursor: none;
   
   overflow: hidden;
+
+  margin: 0px;
+  padding: 0px;
 
       user-drag: none;
   -webkit-user-drag: none;
@@ -196,6 +260,13 @@ li{
   visibility: hidden
 }
 
+#musicWindow{
+  width: 350px;
+  right: 450px;
+  top: 50px;
+  left: auto;
+}
+
 #aboutWindow{
   top: 175px;
   left: 230px;
@@ -209,7 +280,7 @@ li{
 
 #gamesWindow{
   width: 1100px;
-  visibility: visible;
+  visibility: hidden;
 }
 
 
@@ -221,6 +292,66 @@ li{
   font-weight: normal;
   display: flex;
 }
+
+.musicPlayer{
+  height: 400px;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+#albumCover{
+  width: 250px;
+  height: 250px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  box-shadow: black 3px 3px;
+}
+
+h2{
+  padding: 0;
+  margin: 0;
+  font-weight: normal;
+}
+
+.musicButton{
+  border: 0;
+  padding: 0px 0px;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  vertical-align: center;
+  cursor: none;
+}
+
+.musicButtonDiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#playButton{
+  width: 48px;
+  height: 48px;
+}
+
+#muteButton{
+  width: 32px;
+  height: 32px;
+  margin-left: 5px;
+}
+
+#prevButton{
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.buttonImg{
+  width: 100%;
+  object-fit: contain;
+}
+
 
 .tagSection{
   padding: 0.8rem;
@@ -301,6 +432,12 @@ h4{
   font-size: 2rem;
 }
 
+.bannerText{
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 
 
@@ -315,4 +452,117 @@ h4{
   -webkit-user-select: none;
   -ms-user-select: none;
   image-rendering: pixelated;
+}
+
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 60%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+  width: 60%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent; 
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 1.3px;
+  border: 3px solid white;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 1.3px;
+  border: 3px solid white;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: transparent;
+  border-radius: 1.3px;
+  border: 3px solid white;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: transparent;
+}
+input[type=range]::-ms-fill-upper {
+  background: transparent;
+  border-radius: 1.3px;
+  border: 3px solid white;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 6px;
+  border-radius: 0px;
+  background: white;
+  outline:  white solid 1px;
+}
+
+input[type=range]::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 6px;
+  border-radius: 0px;
+  background: white;
+  outline:  white solid 1px;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 6px;
+  border-radius: 0px;
+  background: white;
+  outline:  white solid 1px;
+}
+
+audio{
+  preload: metadata;
+}
+
+#currentTime{
+  width: 50px;
+  float: left;
+  text-align: left;
+  vertical-align: middle;
+  margin-top: 4px;
+  margin-right: 4px;
 }

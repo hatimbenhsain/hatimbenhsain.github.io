@@ -1,5 +1,9 @@
 
+
 abtButton=document.getElementById("abtButton");
+
+gallerySources={"amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
+"kidloki.jpg","skeleguy.gif"}
 
 // abtButton.addEventListener("click",function(){
 // 	console.log("abt clicked");
@@ -15,6 +19,9 @@ const comicsInfo={window:comicsWindow,initLeft:comicsWindow.style.left,initTop:c
 
 var gamesWindow=document.getElementById("gamesWindow");
 const gamesInfo={window:gamesWindow,initLeft:gamesWindow.style.left,initTop:gamesWindow.style.top};
+
+var musicWindow=document.getElementById("musicWindow");
+const musicInfo={window:musicWindow,initLeft:musicWindow.style.left,initTop:musicWindow.style.top};
 
 const cursorNormal = document.getElementById('cursorNormal');
 const cursorHover = document.getElementById('cursorHover');
@@ -33,6 +40,8 @@ cursorClick.style.visibility="hidden";
 var draggedElement=-1;
 var disX=0;
 var disY=0;
+
+console.log(window.screen.height);
 
 const moveCursor = (e)=> {
 	mouseMoved=true;
@@ -54,6 +63,8 @@ const moveCursor = (e)=> {
 				!draggedElement.classList.contains("clearButton")){
 				draggedElement.style.left=mouseX+disX+"px";
 				draggedElement.style.top=mouseY+disY+"px";
+				draggedElement.style.bottom="auto";
+				draggedElement.style.right="auto";
 			}
 			//console.log("moving");
 			//log.innerHTML=log.innerHTML+"<br>moving "+draggedElement.className;
@@ -222,6 +233,9 @@ for(var i=0;i<crosses.length;i++){
 				w=w.parentElement;
 			}
 			w.style.visibility="hidden";
+			if(w.id="musicWindow"){
+				stopMusic();
+			}
 		}
 		crossClicked=-1;
 	});
@@ -291,6 +305,10 @@ for(var i=0;i<clickableStuff.length;i++){
 						case "gamesIcon":
 							win=gamesWindow;
 							break;
+						case "musicIcon":
+							win=musicWindow;
+							loadMusicInfo();
+							break;
 					}
 					if(win!=null){
 						win.style.visibility="visible";
@@ -314,3 +332,129 @@ function putOnTop(div, divs,minZ){
 		//console.log(divs[i]+" "+i);
 	}
 }
+
+
+
+var songs=Array.from(document.getElementsByClassName("song"));
+var currentSong=0;
+const seekSlider = document.getElementById('seekSlider');
+
+const currentTimeContainer = document.getElementById('currentTime');
+
+var musicPlaying=false;
+var playButton=document.getElementById("playButton");
+var muteButton=document.getElementById("muteButton");
+var nextButton=document.getElementById("nextButton");
+var prevButton=document.getElementById("prevButton");
+var muted=false;
+
+function loadMusicInfo(){
+	musicWindow.getElementsByClassName("bannerText")[0].innerHTML=songs[currentSong].id;
+	setSliderMax();
+	songs[currentSong].addEventListener('progress', displayBufferedAmount);
+	songs[currentSong].addEventListener('timeupdate', () => {
+		seekSlider.value = Math.floor(songs[currentSong].currentTime);
+		currentTimeContainer.textContent = calculateTime(seekSlider.value);
+	});
+	songs[currentSong].addEventListener("ended", nextSong);
+	document.getElementById("albumCover").src=songs[currentSong].getElementsByClassName("albumCover")[0].src;
+}
+
+playButton.addEventListener("click",function(e){
+	console.log(e.target);
+	var img=e.target;
+	if(img.tagName!="IMG"){
+		img=img.getElementsByTagName("IMG")[0];
+	}
+	if(!musicPlaying){
+		playMusic();		
+	}else{
+		pauseMusic();
+	}
+});
+
+nextButton.addEventListener("click",nextSong);
+
+function nextSong(){
+	var playing=musicPlaying;
+	stopMusic();
+	currentSong++;
+	currentSong=currentSong%songs.length;
+	loadMusicInfo();
+	if(playing){
+		playMusic();
+	}
+}
+
+function prevSong(){
+	var playing=musicPlaying;
+	stopMusic();
+	currentSong--;
+	currentSong=((currentSong%songs.length)+songs.length)%songs.length;
+	loadMusicInfo();
+	if(playing){
+		playMusic();
+	}
+}
+
+prevButton.addEventListener("click",function(e){
+	if(songs[currentSong].currentTime>1){
+		songs[currentSong].currentTime=0;
+	}else{
+		prevSong();
+	}
+});
+
+function playMusic(){
+	document.getElementById("playButton").getElementsByTagName("IMG")[0].src="imgs/pauseButton.png";
+	musicPlaying=true;
+	songs[currentSong].play();
+}
+
+function pauseMusic(){
+	document.getElementById("playButton").getElementsByTagName("IMG")[0].src="imgs/playButton.png";
+	musicPlaying=false;
+	songs[currentSong].pause();
+}
+
+function stopMusic(){
+	pauseMusic();
+	songs[currentSong].currentTime=0;
+}
+
+muteButton.addEventListener("click",function(e){
+	console.log(e.target);
+	var img=e.target;
+	if(img.tagName!="IMG"){
+		img=img.getElementsByTagName("IMG")[0];
+	}
+	muted=!muted;
+	songs[currentSong].muted=muted;
+	if(muted){
+		img.style.opacity="10%";
+	}else{
+		img.style.opacity="100%";
+	}
+});
+
+
+function displayBufferedAmount(){
+    const bufferedAmount = Math.floor(songs[currentSong].buffered.end(songs[currentSong].buffered.length - 1));
+    audioPlayerContainer.style.setProperty('--buffered-width', `${(bufferedAmount/seekSlider.max) * 100}%`);
+}
+
+function setSliderMax(){
+	seekSlider.max=Math.floor(songs[currentSong].duration);
+}
+
+function calculateTime(secs){
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${minutes}:${returnedSeconds}`;
+}
+
+seekSlider.addEventListener('input', () => {
+  currentTimeContainer.textContent = calculateTime(seekSlider.value);
+  songs[currentSong].currentTime = seekSlider.value;
+});
