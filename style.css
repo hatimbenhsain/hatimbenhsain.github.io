@@ -44,6 +44,7 @@ h1{
   width: 160px;
   display: block;
   z-index: 0;
+  transition: 0.1s;
 }
 
 .iconText{
@@ -93,6 +94,10 @@ h1{
 #trashIcon{
   top: 47px;
   right: 40px;
+}
+
+.trashOver{
+  transform: scale(1.1);
 }
 
 #cvIcon{
@@ -223,6 +228,28 @@ a{
   image-rendering: pixelated;
 }
 
+.desktopIcon:hover .iconImg{
+  transform: scale(1.05);
+}
+
+
+.desktopIcon:hover .iconImg.clicked{
+  transform: scale(0.9);
+}
+
+.folderIcon:hover .iconImg{
+  transform: scale(1.05);
+}
+
+
+.folderIcon:hover .iconImg.clicked{
+  transform: scale(0.9);
+}
+
+.window.clicked{
+  transform: scale(1.01);
+}
+
 ul{
   text-align: center;
   list-style-type: none;
@@ -257,11 +284,69 @@ li{
   flex-direction: column;
   border: 1px solid white;
   box-shadow: black 3px 3px;
-  visibility: hidden
+  visibility: hidden;
+}
+
+.window.windowOpened{
+  transition: 0.1s;
+  animation-name: openingAnim;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+}
+
+.window.windowClosed{
+  animation-name: closingAnim;
+  animation-duration: 0.1s;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+}
+
+@keyframes openingAnim{
+  from{
+    transform: scale(1,0);
+
+  }
+
+  30%{
+    transform: scale(1,1.1);
+  }
+
+  70%{
+    transform: scale(1,0.95);
+  }
+
+  to{
+    transform: scale(1,1);
+  }
+}
+
+@keyframes closingAnim{
+  from{
+    transform: scale(1,1);
+
+  }
+
+  to{
+    transform: scale(1,0);
+    visibility: hidden;
+  }
+}
+
+.openingAnim {
+  -webkit-animation-name: openingAnim;
+  animation-name: openingAnim;
+}
+
+.closingAnim {
+  -webkit-animation-name: closingAnim;
+  animation-name: closingAnim;
 }
 
 #galleryWindow{
-  visibility: visible;
+  visibility: hidden;
   left: 0; 
   right: 0; 
   margin-left: auto; 
@@ -456,6 +541,10 @@ h4{
   position: relative;
   color: #71948d;
   cursor: none;
+}
+
+[type="checkbox"]:hover + span{
+  color: #B8CAC6;
 }
 
 [type="checkbox"]:checked + span{

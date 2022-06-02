@@ -1,14 +1,26 @@
-
-
 abtButton=document.getElementById("abtButton");
 
-gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
-"kidloki.jpg","skeleguy.gif"]
+trashIcon=document.getElementById("trashIcon");
+var trash=[];
 
-// abtButton.addEventListener("click",function(){
-// 	console.log("abt clicked");
-// 	history.pushState({page:1},"about","about.html");
-// });
+gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
+"kidloki.jpg","skeleguy.gif"];
+
+var clickableStuff=Array.from(document.getElementsByClassName("desktopIcon"));
+var desktopIcons=[];
+
+clickableStuff.forEach(function(e){
+	desktopIcons.push(e);
+});
+
+var desktopIconInfo=[];
+
+for(var i=0;i<desktopIcons.length;i++){
+	compStyle=window.getComputedStyle(desktopIcons[i]);
+	var info={id:desktopIcons[i].id,initLeft:compStyle.getPropertyValue('left'),initTop:compStyle.getPropertyValue('top'),
+		initRight:compStyle.getPropertyValue('right'),initBottom:compStyle.getPropertyValue('bottom')};
+	desktopIconInfo.push(info);
+}
 
 var aboutWindow=document.getElementById("aboutWindow");
 const aboutInfo={window:aboutWindow,initLeft:aboutWindow.style.left,initTop:aboutWindow.style.top};
@@ -74,6 +86,14 @@ const moveCursor = (e)=> {
 				draggedElement.style.bottom="auto";
 				draggedElement.style.right="auto";
 			}
+
+			if(draggedElement.classList.contains("desktopIcon")){
+				if(collide(trashIcon.getElementsByClassName("iconImg")[0],draggedElement) && draggedElement.id!="trashIcon"){
+					trashIcon.getElementsByClassName("iconImg")[0].classList.add("trashOver");
+				}else{
+					trashIcon.getElementsByClassName("iconImg")[0].classList.remove("trashOver");
+				}
+			}
 			//console.log("moving");
 			//log.innerHTML=log.innerHTML+"<br>moving "+draggedElement.className;
 			var children=draggedElement.children;
@@ -113,6 +133,12 @@ window.addEventListener('mousedown',function(){
 })
 
 window.addEventListener('mouseup',function(){
+	trashIcon.getElementsByClassName("iconImg")[0].classList.remove("trashOver");
+	var clicked=document.getElementsByClassName("clicked");
+	for(var i=0;i<clicked.length;i++){
+		clicked[i].classList.remove("clicked");
+	}
+
 	var k = document.querySelectorAll(".dragstart")
     for(var i=0; i < k.length;i++){
         k[0].classList.remove("dragstart")
@@ -201,12 +227,7 @@ for(var i=0;i<clearButtons.length;i++){
 	clearButtons[i].addEventListener("click",clearTags);
 }
 
-var clickableStuff=Array.from(document.getElementsByClassName("desktopIcon"));
-var desktopIcons=[];
 
-clickableStuff.forEach(function(e){
-	desktopIcons.push(e);
-})
 
 var windows=Array.from(document.getElementsByClassName("windowBanner"));
 
@@ -252,13 +273,30 @@ for(var i=0;i<crosses.length;i++){
 			while(!w.classList.contains("window") || w.classList.contains("windowBanner")){
 				w=w.parentElement;
 			}
-			w.style.visibility="hidden";
+			//w.style.visibility="hidden";
+			w.classList.remove("windowOpened");
+			w.classList.add("windowClosed");
+			setTimeout(replaceWindow,300,w);
 			if(w.id=="musicWindow"){
 				stopMusic();
 			}
 		}
 		crossClicked=-1;
 	});
+}
+
+function replaceWindow(w){
+	for(var i=0;i<infos.length;i++){
+		if(infos[i].window==w){
+			w.style.transition="0s";
+			w.style.top=infos[i].initTop;
+			w.style.left=infos[i].initLeft;
+			w.style.bottom=infos[i].initBottom;
+			w.style.right=infos[i].initRight;
+			w.style.transition="0.1s";
+			break;
+		}
+	}
 }
 
 for(var i=0;i<clickableStuff.length;i++){
@@ -299,15 +337,23 @@ for(var i=0;i<clickableStuff.length;i++){
 			draggedElement=draggedElement.parentElement;
 		}
 
-		if(draggedElement.classList.contains("desktopIcon")) putOnTop(draggedElement,desktopIcons,0);
-		else if(draggedElement.classList.contains("window")) putOnTop(draggedElement,windows,100);
-
+		if(draggedElement.classList.contains("desktopIcon")){
+			putOnTop(draggedElement,desktopIcons,0);
+			draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
+		}
+		else if(draggedElement.classList.contains("window")){
+		 putOnTop(draggedElement,windows,100);
+		 draggedElement.classList.add("clicked");
+		 draggedElement.classList.remove("windowOpened");
+		}else if(draggedElement.classList.contains("folderIcon")){
+			draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
+		}
 		const mouseY = e.clientY;
 		const mouseX = e.clientX-64;
 		disX=draggedElement.offsetLeft-mouseX;
 		disY=draggedElement.offsetTop-mouseY;
 
-		console.log(draggedElement);
+		//console.log(draggedElement);
 	})
 
 	clickableStuff[i].addEventListener('mouseup',function(e){
@@ -315,12 +361,13 @@ for(var i=0;i<clickableStuff.length;i++){
 		if(!elem.classList.contains("checkbox") && !elem.classList.contains("clearButton") &&
 			!draggedElement.classList.contains("buttonImg") &&
 			!draggedElement.classList.id!="seekSlider"){
-			console.log(elem);
-			var elem=elem.parentElement;
+			//console.log(elem);
+			var elem=elem;
 			while(!elem.classList.contains("desktopIcon") && !elem.classList.contains("window") && elem.parentElement!=null){
 				elem=elem.parentElement;
 			}
 			if(!mouseMoved && elem==draggedElement){
+				console.log(draggedElement.getElementsByClassName("iconImg")[0]);
 				if(elem.classList.contains("desktopIcon")){
 					var win=null;
 					var info=null;
@@ -349,8 +396,17 @@ for(var i=0;i<clickableStuff.length;i++){
 						win.style.left=info.initLeft;
 						win.style.bottom=info.initBottom;
 						win.style.right=info.initRight;
+						win.classList.add("windowOpened");
+						win.classList.remove("windowClosed");
 						putOnTop(win,windows,100);
 					}
+					if(elem.id=="trashIcon"){
+						takeTrashOut();
+					}
+				}
+			}else if(elem==draggedElement && elem.classList.contains("desktopIcon")){
+				if(collide(trashIcon.getElementsByClassName("iconImg")[0],elem) && elem.id!="trashIcon"){
+					putInTrash(elem);
 				}
 			}
 		}
@@ -509,3 +565,50 @@ seekSlider.addEventListener('input', () => {
   currentTimeContainer.textContent = calculateTime(seekSlider.value);
   songs[currentSong].currentTime = seekSlider.value;
 });
+
+function collide(el1, el2){
+	var rect1 = el1.getBoundingClientRect();
+	var rect2 = el2.getBoundingClientRect();
+
+	return !(rect1.top > rect2.bottom || rect1.right < rect2.left || rect1.bottom < rect2.top || rect1.left > rect2.right);
+}
+
+function putInTrash(elem){
+	trash.push(elem);
+	elem.style.display="none";
+	console.log("put in trash");
+}
+
+function takeTrashOut(){
+	console.log("take trash out");
+	for(var i=0;i<trash.length;i++){
+		trash[i].style.display="block";
+		putOnTop(trash[i],desktopIcons,0);;
+		moveBack(trash[i])
+	}
+	trash=[];
+}
+
+function moveBack(elem){
+	compStyle=window.getComputedStyle(trashIcon);
+	for(var i=0;i<desktopIconInfo.length;i++){
+		if(elem.id==desktopIconInfo[i].id){
+			elem.style.left=compStyle.getPropertyValue("left");
+			elem.style.top=compStyle.getPropertyValue("top");
+			elem.style.transition="0.3s";
+			//elem.style.transitionTimingFunction = 'ease-out';
+			setTimeout(moveTo, 10,elem,desktopIconInfo[i].initLeft,desktopIconInfo[i].initTop);
+			setTimeout(removeTransition, 310,elem);
+			break;
+		}
+	}
+}
+
+function moveTo(elem,left,top){
+	elem.style.left=left;
+	elem.style.top=top;
+}
+
+function removeTransition(elem){
+	elem.style.transition="0.1s";
+}
