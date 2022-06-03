@@ -749,8 +749,70 @@ audio{
     display: none;
   }
 
+
+
+  .windowIcons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 1rem;
+  }
+
+  .socialIcons{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+    align-items: flex-end;
+    align-content: flex-end;
+    padding: 1rem;
+    justify-content: flex-end;
+  }
+
+  .desktopIcon{
+    width: initial;
+    display: block;
+    position: initial;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+
+
+  #trashIcon{
+    display: none;
+  }
+
+  #gamesWindow .windowContent .fileBrowser{
+    justify-content: space-evenly;
+  }
+
+}
+
+@media (max-device-width: 640px) and (orientation: portrait){
   html{
     font-size: 18px;
+  }
+
+  .window, #aboutWindow, #comicsWindow, #musicWindow, #gamesWindow, #galleryWindow{
+    width: 92vw;
+    position: fixed;
+    left: 4vw;
+    top: 4vw;
+    max-height: 100%;
+  }
+
+  .desktopIcon .iconImg{
+    width: 20vw;
+  }
+  .desktopIcon{
+    margin-top: 2rem;
+  }
+
+  .socialIcons{
+    bottom: 0rem;
   }
 
   #albumCover{
@@ -771,8 +833,8 @@ audio{
   #playButtonDiv{
     margin-bottom: 5vw;
   }
-  
-  #playButton{
+
+    #playButton{
     width: 10vw;
     height: 10vw;
   }
@@ -786,57 +848,96 @@ audio{
     height: 6vw;
   }
 
-  .windowIcons{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    align-content: flex-start;
-    width: 100%;
-    padding: 1rem;
+}
+
+@media (max-device-height: 640px) and (orientation: landscape){
+  html{
+  font-size: 14px;
   }
 
-  .socialIcons{
-    position: absolute;
-    bottom: 2rem;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    align-content: flex-end;
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .desktopIcon{
-    width: initial;
-    display: block;
-    position: initial;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: 2rem;
+  .window, #aboutWindow, #comicsWindow, #musicWindow, #gamesWindow, #galleryWindow{
+    width: 96vw;
+    position: fixed;
+    left: 4vh;
+    top: 4vh;
+    max-height: 96%;
+    max-width: initial;
+    margin: initial;
   }
 
   .desktopIcon .iconImg{
-    width: 20vw;
+    width: 20vh;
   }
 
-  #trashIcon{
-    display: none;
+  .folderIcon .iconImg{
+    width: 20vh;
   }
 
-  #gamesWindow .windowContent .fileBrowser{
-    justify-content: space-evenly;
+  .tagSection{
+    font-size: 1rem;
+    line-height: 1.1rem;
   }
 
-}
+  .fileBrowser{
+    min-height: initial;
+  }
 
-@media (max-device-width: 640px) and (orientation: portrait){
-  .window, #aboutWindow, #comicsWindow, #musicWindow, #gamesWindow, #galleryWindow{
-    width: 92vw;
-    position: fixed;
-    left: 4vw;
-    top: 4vw;
+  .socialIcons{
+    bottom: 0rem;
+  }
+
+  #galleryImage{
+    padding-top: 0;
+    padding-bottom: 0;
     max-height: 100%;
   }
+
+  .galleryContent{
+    max-height: 85vh;
+  }
+
+  #albumCover{
+    width: 70vh;
+    height: 70vh;
+    margin-top: 7vh;
+    margin-bottom: 7vh;
+    margin-left: 7vh;
+    margin-right: 7vh;
+  }
+
+  .musicPlayer{
+    display: flex;
+  }
+
+  input[type=range] {
+    width: 75%;
+  }
+
+  .musicButtons{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    padding-top: 10vh;
+  }
+
+  #playButton{
+    width: 10vh;
+    height: 10vh;
+  }
+
+  #prevButton{
+    width: 6vh;
+    height: 6vh;
+  }
+  #nextButton{
+    width: 6vh;
+    height: 6vh;
+  }
+
+  .fileBrowser{
+    padding-bottom: 10vh;
+  }
+
 }
