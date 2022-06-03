@@ -13,7 +13,7 @@ body{
   font-size: 16px;
 }
 
-@media screen and (min-width:768px){
+/*@media screen and (min-width:768px){
     font-size:16px;
 }
 
@@ -23,7 +23,7 @@ body{
 
 @media screen and (min-width:1600px){
     font-size:20px;
-}
+}*/
 
 h1{
   font-family: pixellari;
@@ -75,6 +75,14 @@ h1{
 
   word-wrap: break-word;
   text-align: center;
+  width: 120%;
+  left: -10%;
+  position: relative;
+}
+
+.folderIcon .iconText{
+  width: 100%;
+  left: 0%;
 }
 
 #aboutIcon{
@@ -420,7 +428,6 @@ li{
 }
 
 .musicPlayer{
-  height: 400px;
   text-align: center;
   width: 100%;
   display: block;
@@ -483,6 +490,7 @@ h2{
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 5px;
 }
 
 #playButton{
@@ -525,7 +533,7 @@ h2{
 .fileBrowser{
   width: 100%;
   padding: 0.3rem;
-  height: 500px;
+  min-height: 500px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -739,6 +747,86 @@ audio{
 
   .cursorImg{
     display: none;
+  }
+
+  html{
+    font-size: 18px;
+  }
+
+  #albumCover{
+    width: 70vw;
+    height: 70vw;
+    margin-top: 7vw;
+    margin-bottom: 7vw;
+  }
+
+  input[type=range] {
+    width: 80%;
+  }
+
+  .musicButtonDiv{
+    margin-bottom: 3vw;
+  }
+
+  #playButtonDiv{
+    margin-bottom: 5vw;
+  }
+  
+  #playButton{
+    width: 10vw;
+    height: 10vw;
+  }
+
+  #prevButton{
+    width: 6vw;
+    height: 6vw;
+  }
+  #nextButton{
+    width: 6vw;
+    height: 6vw;
+  }
+
+  .windowIcons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .socialIcons{
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    align-content: flex-end;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .desktopIcon{
+    width: initial;
+    display: block;
+    position: initial;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 2rem;
+  }
+
+  .desktopIcon .iconImg{
+    width: 20vw;
+  }
+
+  #trashIcon{
+    display: none;
+  }
+
+  #gamesWindow .windowContent .fileBrowser{
+    justify-content: space-evenly;
   }
 
 }
