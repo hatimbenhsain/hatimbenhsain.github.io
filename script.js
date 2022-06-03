@@ -9,6 +9,11 @@ gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPai
 var clickableStuff=Array.from(document.getElementsByClassName("desktopIcon"));
 var desktopIcons=[];
 
+function mobileMode(){
+	return(window.matchMedia("(max-device-width: 640px) and (orientation: portrait)").matches ||
+		window.matchMedia("(max-device-height: 640px) and (orientation: landscape)".matches));
+}
+
 clickableStuff.forEach(function(e){
 	desktopIcons.push(e);
 });
@@ -300,6 +305,12 @@ function replaceWindow(w){
 }
 
 for(var i=0;i<clickableStuff.length;i++){
+	clickableStuff[i].addEventListener('mouseenter',function(){
+		var snd=document.getElementById("hoverSound");
+		snd.currentTime=0;
+		//snd.play();
+	})
+
 	clickableStuff[i].addEventListener('mouseleave',function(){
 		//console.log("mouse out");
 		log.innerHTML=log.innerHTML+"<br>mouse out";
@@ -392,10 +403,13 @@ for(var i=0;i<clickableStuff.length;i++){
 					if(info!=null){
 						win=info.window;
 						win.style.visibility="visible";
-						win.style.top=info.initTop;
-						win.style.left=info.initLeft;
-						win.style.bottom=info.initBottom;
-						win.style.right=info.initRight;
+						console.log(mobileMode());
+						if(!mobileMode()){
+							win.style.top=info.initTop;
+							win.style.left=info.initLeft;
+							win.style.bottom=info.initBottom;
+							win.style.right=info.initRight;
+						}
 						win.classList.add("windowOpened");
 						win.classList.remove("windowClosed");
 						putOnTop(win,windows,100);
