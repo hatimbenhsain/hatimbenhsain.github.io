@@ -11,7 +11,7 @@ var desktopIcons=[];
 
 function mobileMode(){
 	return(window.matchMedia("(max-device-width: 640px) and (orientation: portrait)").matches ||
-		window.matchMedia("(max-device-height: 640px) and (orientation: landscape)".matches));
+		window.matchMedia("(max-device-height: 640px) and (orientation: landscape)").matches);
 }
 
 clickableStuff.forEach(function(e){
@@ -129,6 +129,10 @@ window.addEventListener('mousemove', moveCursor)
 
 window.addEventListener('mousedown',function(){
 	mouseMoved=false;
+	if(!mobileMode()){
+		clickSnd1.currentTime=0;
+		clickSnd1.play();
+	}
 	if(mouseHovering){
 		cursorNormal.style.visibility="hidden";
 		cursorHover.style.visibility="hidden";
@@ -138,6 +142,10 @@ window.addEventListener('mousedown',function(){
 })
 
 window.addEventListener('mouseup',function(){
+	if(!mobileMode()){
+		clickSnd2.currentTime=0;
+		clickSnd2.play();
+	}
 	trashIcon.getElementsByClassName("iconImg")[0].classList.remove("trashOver");
 	var clicked=document.getElementsByClassName("clicked");
 	for(var i=0;i<clicked.length;i++){
@@ -304,11 +312,32 @@ function replaceWindow(w){
 	}
 }
 
+var clickSnd=document.getElementById("clickSound");
+var clickSnd1=document.getElementById("clickSound1");
+var clickSnd2=document.getElementById("clickSound2");
+
+var hoverSnd=document.getElementById("hoverSound");
+
+
 for(var i=0;i<clickableStuff.length;i++){
-	clickableStuff[i].addEventListener('mouseenter',function(){
-		var snd=document.getElementById("hoverSound");
-		snd.currentTime=0;
-		//snd.play();
+	clickableStuff[i].addEventListener('mouseenter',function(e){
+		elem=e.target;
+		
+
+
+		while(!elem.classList.contains("folderIcon") && !elem.classList.contains("desktopIcon")
+		 && elem.parentElement!=null){
+			elem=elem.parentElement;
+		}
+
+		if(elem.classList.contains("desktopIcon") || elem.classList.contains("folderIcon")){
+			if(hoverSnd.currentTime > hoverSnd.duration/4 || hoverSnd.paused){
+				hoverSnd.currentTime=0;
+				hoverSnd.play();
+				hoverSnd.volume=0.3;
+				if(muted) hoverSnd.volume=0;
+			}
+		}
 	})
 
 	clickableStuff[i].addEventListener('mouseleave',function(){
