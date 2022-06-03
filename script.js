@@ -3,6 +3,8 @@ abtButton=document.getElementById("abtButton");
 trashIcon=document.getElementById("trashIcon");
 var trash=[];
 
+var interacted=false;
+
 gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
 "kidloki.jpg","skeleguy.gif"];
 
@@ -129,7 +131,8 @@ window.addEventListener('mousemove', moveCursor)
 
 window.addEventListener('mousedown',function(){
 	mouseMoved=false;
-	if(!mobileMode()){
+	interacted=true;
+	if(!mobileMode() && interacted){
 		clickSnd1.currentTime=0;
 		clickSnd1.play();
 	}
@@ -142,7 +145,7 @@ window.addEventListener('mousedown',function(){
 })
 
 window.addEventListener('mouseup',function(){
-	if(!mobileMode()){
+	if(!mobileMode() && interacted){
 		clickSnd2.currentTime=0;
 		clickSnd2.play();
 	}
@@ -321,39 +324,32 @@ var hoverSnd=document.getElementById("hoverSound");
 
 for(var i=0;i<clickableStuff.length;i++){
 	clickableStuff[i].addEventListener('mouseenter',function(e){
-		elem=e.target;
-		
-
+		var elem=e.target;
 
 		while(!elem.classList.contains("folderIcon") && !elem.classList.contains("desktopIcon")
 		 && elem.parentElement!=null){
 			elem=elem.parentElement;
 		}
 
-		if(elem.classList.contains("desktopIcon") || elem.classList.contains("folderIcon")){
-			if(hoverSnd.currentTime > hoverSnd.duration/4 || hoverSnd.paused){
+		if(interacted && (elem.classList.contains("desktopIcon") || elem.classList.contains("folderIcon"))){
+			if(!muted && (hoverSnd.currentTime > hoverSnd.duration/4 || hoverSnd.paused)){
 				hoverSnd.currentTime=0;
 				hoverSnd.play();
 				hoverSnd.volume=0.3;
-				if(muted) hoverSnd.volume=0;
 			}
 		}
-	})
+	});
 
 	clickableStuff[i].addEventListener('mouseleave',function(){
-		//console.log("mouse out");
-		log.innerHTML=log.innerHTML+"<br>mouse out";
 		if(!mouseClicked){
 			cursorNormal.style.visibility="visible";
 			cursorHover.style.visibility="hidden";
 			cursorClick.style.visibility="hidden";
 		}
 		mouseHovering=false;
-	})
+	});
 
 	clickableStuff[i].addEventListener('mousemove',function(){
-		//console.log("mouse move");
-		log.innerHTML=log.innerHTML+"<br>mouse move";
 		if(!mouseClicked){
 			cursorNormal.style.visibility="hidden";
 			cursorHover.style.visibility="visible";
@@ -361,12 +357,11 @@ for(var i=0;i<clickableStuff.length;i++){
 		}
 		mouseHovering=true;
 		mouseout=false;
-	})
+	});
 
 	clickableStuff[i].addEventListener('mousedown',function(e){
 		draggedElement=e.target.parentElement;
 		
-
 
 		while(!draggedElement.classList.contains("buttonImg") &&
 			!draggedElement.classList.contains("windowContent") &&
@@ -402,7 +397,6 @@ for(var i=0;i<clickableStuff.length;i++){
 			!draggedElement.classList.contains("buttonImg") &&
 			!draggedElement.classList.id!="seekSlider"){
 			//console.log(elem);
-			var elem=elem;
 			while(!elem.classList.contains("desktopIcon") && !elem.classList.contains("window") && elem.parentElement!=null){
 				elem=elem.parentElement;
 			}
