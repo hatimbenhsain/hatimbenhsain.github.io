@@ -1,3 +1,41 @@
+// var h1=document.getElementsByTagName("h1")[0];
+// h1=h1.innerHTML;
+// var newh="";
+
+// for(var i=0;i<h1.length;i++){
+// 	var c=h1.charAt(i)
+// 	if(c!="<" && c!="b" && c!="r" && c!=">" && c!=" "){
+// 		newh=newh+"<t>"+c+"</t>"
+// 	}else{
+// 		newh=newh+c;
+// 	}
+// }
+
+// document.getElementsByTagName("h1")[0].innerHTML=newh;
+// console.log(newh);
+
+bgImage=document.getElementById("bgImage");
+
+function changeBg(d){
+	console.log("change bg");
+	bgImage.style.filter="hue-rotate("+d+"deg)";
+	setTimeout(changeBg,200,d+1);
+}
+
+changeBg(313);
+
+var ts=document.getElementsByTagName("t");
+
+for(var i=0;i<ts.length;i++){
+	ts[i].addEventListener("click",function(e){
+		if(e.which==1){
+			if(!e.target.classList.contains("tClicked")) e.target.classList.add("tClicked");
+			else e.target.classList.remove("tClicked");
+			console.log(e.target.classList[0]);
+		}
+	})
+}
+
 abtButton=document.getElementById("abtButton");
 
 trashIcon=document.getElementById("trashIcon");
@@ -5,8 +43,11 @@ var trash=[];
 
 var interacted=false;
 
-gallerySources=["amelMart.jpg","changeDwellingColors.jpg","creechur.gif","gopPainting.gif","gopSketch.png","janitoBot.jpg",
-"kidloki.jpg","skeleguy.gif"];
+var mouseDownCoords=[0,0];
+var timeSinceMouseDown=0;
+
+gallerySources=["janitoBot.jpg","kidloki.jpg","skeleguy.gif","amelMart.jpg","changeDwellingColors.jpg","creechur.gif",
+"gopPainting.gif","gopSketch.png"];
 
 var clickableStuff=Array.from(document.getElementsByClassName("desktopIcon"));
 var desktopIcons=[];
@@ -69,14 +110,18 @@ var draggedElement=-1;
 var disX=0;
 var disY=0;
 
-console.log(window.screen.height);
 
 const moveCursor = (e)=> {
-	mouseMoved=true;
-
 	const mouseY = e.clientY;
 	const mouseX = e.clientX-64;
    
+	if(!mouseMoved){
+		var distance=((mouseX-mouseDownCoords[0])**2+(mouseY-mouseDownCoords[1])**2)**0.5;
+		if(distance>3){
+			mouseMoved=true;
+		}
+	}
+
 	cursorNormal.style.top=mouseY+"px";
 	cursorNormal.style.left=mouseX+"px";
 	cursorHover.style.top=mouseY+"px";
@@ -87,7 +132,8 @@ const moveCursor = (e)=> {
 	//log.innerHTML=log.innerHTML+"<br>moving";
 	if(draggedElement!=-1 && mouseClicked){
 		if(crossClicked==-1){
-			if(draggedElement.classList.contains("desktopIcon") || draggedElement.classList.contains("window")){
+			if((mouseX>0 && mouseY>screen.height*0.1 && mouseX<screen.width*0.9 && mouseY<screen.height*0.85)
+				&& (draggedElement.classList.contains("desktopIcon") || draggedElement.classList.contains("window"))){
 				draggedElement.style.left=mouseX+disX+"px";
 				draggedElement.style.top=mouseY+disY+"px";
 				draggedElement.style.bottom="auto";
@@ -104,12 +150,14 @@ const moveCursor = (e)=> {
 			//console.log("moving");
 			//log.innerHTML=log.innerHTML+"<br>moving "+draggedElement.className;
 			var children=draggedElement.children;
-			for(var i=0;i<children.length;i++){
-				if(children[i].tagName.toLowerCase()=="a"){
-					children[i].classList.remove("dragstart");
-		        	children[i].className=children[i].className + " dragstart";
-		        	log.innerHTML=log.innerHTML+"<br>removing a tag ";
-	        	}
+			if(mouseMoved){
+				for(var i=0;i<children.length;i++){
+					if(children[i].tagName.toLowerCase()=="a"){
+						children[i].classList.remove("dragstart");
+			        	children[i].className=children[i].className + " dragstart";
+			        	log.innerHTML=log.innerHTML+"<br>removing a tag ";
+		        	}
+				}
 			}
 		}else{
 			draggedElement=-1;
@@ -129,9 +177,13 @@ window.addEventListener('mousemove', moveCursor)
 
 
 
-window.addEventListener('mousedown',function(){
+window.addEventListener('mousedown',function(e){
 	mouseMoved=false;
 	interacted=true;
+
+	mouseDownCoords[0]=e.clientX-64;
+	mouseDownCoords[1]=e.clientY;
+
 	if(!mobileMode() && interacted){
 		clickSnd1.currentTime=0;
 		clickSnd1.play();
@@ -185,10 +237,35 @@ document.addEventListener("mouseleave",function(){
 var tagSection=document.getElementsByClassName("tagSection");
 var checkboxes=Array.from(tagSection[0].getElementsByClassName("input-checkbox"));
 var labels=Array.from(tagSection[0].getElementsByClassName("checkbox"));
-console.log(checkboxes);
 
 for(var k=0;k<checkboxes.length;k++){
 	checkboxes[k].addEventListener("change",checkboxClicked);
+}
+
+var games=Array.from(document.getElementById("gamesWindow").getElementsByClassName("folderIcon"));
+
+for(var i=0;i<games.length;i++){
+	games[i].addEventListener("mouseenter",function(e){
+
+		var tags=Array.from(e.target.classList);
+		tags.shift();
+		for(var n=0;n<tags.length;n++){
+			for(var k=0;k<checkboxes.length;k++){
+				var span=checkboxes[k].parentElement.getElementsByTagName("span")[0]
+				var tag=span.innerHTML.replace(/\s/g,'');
+				if(!checkboxes[k].checked && tag==tags[n]){
+					span.classList.add("hover");
+				}
+			}
+		}
+	});
+
+	games[i].addEventListener("mouseleave",function(e){
+		for(var k=0;k<checkboxes.length;k++){
+			var span=checkboxes[k].parentElement.getElementsByTagName("span")[0]
+			span.classList.remove("hover");
+		}
+	});
 }
 
 function checkboxClicked(e){
@@ -204,7 +281,6 @@ function checkboxClicked(e){
 		w=w.parentElement;
 	}
 	var fileBrowser=w.getElementsByClassName("fileBrowser")[0];
-	var games=Array.from(fileBrowser.getElementsByClassName("folderIcon"));
 	for(var i=0;i<games.length;i++){
 		var containsTags=true;
 		var gameTags=games[i].classList;
@@ -223,7 +299,6 @@ function checkboxClicked(e){
 }
 
 function clearTags(e){
-	console.log("clear tags");
 	var w=e.target.parentElement;
 	while(!w.classList.contains("windowContent") && w.parentElement!=null){
 		w=w.parentElement;
@@ -282,9 +357,7 @@ for(var i=0;i<crosses.length;i++){
 	});
 
 	crosses[i].addEventListener("mouseup",function(e){
-		console.log(e);
-		if(crossClicked==e.target){
-			console.log("cross clicked");
+		if(crossClicked==e.target && e.which==1){
 			var w=crossClicked;
 			while(!w.classList.contains("window") || w.classList.contains("windowBanner")){
 				w=w.parentElement;
@@ -360,40 +433,41 @@ for(var i=0;i<clickableStuff.length;i++){
 	});
 
 	clickableStuff[i].addEventListener('mousedown',function(e){
-		draggedElement=e.target.parentElement;
-		
+		if(e.which==1){
+			draggedElement=e.target.parentElement;
+			
 
-		while(!draggedElement.classList.contains("buttonImg") &&
-			!draggedElement.classList.contains("windowContent") &&
-			!draggedElement.classList.contains("clearButton") &&
-			!draggedElement.classList.contains("checkbox") && !draggedElement.classList.contains("folderIcon") && 
-			!draggedElement.classList.contains("desktopIcon") && 
-			!draggedElement.classList.contains("window") && draggedElement.parentElement!=null){
-			draggedElement=draggedElement.parentElement;
-		}
+			while(!draggedElement.classList.contains("buttonImg") &&
+				!draggedElement.classList.contains("windowContent") &&
+				!draggedElement.classList.contains("clearButton") &&
+				!draggedElement.classList.contains("checkbox") && !draggedElement.classList.contains("folderIcon") && 
+				!draggedElement.classList.contains("desktopIcon") && 
+				!draggedElement.classList.contains("window") && draggedElement.parentElement!=null){
+				draggedElement=draggedElement.parentElement;
+			}
 
-		if(draggedElement.classList.contains("desktopIcon")){
-			putOnTop(draggedElement,desktopIcons,0);
-			draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
+			if(draggedElement.classList.contains("desktopIcon")){
+				putOnTop(draggedElement,desktopIcons,0);
+				draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
+			}
+			else if(draggedElement.classList.contains("window")){
+			 putOnTop(draggedElement,windows,100);
+			 draggedElement.classList.add("clicked");
+			 draggedElement.classList.remove("windowOpened");
+			}else if(draggedElement.classList.contains("folderIcon")){
+				draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
+			}
+			const mouseY = e.clientY;
+			const mouseX = e.clientX-64;
+			disX=draggedElement.offsetLeft-mouseX;
+			disY=draggedElement.offsetTop-mouseY;
 		}
-		else if(draggedElement.classList.contains("window")){
-		 putOnTop(draggedElement,windows,100);
-		 draggedElement.classList.add("clicked");
-		 draggedElement.classList.remove("windowOpened");
-		}else if(draggedElement.classList.contains("folderIcon")){
-			draggedElement.getElementsByClassName("iconImg")[0].classList.add("clicked");
-		}
-		const mouseY = e.clientY;
-		const mouseX = e.clientX-64;
-		disX=draggedElement.offsetLeft-mouseX;
-		disY=draggedElement.offsetTop-mouseY;
-
 		//console.log(draggedElement);
 	})
 
 	clickableStuff[i].addEventListener('mouseup',function(e){
 		var elem=e.target;
-		if(!elem.classList.contains("checkbox") && !elem.classList.contains("clearButton") &&
+		if(e.which==1 && !elem.classList.contains("checkbox") && !elem.classList.contains("clearButton") &&
 			!draggedElement.classList.contains("buttonImg") &&
 			!draggedElement.classList.id!="seekSlider"){
 			//console.log(elem);
@@ -401,7 +475,6 @@ for(var i=0;i<clickableStuff.length;i++){
 				elem=elem.parentElement;
 			}
 			if(!mouseMoved && elem==draggedElement){
-				console.log(draggedElement.getElementsByClassName("iconImg")[0]);
 				if(elem.classList.contains("desktopIcon")){
 					var win=null;
 					var info=null;
@@ -426,7 +499,6 @@ for(var i=0;i<clickableStuff.length;i++){
 					if(info!=null){
 						win=info.window;
 						win.style.visibility="visible";
-						console.log(mobileMode());
 						if(!mobileMode()){
 							win.style.top=info.initTop;
 							win.style.left=info.initLeft;
@@ -505,7 +577,6 @@ function loadMusicInfo(){
 }
 
 playButton.addEventListener("click",function(e){
-	console.log(e.target);
 	var img=e.target;
 	if(img.tagName!="IMG"){
 		img=img.getElementsByTagName("IMG")[0];
@@ -567,7 +638,6 @@ function stopMusic(){
 }
 
 muteButton.addEventListener("click",function(e){
-	console.log(e.target);
 	var img=e.target;
 	if(img.tagName!="IMG"){
 		img=img.getElementsByTagName("IMG")[0];
@@ -613,11 +683,9 @@ function collide(el1, el2){
 function putInTrash(elem){
 	trash.push(elem);
 	elem.style.display="none";
-	console.log("put in trash");
 }
 
 function takeTrashOut(){
-	console.log("take trash out");
 	for(var i=0;i<trash.length;i++){
 		trash[i].style.display="block";
 		putOnTop(trash[i],desktopIcons,0);;
