@@ -522,7 +522,11 @@ h2{
 #muteButton{
   width: 32px;
   height: 32px;
-  margin-left: 5px;
+  margin-left: 8px;
+}
+
+.garbage{
+  display: none;
 }
 
 #prevButton{
