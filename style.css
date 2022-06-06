@@ -789,6 +789,8 @@ audio{
     padding: 1rem;
   }
 
+
+
   .socialIcons{
     position: absolute;
     display: flex;
@@ -806,6 +808,10 @@ audio{
     position: initial;
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .garbage{
+    display: none;
   }
 
 
