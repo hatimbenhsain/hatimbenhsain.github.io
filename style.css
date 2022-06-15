@@ -71,7 +71,6 @@ h1{
   width: 160px;
   display: block;
   z-index: 0;
-  transition: 0.1s;
 }
 
 .iconText{

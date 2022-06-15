@@ -14,6 +14,18 @@
 // document.getElementsByTagName("h1")[0].innerHTML=newh;
 // console.log(newh);
 
+var images=document.getElementsByTagName("img");
+
+for(var i=0;i<images.length;i++){
+	images[i].draggable=false;
+}
+
+var links=document.getElementsByTagName("a");
+
+for(var i=0;i<links.length;i++){
+	links[i].draggable=false;
+}
+
 bgImage=document.getElementById("bgImage");
 
 function changeBg(d){
@@ -140,6 +152,10 @@ const moveCursor = (e)=> {
 				draggedElement.style.top=mouseY+disY+"px";
 				draggedElement.style.bottom="auto";
 				draggedElement.style.right="auto";
+				// var rect = draggedElement.getBoundingClientRect();
+				// var x=mouseX-rect.left-disX;
+				// var y=mouseY-rect.top-disY;
+				// draggedElement.style.transform="translate("+x+"px,"+y+"px)";
 			}
 
 			if(draggedElement.classList.contains("desktopIcon")){
@@ -760,5 +776,5 @@ function moveTo(elem,left,top){
 }
 
 function removeTransition(elem){
-	elem.style.transition="0.1s";
+	elem.style.transition="none";
 }
