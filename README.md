@@ -1,6 +1,5 @@
-# hatimbenhsain.github.io
-Hatim Github
+Hi!
 
-https://drive.google.com/file/d/1h-pPnjZvz_EUb7Aays-nSfl0Al5pnUT4/view?usp=sharing
+Here you will find my personal website/portfolio. I coded it entirely using only CSS and JavaScript, and I drew and recorded all the images and sounds on the website. The font I used it Pixellari. You can visit it here:
 
-https://drive.google.com/file/d/1WTDhr8ip4krn19EP46qab20rDCP55w9d/view?usp=sharing
+https://hatimbenhsain.github.io/
