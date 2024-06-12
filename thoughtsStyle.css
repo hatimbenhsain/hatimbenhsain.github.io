@@ -1,0 +1,28 @@
+
+@font-face{
+  font-family: codersCrux;
+  src: url("Coders-Crux.woff");
+}
+
+@font-face{
+  font-family: pixellari;
+  src: url("Pixellari.ttf");
+}
+
+.source-code-pro-<uniquifier> {
+  font-family: "Source Code Pro", monospace;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+body{
+  font-family: Source Code Pro;
+  background-color: black;
+  color: white;
+  max-width: 1000px;
+}
+
+a{
+  color: lightgray;
+}
