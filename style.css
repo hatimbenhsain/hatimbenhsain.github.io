@@ -149,14 +149,19 @@ h1{
   right: 610px;
 }
 
+#bskyIcon{
+  bottom: 35px;
+  right: 790px;
+}
+
 #igIcon{
   right:  422px;
   bottom: 32px;
 }
 
 #itchIcon{
-  bottom: 35px;
-  right: 790px;
+  bottom: 36px;
+  right: 970px;
 }
 
 #githubIcon{
