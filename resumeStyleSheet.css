@@ -1,0 +1,163 @@
+@font-face{
+    font-family: codersCrux;
+    src: url("Coders-Crux.woff");
+  }
+
+@font-face{
+font-family: eightbitoperator;
+src: url("8bitoperator.ttf");
+}
+
+@font-face{
+font-family: inconsolata;
+src: url("Inconsolata-SemiBold.ttf");
+}
+
+/* Set A4 size */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+/* Set content to fill the entire A4 page */
+
+body {
+    width: 215.9mm;
+    height: 279.4mm;
+    padding: 0;
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display:flex; 
+    border-color: black;
+    border:5px;
+    border-style: solid;
+}
+
+/* Style content with shaded background */
+.content {
+    width: 100%;
+    /* Adjust the width as needed */
+    height: 100%;
+    /* Adjust the height as needed*/
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: eightbitoperator;
+    background-color: white;
+    /* Light gray shade */
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    text-align: center;
+    background-color: #319f63;
+    padding:20px;
+    color: white;
+}
+
+.resumeBody{
+    color: #272726;
+    display:flex;
+    flex-direction: row;
+    height:100%;
+    min-height: 0;
+    padding:20px;
+}
+
+.resumeColumn{
+    padding:0px;
+    flex-direction: column;
+    justify-content: space-between;
+    height:100%;
+    display:flex;
+    padding:10px;
+}
+
+#column1{
+    width:33%;
+}
+
+#column2{
+    width:67%;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+
+h1{
+    font-size: 40px;
+    padding-bottom: 5px;
+}
+
+h2{
+    color:#319f63;
+}
+
+h3{
+    font-size: 14px;
+    font-weight:normal;
+    padding-bottom: 0px;
+}
+
+
+h4{
+    font-family: inconsolata;
+    font-style: italic;
+    font-weight: lighter;
+    padding-bottom: 5px;
+}
+
+p{
+    font-family: inconsolata;
+    padding-top:5px;
+}
+
+.section1{
+    padding-bottom:5px;
+    flex-direction: column;
+    justify-content: top;
+    display:flex;
+}
+
+.section2{
+    padding-top:5px;
+    padding-bottom:5px;
+    flex-direction: column;
+    display:flex;
+}
+
+.skillTable{
+    display:flex;
+    flex-direction: column;
+    flex-wrap:wrap;
+    width:100%;
+}
+
+.subSkilltable{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    width:100%;
+}
+
+.skillChild{
+    width:50%;
+    padding-bottom: 5px;
+}
+
+#computerSkills{
+    flex-direction:row;
+}
