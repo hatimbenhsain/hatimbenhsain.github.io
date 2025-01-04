@@ -75,10 +75,18 @@ body {
 .resumeColumn{
     padding:0px;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: top;
     height:100%;
     display:flex;
     padding:10px;
+}
+
+.columnTable{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height:90%;
+    max-height: 100%;
 }
 
 #column1{
@@ -117,12 +125,13 @@ h4{
     font-family: inconsolata;
     font-style: italic;
     font-weight: lighter;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
 }
 
 p{
     font-family: inconsolata;
     padding-top:5px;
+    text-align: justify;
 }
 
 .section1{
@@ -155,7 +164,10 @@ p{
 
 .skillChild{
     width:50%;
-    padding-bottom: 5px;
+}
+
+.subSkillChild{
+    width:100%;
 }
 
 #computerSkills{
