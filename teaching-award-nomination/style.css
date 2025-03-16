@@ -1,0 +1,125 @@
+#world{
+    width:100%;
+    height:100%;
+    position: absolute;
+}
+
+body{
+    overflow: hidden;
+    width:2000px;
+    height:2000px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23191715' fill-opacity='1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E"),linear-gradient(#fff 70%,#ffc2e4);
+    background-color: #fff;
+    background-repeat: repeat;
+}
+
+p{
+    text-align: justify;
+}
+
+.island{
+    position: absolute;
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+}
+
+.bordered{
+    outline: black solid 5px;
+    box-shadow: 10px 10px #ff57b3;
+}
+
+.islandcontent{
+    display:flex;
+    max-width: 600px;
+    justify-content: center;
+}
+
+.subisland{
+    padding:20px;
+    margin:15px;
+    width:300px;
+    flex-shrink:0;
+    z-index: 1;
+    background-color: white;
+}
+
+#intro{
+    left:425px;
+    top:100px;
+}
+
+#classes{
+    left:410px;
+    top:600px;
+}
+
+#philosophy{
+    left:1400px;
+    top:600px;
+}
+
+#insideclassroom{
+    left:1400px;
+    top:1200px;
+}
+
+#outsideclassroom{
+    left:410px;
+    top:1200px;
+}
+
+#finalstatement{
+    left:410px;
+    top:1800px;
+}
+
+#avatar{
+    position:fixed;
+    left:calc(50vw - 32px);
+    top:calc(50vh - 32px);
+    width:64px;
+    height:64px;
+    image-rendering: pixelated;
+    z-index: 100;
+}
+
+.textcentered{
+    text-align: center;
+}
+
+.textright{
+    text-align: right;
+}
+
+
+.arrow{
+    position: absolute;
+    font-size:24px;
+    font-weight: bolder;
+}
+
+#arrow1{
+    left:627px;
+    top:400px;
+}
+
+#arrow2{
+    left:1100px;
+    top:800px;
+}
+
+#arrow3{
+    left:1620px;
+    top:1050px;
+}
+
+#arrow4{
+    left:1100px;
+    top:1320px;
+}
+
+#arrow5{
+    left:627px;
+    top:1600px;
+}
