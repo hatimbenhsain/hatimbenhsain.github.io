@@ -3,15 +3,16 @@ timer=0;
 
 img_index=0;
 
-spritesIdle=["alexanderKing1.png"]
-spritesDown=["alexanderKing2.png","alexanderKing1.png","alexanderKing3.png","alexanderKing1.png"]
-spritesUp=["alexanderKing5.png","alexanderKing4.png","alexanderKing6.png","alexanderKing4.png"]
-spritesLeft=["alexanderKing7.png","alexanderKing8.png","alexanderKing7.png","alexanderKing8.png"]
-spritesRight=["alexanderKing9.png","alexanderKing10.png","alexanderKing9.png","alexanderKing10.png"]
+spritesIdle=["bottom1"]
+spritesDown=["bottom2","bottom1","bottom3","bottom1"]
+spritesUp=["top2","top1","top3","top1"]
+spritesLeft=["left1","left2","left1","left2"]
+spritesRight=["right1","right2","right1","right2"]
 
 imageSpeed=8
 
-sprite=document.getElementById("avatar")
+spriteImages=document.getElementsByClassName("avatar")
+sprite=spriteImages[0]
 
 islands=document.querySelectorAll(".island, .subisland");
 direction="down"
@@ -64,9 +65,18 @@ function draw(){
             break;  
     }
 
-    if(moving)
-    sprite.src="images/"+sprites[parseInt((timer*imageSpeed)%sprites.length)]
-    else sprite.src="images/"+sprites[1]
+    for(var i=0;i<spriteImages.length;i++){
+        spriteImages[i].style.visibility="hidden"
+    }
+
+    if(moving){
+        //sprite.src="images/"+sprites[parseInt((timer*imageSpeed)%sprites.length)]
+        document.getElementById(sprites[parseInt((timer*imageSpeed)%sprites.length)]).style.visibility="visible"
+    }
+    else{
+        //sprite.src="images/"+sprites[1]
+        document.getElementById(sprites[1]).style.visibility="visible"
+    } 
 
     var rect=sprite.getBoundingClientRect()
     var avatarx=rect.left+(rect.right-rect.left)/2;

@@ -74,7 +74,7 @@ p{
     top:1800px;
 }
 
-#avatar{
+.avatar{
     position:fixed;
     left:calc(50vw - 32px);
     top:calc(50vh - 32px);
@@ -82,6 +82,7 @@ p{
     height:64px;
     image-rendering: pixelated;
     z-index: 100;
+    visibility: hidden;
 }
 
 .textcentered{
