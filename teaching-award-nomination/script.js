@@ -1,4 +1,4 @@
-walkSpeed=40;
+walkSpeed=5;
 timer=0;
 
 img_index=0;
