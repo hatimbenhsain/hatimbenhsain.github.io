@@ -22,6 +22,10 @@ p{
     text-align: justify;
 }
 
+li{
+    list-style: square;
+}
+
 .island{
     position: absolute;
     width: 400px;
@@ -62,10 +66,79 @@ p{
     width:300px;
 }
 
+#presenterImg{
+    left:300px;
+    top:650px;
+    width:600px;
+}
+
+#printerImg{
+    left:1300px;
+    top:1450px;
+    width:600px;
+}
+
+#gradesImg{
+    left:-100px;
+    top:1300px;
+    width:300px;
+}
+#gradesImg2{
+    left:0px;
+    top:1500px;
+    width:200px;
+}
+
+#presentingImg{
+    left:200px;
+    top:2700px;
+    width:400px;
+}
+
+#appleImg1{
+    left:-50px;
+    top:2675px;
+    width:200px;
+}
+
+#sfgdImg{
+    left:2100px;
+    top:2000px;
+    width:400px;
+}
+
+#hifiveImg{
+    left:2200px;
+    top:2400px;
+    width:400px;
+}
+
+#prideImg{
+    left:2400px;
+    top:2100px;
+    width:400px;
+}
+
+#classroomImg{
+    left:1600px;
+    top:2800px;
+    width:400px;
+}
+
+#spreadsheetartImg1{
+    left:1900px;
+    top:600px;
+    width:400px;
+}
+
 img{
     width:100%
 }
 
+#tuto{
+    left:525px;
+    top:-100px;
+}
 
 #intro{
     left:525px;
@@ -73,28 +146,37 @@ img{
 }
 
 #classes{
-    left:410px;
+    left:1400px;
     top:600px;
 }
 
 #philosophy{
-    left:1400px;
-    top:600px;
+    left:300px;
+    top:1400px;
+    width:600px;
 }
 
 #insideclassroom{
-    left:1400px;
-    top:1200px;
+    left:100px;
+    top:2100px;
+    width:500px;
+}
+
+#extendedexample{
+    left:700px;
+    top:2200px;
+    width:450px;
 }
 
 #outsideclassroom{
-    left:410px;
-    top:1200px;
+    left:1600px;
+    top:2200px;
+    width:500px;
 }
 
 #finalstatement{
-    left:410px;
-    top:1800px;
+    left:2100px;
+    top:2800px;
 }
 
 .avatar{
@@ -106,6 +188,10 @@ img{
     image-rendering: pixelated;
     z-index: 100;
     visibility: hidden;
+}
+
+.italic{
+    font-style:italic;
 }
 
 .textcentered{
@@ -125,7 +211,7 @@ img{
 
 #arrow1{
     left:627px;
-    top:400px;
+    top:450px;
 }
 
 #arrow2{
@@ -135,20 +221,50 @@ img{
 
 #arrow3{
     left:1620px;
-    top:1050px;
+    top:1300px;
 }
 
 #arrow4{
     left:1100px;
-    top:1320px;
+    top:1620px;
 }
 
 #arrow5{
     left:627px;
-    top:1600px;
+    top:1950px;
+}
+
+#arrow6{
+    left:1400px;
+    top:2400px;
+}
+
+#arrow7{
+    left:1850px;
+    top:2700px;
 }
 
 @font-face {
 font-family: "Aktiv";
 src: url(AktivGrotesk-Regular.ttf) format("truetype");
+}
+
+#quote1{
+    left:250px;
+    top:1000px;
+}
+
+#quote2{
+    left:1600px;
+    top:1750px;
+}
+
+#quote3{
+    left:2000px;
+    top:1100px;
+}
+
+#quote4{
+    left:2000px;
+    top:550px;
 }
