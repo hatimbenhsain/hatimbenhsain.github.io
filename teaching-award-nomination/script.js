@@ -24,63 +24,65 @@ function setup(){
 function draw(){
     var moving=false 
 
-    if(keyIsDown(LEFT_ARROW)){
-        world.style.left=(parseFloat(getComputedStyle(world).getPropertyValue("left"))+walkSpeed).toString()+"px";
-        moving=true
-        direction="left"
-    }
-    if(keyIsDown(DOWN_ARROW)){
-        world.style.top=(parseFloat(getComputedStyle(world).getPropertyValue("top"))-walkSpeed).toString()+"px";
-        moving=true
-        direction="down"
-    }
-    if(keyIsDown(RIGHT_ARROW)){
-        world.style.left=(parseFloat(getComputedStyle(world).getPropertyValue("left"))-walkSpeed).toString()+"px";
-        moving=true
-        direction="right"
-    }
-    if(keyIsDown(UP_ARROW)){
-        world.style.top=(parseFloat(getComputedStyle(world).getPropertyValue("top"))+walkSpeed).toString()+"px";
-        moving=true
-        direction="up"
-    }   
+    // if(window.matchMedia("(min-width: 801px)")){
+        if(keyIsDown(LEFT_ARROW)){
+            world.style.left=(parseFloat(getComputedStyle(world).getPropertyValue("left"))+walkSpeed).toString()+"px";
+            moving=true
+            direction="left"
+        }
+        if(keyIsDown(DOWN_ARROW)){
+            world.style.top=(parseFloat(getComputedStyle(world).getPropertyValue("top"))-walkSpeed).toString()+"px";
+            moving=true
+            direction="down"
+        }
+        if(keyIsDown(RIGHT_ARROW)){
+            world.style.left=(parseFloat(getComputedStyle(world).getPropertyValue("left"))-walkSpeed).toString()+"px";
+            moving=true
+            direction="right"
+        }
+        if(keyIsDown(UP_ARROW)){
+            world.style.top=(parseFloat(getComputedStyle(world).getPropertyValue("top"))+walkSpeed).toString()+"px";
+            moving=true
+            direction="up"
+        }   
 
-    if(!moving) timer=0
+        if(!moving) timer=0
 
-    timer+=deltaTime/1000
+        timer+=deltaTime/1000
 
-    sprites=spritesDown
-    switch(direction){
-        case "left":
-            sprites=spritesLeft
-            break;
-        case "down":
-            sprites=spritesDown
-            break;  
-        case "up":
-            sprites=spritesUp
-            break;  
-        case "right":
-            sprites=spritesRight
-            break;  
-    }
+        sprites=spritesDown
+        switch(direction){
+            case "left":
+                sprites=spritesLeft
+                break;
+            case "down":
+                sprites=spritesDown
+                break;  
+            case "up":
+                sprites=spritesUp
+                break;  
+            case "right":
+                sprites=spritesRight
+                break;  
+        }
 
-    for(var i=0;i<spriteImages.length;i++){
-        spriteImages[i].style.visibility="hidden"
-    }
+        for(var i=0;i<spriteImages.length;i++){
+            spriteImages[i].style.visibility="hidden"
+        }
 
-    if(moving){
-        //sprite.src="images/"+sprites[parseInt((timer*imageSpeed)%sprites.length)]
-        document.getElementById(sprites[parseInt((timer*imageSpeed)%sprites.length)]).style.visibility="visible"
-    }
-    else{
-        //sprite.src="images/"+sprites[1]
-        document.getElementById(sprites[1]).style.visibility="visible"
-    } 
+        if(moving){
+            //sprite.src="images/"+sprites[parseInt((timer*imageSpeed)%sprites.length)]
+            document.getElementById(sprites[parseInt((timer*imageSpeed)%sprites.length)]).style.visibility="visible"
+        }
+        else{
+            //sprite.src="images/"+sprites[1]
+            document.getElementById(sprites[1]).style.visibility="visible"
+        } 
 
-    var rect=sprite.getBoundingClientRect()
-    var avatarx=rect.left+(rect.right-rect.left)/2;
-    var avatary=rect.bottom;
+        var rect=sprite.getBoundingClientRect()
+        var avatarx=rect.left+(rect.right-rect.left)/2;
+        var avatary=rect.bottom;
+    // }
 
     for(var i=0;i<islands.length;i++){
         var rect = islands[i].getBoundingClientRect()

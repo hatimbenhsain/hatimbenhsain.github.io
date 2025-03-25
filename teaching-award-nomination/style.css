@@ -13,9 +13,24 @@ body{
     overflow: hidden;
     width:2000px;
     height:2000px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23191715' fill-opacity='1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E"),linear-gradient(#fff 70%,#ffc2e4);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23191715' fill-opacity='1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
     background-color: #fff;
     background-repeat: repeat;
+}
+
+@media only screen and (min-width:100px) {
+    body {
+      overflow:visible;
+    }
+    .avatar{
+        top:0px;
+        left:0px;
+    }
+}
+@media only screen and (min-width:801px) {
+    body {
+      overflow:hidden;
+    }
 }
 
 p{
