@@ -14,7 +14,7 @@ imageSpeed=8
 spriteImages=document.getElementsByClassName("avatar")
 sprite=spriteImages[0]
 
-islands=document.querySelectorAll(".island, .subisland");
+islands=document.querySelectorAll(".island, .subisland, .imgisland");
 direction="down"
 
 function setup(){
