@@ -247,6 +247,7 @@ a{
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  color:white;
 }
 
 .cursorImg{
