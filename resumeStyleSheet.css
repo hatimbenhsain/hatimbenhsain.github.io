@@ -13,17 +13,18 @@ font-family: inconsolata;
 src: url("Inconsolata-SemiBold.ttf");
 }
 
-/* Set A4 size */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Set A4 size
 @page {
     size: A4;
     margin: 0;
-}
+} */
 
 /* Set content to fill the entire A4 page */
 
@@ -36,9 +37,9 @@ body {
     justify-content: center;
     align-items: center;
     display:flex; 
-    border-color: black;
+    /* border-color: black;
     border:5px;
-    border-style: solid;
+    border-style: solid; */
 }
 
 /* Style content with shaded background */
