@@ -351,6 +351,9 @@ var buttonImgs=Array.from(document.getElementsByClassName("buttonImg"));
 clickableStuff=clickableStuff.concat(buttonImgs);
 clickableStuff.push(document.getElementById("seekSlider"));
 
+var links=Array.from(document.getElementsByTagName("a"));
+clickableStuff=clickableStuff.concat(links);
+
 
 for(var i=0;i<windows.length;i++){
 	windows[i]=windows[i].parentElement;
