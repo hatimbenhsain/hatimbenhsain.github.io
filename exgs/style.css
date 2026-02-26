@@ -1,0 +1,30 @@
+.slide{
+    opacity:0;
+    transition:opacity 3s;
+}
+
+#currentSlide{
+    opacity:1;
+}
+
+img.slide{
+    /* width:100vw; */
+    height:100vh;
+    position:absolute;
+    left: 0; 
+    right: 0; 
+    margin-inline: auto; 
+    width: fit-content;
+}
+
+body{
+    margin:0;
+}
+
+html{
+    background-color: black;
+}
+
+audio{
+    visibility: hidden;
+}
