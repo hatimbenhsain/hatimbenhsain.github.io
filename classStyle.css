@@ -18,9 +18,22 @@ body{
 
 .separator{
     text-align:center;
-    display: block;
+    display: flex;
+    justify-content: center;
     white-space: pre;
     font-family: monospace;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+.separator:hover{
+    text-decoration: overline underline wavy 1.5px;
+}
+
+a{
+    transition: 1s;
+}
+a:hover{
+    color:white;
+    text-shadow: 0 0 6px white;
 }
