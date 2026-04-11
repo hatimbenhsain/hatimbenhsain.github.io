@@ -32,8 +32,9 @@ body{
 
 a{
     transition: 1s;
+    text-underline-offset: 3px;
 }
 a:hover{
     color:white;
-    text-shadow: 0 0 6px white;
+    text-shadow: 0 0 12px white;
 }
