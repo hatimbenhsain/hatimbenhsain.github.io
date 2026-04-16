@@ -1,0 +1,40 @@
+hr{
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border-top: 2px dashed white;
+    border-bottom: none;
+    width: 75%;
+}
+
+h2:hover{
+    text-decoration: underline wavy 1.5px;
+    text-underline-offset: 5px;
+}
+
+body{
+    margin:auto;
+    padding:15px;
+}
+
+.separator{
+    text-align:center;
+    display: flex;
+    justify-content: center;
+    white-space: pre;
+    font-family: monospace;
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+.separator:hover{
+    text-decoration: overline underline wavy 1.5px;
+}
+
+a{
+    transition: 1s;
+    text-underline-offset: 3px;
+}
+a:hover{
+    color:white;
+    text-shadow: 0 0 12px white;
+}
